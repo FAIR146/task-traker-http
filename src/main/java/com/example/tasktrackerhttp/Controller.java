@@ -1,8 +1,9 @@
 package com.example.tasktrackerhttp;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -11,45 +12,77 @@ public class Controller {
         this.manager = manager;
     }
 
-    @GetMapping("/addTask/{name}/{description}/{status}")
-        public long addTask (@PathVariable String name,@PathVariable String description,@PathVariable Status status) {
-        return manager.addTask(name,description, status);
+    @PutMapping("/putTask")
+    public AddTaskResponse putTask (@RequestBody Task task) {
+        AddTaskResponse addTaskResponse = new AddTaskResponse();
+        long id = manager.addTask(task.getName(),task.getDescription(), task.getStatus());
+        addTaskResponse.setId(id);
+        return addTaskResponse;
     }
-    @GetMapping("/addEpic/{name}/{description}")
-    public long addEpic (@PathVariable String name, @PathVariable String description) {
-        return manager.addEpic(name, description);
+    @PutMapping("/putEpic")
+    public AddEpicResponse putEpic (@RequestBody Epic epic) {
+        AddEpicResponse addEpicResponse = new AddEpicResponse();
+        long id = manager.addEpic(epic.getName(), epic.getDescription());
+        addEpicResponse.setId(id);
+        return addEpicResponse;
     }
-//    @GetMapping("/addSubTask/{id}/{name}/{description}/{status}")
-//    public SubTask addSubTask (@PathVariable long id ,@PathVariable String name, @PathVariable String description, @PathVariable Status status) {
-//        return addSubTask(id, name)
-//    }
-    @GetMapping("/removeEpicById/{id}")
-    public void removeEpicById (long id) {
+
+    @PutMapping("/putSubTask")
+    public AddSubTaskResponse addSubTask (@RequestBody AddSubTaskRequest addSubTaskRequest) {
+        AddSubTaskResponse addSubTaskResponse = new AddSubTaskResponse();
+        Epic epic = new Epic();
+        long id = manager.addSubTask(addSubTaskResponse.getId(), addSubTaskRequest.getName(), addSubTaskRequest.getDescription(), addSubTaskRequest.getStatus());
+        addSubTaskResponse.setId(id);
+        return addSubTaskResponse;
+    }
+    @DeleteMapping("/deleteEpicById")
+    public void deleteEpicById (@RequestParam long id) {
+        manager.removeEpicById(id);
+    }
+    @DeleteMapping("/deleteTaskById")
+    public void deleteTaskById (@RequestParam long id) {
+        manager.removeTaskById(id);
 
     }
-    @GetMapping("/removeTaskById/{od}")
-    public void removeTaskById (long id) {
-
+    @DeleteMapping("/deleteSubTaskById")
+    public void deleteSubTaskById (@RequestParam long id) {
+        manager.removeSubTaskById(id);
     }
-    @GetMapping("/removeSubTaskById/{id}")
-    public void removeSubTaskById (long id) {
-
+    @DeleteMapping("/deleteAllTasks")
+    public void deleteAllTasks () {
+        manager.removeAllTasks();
     }
-    @GetMapping("/removeAllTasks")
-    public void removeAllTasks () {
-
+    @DeleteMapping("/deleteAllEpics")
+    public void deleteAllEpics () {
+        manager.removeAllEpics();
     }
-    @GetMapping("/removeAllEpics")
-    public void removeAllEpics () {
-
-    }
-    @GetMapping("/removeAllSubTasks")
-    public void removeAllSubTasks () {
-
+    @DeleteMapping("/deleteAllSubTasks")
+    public void deleteAllSubTasks () {
+        manager.removeAllSubTasks();
     }
     @GetMapping("/getEpicById")
-    public void getEpicById () {
-
+    public Epic getEpicById (@RequestParam long id) {
+        return manager.getEpicById(id);
+    }
+    @GetMapping("/getTaskById")
+    public Task getTaskById (@RequestParam long id) {
+        return manager.getTaskById(id);
+    }
+    @GetMapping("/getSubTaskById/{id}")
+    public SubTask getSubTaskById (@PathVariable long id) {
+        return manager.getSubTaskById(id);
+    }
+    @GetMapping("/getAllTasks")
+    public List<Task> getAllTasks () {
+        return manager.getAllTasks();
+    }
+    @GetMapping("/getAllEpics")
+    public List<Epic> getAllEpics () {
+        return manager.getAllEpics();
+    }
+    @GetMapping("/getAllSubTasks")
+    public List<SubTask> getAllSubTasks () {
+        return manager.getAllSubTasks();
     }
 
 }

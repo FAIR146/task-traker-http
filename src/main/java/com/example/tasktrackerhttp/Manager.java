@@ -17,8 +17,8 @@ public class Manager  {
         return taskDao.addEpic(name, description);
     }
 
-    public long addSubTask(long id, String name, String description, Status status) {
-        return taskDao.addSubTask(id, name, description, status);
+    public long addSubTask(long epicId, String name, String description, Status status) {
+        return taskDao.addSubTask(epicId, name, description, status);
     }
 
     public void removeEpicById(long id) {

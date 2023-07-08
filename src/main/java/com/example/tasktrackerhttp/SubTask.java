@@ -1,5 +1,9 @@
 package com.example.tasktrackerhttp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class SubTask extends Task {
+    @JsonIgnore
     private final Epic epic;
     public SubTask (Epic epic) {
         this.epic = epic;

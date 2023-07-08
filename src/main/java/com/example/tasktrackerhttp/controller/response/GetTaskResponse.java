@@ -1,8 +1,11 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.controller.response;
 
-public class GetEpicResponse {
+import com.example.tasktrackerhttp.dto.Status;
+
+public class GetTaskResponse {
     private String name;
     private String description;
+    private Status status;
     private long id;
 
     public long getId() {
@@ -27,5 +30,13 @@ public class GetEpicResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

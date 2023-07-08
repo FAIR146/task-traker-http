@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dto;
 public enum Status {
     NEW,
     IN_PROGRESS,

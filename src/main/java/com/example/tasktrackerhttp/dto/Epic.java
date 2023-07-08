@@ -1,5 +1,4 @@
-package com.example.tasktrackerhttp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.example.tasktrackerhttp.dto;
 
 import java.util.ArrayList;
 import java.util.List;

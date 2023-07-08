@@ -1,14 +1,21 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.controller;
 
+import com.example.tasktrackerhttp.controller.response.AddTaskResponse;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.service.Manager;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
+import com.example.tasktrackerhttp.controller.request.AddSubTaskRequest;
+import com.example.tasktrackerhttp.controller.response.AddEpicResponse;
+import com.example.tasktrackerhttp.controller.response.AddSubTaskResponse;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class Controller {
+public class ManagerController {
     private final Manager manager;
-    public Controller (Manager manager) {
+    public ManagerController(Manager manager) {
         this.manager = manager;
     }
 

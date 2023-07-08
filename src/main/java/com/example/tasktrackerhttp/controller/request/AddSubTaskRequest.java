@@ -1,4 +1,6 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.controller.request;
+
+import com.example.tasktrackerhttp.dto.Status;
 
 public class AddSubTaskRequest {
     private long epicId;

@@ -1,4 +1,5 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dto;
+
 public class Task {
     private long id;
     private String name;

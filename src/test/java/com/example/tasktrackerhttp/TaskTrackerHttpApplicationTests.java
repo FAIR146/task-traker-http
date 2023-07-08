@@ -1,6 +1,13 @@
 package com.example.tasktrackerhttp;
 
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.tasktrackerhttp.controller.response.AddEpicResponse;
+import com.example.tasktrackerhttp.controller.response.AddSubTaskResponse;
+import com.example.tasktrackerhttp.controller.response.AddTaskResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

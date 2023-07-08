@@ -1,8 +1,12 @@
-package com.example.tasktrackerhttp;
-import org.springframework.stereotype.Component;
+package com.example.tasktrackerhttp.service;
+import com.example.tasktrackerhttp.dao.InMemoryTaskDao;
+import com.example.tasktrackerhttp.dao.TaskDao;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

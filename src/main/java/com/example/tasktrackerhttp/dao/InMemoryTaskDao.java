@@ -1,9 +1,14 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dao;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskDao implements TaskDao{
+public class InMemoryTaskDao implements TaskDao {
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, Epic> epics = new HashMap<>();
     private final HashMap<Long, SubTask> subTasks = new HashMap<>();

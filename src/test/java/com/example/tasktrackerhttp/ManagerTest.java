@@ -1,8 +1,9 @@
 package com.example.tasktrackerhttp;
+import com.example.tasktrackerhttp.dto.*;
+import com.example.tasktrackerhttp.service.Manager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 

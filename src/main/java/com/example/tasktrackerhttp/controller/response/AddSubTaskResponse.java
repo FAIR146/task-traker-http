@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.controller.response;
 
 public class AddSubTaskResponse {
     private long id;

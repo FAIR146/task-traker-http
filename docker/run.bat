@@ -1,0 +1,1 @@
+docker run --name task_tracker -d -p 8091:5432 task_tracker:latest

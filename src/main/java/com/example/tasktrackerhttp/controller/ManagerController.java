@@ -1,13 +1,17 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.response.AddTaskResponse;
+import com.example.tasktrackerhttp.controller.request.put.PutEpicRequest;
+import com.example.tasktrackerhttp.controller.request.put.PutTaskRequest;
+import com.example.tasktrackerhttp.controller.response.PutTaskResponse;
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
-import com.example.tasktrackerhttp.controller.request.AddSubTaskRequest;
-import com.example.tasktrackerhttp.controller.response.AddEpicResponse;
-import com.example.tasktrackerhttp.controller.response.AddSubTaskResponse;
+import com.example.tasktrackerhttp.controller.request.put.PutSubTaskRequest;
+import com.example.tasktrackerhttp.controller.response.PutEpicResponse;
+import com.example.tasktrackerhttp.controller.response.PutSubTaskResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +24,27 @@ public class ManagerController {
     }
 
     @PutMapping("/putTask")
-    public AddTaskResponse putTask (@RequestBody Task task) {
-        AddTaskResponse addTaskResponse = new AddTaskResponse();
-        long id = manager.addTask(task.getName(),task.getDescription(), task.getStatus());
-        addTaskResponse.setId(id);
-        return addTaskResponse;
+    public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest) {
+        PutTaskResponse putTaskResponse = new PutTaskResponse();
+        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus());
+        putTaskResponse.setId(id);
+        return putTaskResponse;
     }
     @PutMapping("/putEpic")
-    public AddEpicResponse putEpic (@RequestBody Epic epic) {
-        AddEpicResponse addEpicResponse = new AddEpicResponse();
-        long id = manager.addEpic(epic.getName(), epic.getDescription());
-        addEpicResponse.setId(id);
-        return addEpicResponse;
+    public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest) {
+        PutEpicResponse putEpicResponse = new PutEpicResponse();
+        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription());
+        putEpicResponse.setId(id);
+        return putEpicResponse;
     }
 
     @PutMapping("/putSubTask")
-    public AddSubTaskResponse addSubTask (@RequestBody AddSubTaskRequest addSubTaskRequest) {
-        AddSubTaskResponse addSubTaskResponse = new AddSubTaskResponse();
+    public PutSubTaskResponse addSubTask (@RequestBody PutSubTaskRequest putSubTaskRequest) {
+        PutSubTaskResponse putSubTaskResponse = new PutSubTaskResponse();
         Epic epic = new Epic();
-        long id = manager.addSubTask(addSubTaskResponse.getId(), addSubTaskRequest.getName(), addSubTaskRequest.getDescription(), addSubTaskRequest.getStatus());
-        addSubTaskResponse.setId(id);
-        return addSubTaskResponse;
+        long id = manager.addSubTask(putSubTaskResponse.getId(), putSubTaskRequest.getName(), putSubTaskRequest.getDescription(), putSubTaskRequest.getStatus());
+        putSubTaskResponse.setId(id);
+        return putSubTaskResponse;
     }
     @DeleteMapping("/deleteEpicById")
     public void deleteEpicById (@RequestParam long id) {
@@ -72,8 +76,12 @@ public class ManagerController {
         return manager.getEpicById(id);
     }
     @GetMapping("/getTaskById")
-    public Task getTaskById (@RequestParam long id) {
-        return manager.getTaskById(id);
+    public ResponseEntity<Task> getTaskById (@RequestParam long id) {
+        Task task = manager.getTaskById(id);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(task);
     }
     @GetMapping("/getSubTaskById/{id}")
     public SubTask getSubTaskById (@PathVariable long id) {

@@ -1,6 +1,6 @@
 package com.example.tasktrackerhttp.controller.response;
 
-public class AddSubTaskResponse {
+public class PutTaskResponse {
     private long id;
 
     public long getId() {

@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.service;
 import com.example.tasktrackerhttp.dto.*;
 import com.example.tasktrackerhttp.service.Manager;
 import org.junit.jupiter.api.Assertions;

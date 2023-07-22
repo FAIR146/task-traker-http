@@ -250,7 +250,95 @@ class ManagerControllerTest {
         long id = objectMapper.readValue(response, PutTaskResponse.class).getId();
 
 
+        String updName = "ppp";
+
+        mockMvc.perform(
+                patch("/patchEpic")
+                        .param("name",updName))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                get("/getTaskById")
+                        .param("id", String.valueOf(id)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(updName));
     }
 
+    @Test
+    public void updateEpic () throws Exception {
+        PutEpicRequest putEpicRequest = new PutEpicRequest();
+        putEpicRequest.setName("aa");
+        putEpicRequest.setDescription("daw");
+
+        String response = mockMvc.perform(
+                        put("/putEpic")
+                                .content(objectMapper.writeValueAsString(putEpicRequest))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andReturn().getResponse().getContentAsString();
+
+        long id = objectMapper.readValue(response, PutEpicResponse.class).getId();
+        String updName = "gg";
+
+        mockMvc.perform(
+                patch("/patchEpic")
+                        .param("name", updName))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                get("/getEpicById")
+                        .param("id", String.valueOf(id)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(updName));
+    }
+
+    @Test
+    public void updateSubTask () throws Exception {
+        PutEpicRequest putEpicRequest = new PutEpicRequest();
+        putEpicRequest.setDescription("ii");
+        putEpicRequest.setName("tyy");
+
+        String responseEpic = mockMvc.perform(
+                        put("/putEpic")
+                                .content(objectMapper.writeValueAsString(putEpicRequest))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andReturn().getResponse().getContentAsString();
+
+        long idEpic = objectMapper.readValue(responseEpic, PutEpicResponse.class).getId();
+
+        PutSubTaskRequest putSubTaskRequest = new PutSubTaskRequest();
+        putSubTaskRequest.setName("aa");
+        putSubTaskRequest.setDescription("pp");
+        putSubTaskRequest.setStatus(Status.NEW);
+        putSubTaskRequest.setEpicId(idEpic);
+
+        String responseSubTask = mockMvc.perform(
+                        put("/putSubTask")
+                                .content(objectMapper.writeValueAsString(putSubTaskRequest))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andReturn().getResponse().getContentAsString();
+
+        long idSubTask = objectMapper.readValue(responseSubTask, PutSubTaskResponse.class).getId();
+        String updName = "uu";
+
+        mockMvc.perform(
+                        patch("/patchSubTask")
+                                .param("name", updName))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                        get("/getSubTaskById")
+                                .param("id", String.valueOf(idSubTask)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(updName));
+    }
 
 }

@@ -2,3 +2,4 @@ FROM postgres:latest
 ENV POSTGRES_DB task_tracker
 ENV POSTGRES_USER task_tracker
 ENV POSTGRES_PASSWORD task_tracker
+COPY init.sql docker-entrypoint-initdb.d/init.sql

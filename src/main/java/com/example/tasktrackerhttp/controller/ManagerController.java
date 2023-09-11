@@ -1,15 +1,11 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.request.put.PutEpicRequest;
-import com.example.tasktrackerhttp.controller.request.put.PutTaskRequest;
-import com.example.tasktrackerhttp.controller.response.PutTaskResponse;
+import com.example.tasktrackerhttp.controller.request.put.*;
+import com.example.tasktrackerhttp.controller.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
-import com.example.tasktrackerhttp.controller.request.put.PutSubTaskRequest;
-import com.example.tasktrackerhttp.controller.response.PutEpicResponse;
-import com.example.tasktrackerhttp.controller.response.PutSubTaskResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -83,8 +79,8 @@ public class ManagerController {
         }
         return ResponseEntity.ok(task);
     }
-    @GetMapping("/getSubTaskById/{id}")
-    public SubTask getSubTaskById (@PathVariable long id) {
+    @GetMapping("/getSubTaskById")
+    public SubTask getSubTaskById (@RequestParam long id) {
         return manager.getSubTaskById(id);
     }
     @GetMapping("/getAllTasks")
@@ -98,6 +94,18 @@ public class ManagerController {
     @GetMapping("/getAllSubTasks")
     public List<SubTask> getAllSubTasks () {
         return manager.getAllSubTasks();
+    }
+    @PatchMapping("/updateEpic")
+    public void updateEpic (@RequestBody UpdateEpicRequest updateEpicRequest) {
+        manager.updateEpic(updateEpicRequest.getId(), updateEpicRequest.getName(), updateEpicRequest.getDescription());
+    }
+    @PatchMapping("/updateTask")
+    public void updateTask (@RequestBody UpdateTaskRequest updateTaskRequest) {
+        manager.updateTask(updateTaskRequest.getId(), updateTaskRequest.getName(), updateTaskRequest.getDescription(), updateTaskRequest.getStatus());
+    }
+    @PatchMapping ("/updateSubTask")
+    public void  updateSubTask (@RequestBody UpdateSubTaskRequest updateSubTaskRequest) {
+        manager.updateSubTask(updateSubTaskRequest.getId(), updateSubTaskRequest.getName(), updateSubTaskRequest.getDescription(), updateSubTaskRequest.getStatus());
     }
 
 }

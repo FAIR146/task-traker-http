@@ -1,8 +1,6 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.request.put.PutEpicRequest;
-import com.example.tasktrackerhttp.controller.request.put.PutSubTaskRequest;
-import com.example.tasktrackerhttp.controller.request.put.PutTaskRequest;
+import com.example.tasktrackerhttp.controller.request.put.*;
 import com.example.tasktrackerhttp.controller.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
@@ -124,8 +122,8 @@ class ManagerControllerTest {
                 .andExpect(jsonPath("$.id").value(idSubTask))
                 .andExpect(jsonPath("$.description").value(putSubTaskRequest.getDescription()))
                 .andExpect(jsonPath("$.name").value(putSubTaskRequest.getName()))
-                .andExpect(jsonPath("$.status").value(putSubTaskRequest.getStatus()))
-                .andExpect(jsonPath("$.epic").value(putEpicRequest));
+                .andExpect(jsonPath("$.status").value(putSubTaskRequest.getStatus().name())) // добавил name (было expect NEW actual NEW
+                .andExpect(jsonPath("$.epic").value(putEpicRequest)); // ???
     }
 
 	@Test
@@ -218,17 +216,17 @@ class ManagerControllerTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andReturn().getResponse().getContentAsString();
 
-        long idSubTask = objectMapper.readValue(responseSubTask, PutSubTaskResponse.class).getId();
+        long idResponseSubTask = objectMapper.readValue(responseSubTask, PutSubTaskResponse.class).getId();
 
         mockMvc.perform(
                         delete("/deleteSubTaskById")
-                                .param("id", String.valueOf(idSubTask)))
+                                .param("id", String.valueOf(idResponseSubTask)))
                 .andExpect(status().isOk());
 
         mockMvc.perform(
                         get("/getSubTaskById")
-                                .param("id", String.valueOf(idSubTask)))
-                .andExpect(status().isNotFound());
+                                .param("id", String.valueOf(idResponseSubTask)))
+                .andExpect(status().isNotFound()); // сабтаска не удаляется
     }
 
     @Test
@@ -250,18 +248,26 @@ class ManagerControllerTest {
         long id = objectMapper.readValue(response, PutTaskResponse.class).getId();
 
 
-        String updName = "ppp";
+        UpdateTaskRequest updateTaskRequest = new UpdateTaskRequest();
+        updateTaskRequest.setName("hh");
+        updateTaskRequest.setDescription("tt");
+        updateTaskRequest.setId(id);
 
         mockMvc.perform(
-                patch("/patchEpic")
-                        .param("name",updName))
-                .andExpect(status().isOk());
+                patch("/updateTask")
+                        .content(objectMapper.writeValueAsString(updateTaskRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+
 
         mockMvc.perform(
                 get("/getTaskById")
                         .param("id", String.valueOf(id)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(updName));
+                .andExpect(jsonPath("$.name").value(updateTaskRequest.getName()))
+                .andExpect(jsonPath("$.description").value(updateTaskRequest.getDescription()))
+                .andExpect(jsonPath("$.status").value(updateTaskRequest.getStatus()))
+                .andExpect(jsonPath("$.id").value(updateTaskRequest.getId()));
     }
 
     @Test
@@ -280,18 +286,26 @@ class ManagerControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
         long id = objectMapper.readValue(response, PutEpicResponse.class).getId();
-        String updName = "gg";
+
+        UpdateEpicRequest updateEpicRequest = new UpdateEpicRequest();
+        updateEpicRequest.setName("aa");
+        updateEpicRequest.setId(id);
+        updateEpicRequest.setDescription("ahh");
 
         mockMvc.perform(
-                patch("/patchEpic")
-                        .param("name", updName))
-                .andExpect(status().isOk());
+                patch("/updateEpic")
+                        .content(objectMapper.writeValueAsString(updateEpicRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
 
         mockMvc.perform(
                 get("/getEpicById")
                         .param("id", String.valueOf(id)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(updName));
+                .andExpect(jsonPath("$.name").value(updateEpicRequest.getName()))
+                .andExpect(jsonPath("$.description").value(updateEpicRequest.getDescription()))
+                .andExpect(jsonPath("$.id").value(updateEpicRequest.getId()));
+
     }
 
     @Test
@@ -327,18 +341,27 @@ class ManagerControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
         long idSubTask = objectMapper.readValue(responseSubTask, PutSubTaskResponse.class).getId();
-        String updName = "uu";
+
+        UpdateSubTaskRequest updateSubTaskRequest = new UpdateSubTaskRequest();
+        updateSubTaskRequest.setDescription("kk");
+        updateSubTaskRequest.setName("uj");
+        updateSubTaskRequest.setStatus(Status.NEW);
+        updateSubTaskRequest.setId(idSubTask);
 
         mockMvc.perform(
-                        patch("/patchSubTask")
-                                .param("name", updName))
-                .andExpect(status().isOk());
+                        patch("/updateSubTask")
+                                .content(objectMapper.writeValueAsString(updateSubTaskRequest))
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
 
         mockMvc.perform(
                         get("/getSubTaskById")
                                 .param("id", String.valueOf(idSubTask)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(updName));
+                .andExpect(jsonPath("$.name").value(updateSubTaskRequest.getName()))            // апдейт не работает, не заменяются значения
+                .andExpect(jsonPath("$.description").value(updateSubTaskRequest.getDescription()))
+                .andExpect(jsonPath("$.status").value(updateSubTaskRequest.getStatus().name()))
+                .andExpect(jsonPath("$.id").value(updateSubTaskRequest.getId()));
     }
 
 }

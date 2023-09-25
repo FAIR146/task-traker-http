@@ -37,8 +37,7 @@ public class ManagerController {
     @PutMapping("/putSubTask")
     public PutSubTaskResponse addSubTask (@RequestBody PutSubTaskRequest putSubTaskRequest) {
         PutSubTaskResponse putSubTaskResponse = new PutSubTaskResponse();
-        Epic epic = new Epic();
-        long id = manager.addSubTask(putSubTaskResponse.getId(), putSubTaskRequest.getName(), putSubTaskRequest.getDescription(), putSubTaskRequest.getStatus());
+        long id = manager.addSubTask(putSubTaskRequest.getEpicId(), putSubTaskRequest.getName(), putSubTaskRequest.getDescription(), putSubTaskRequest.getStatus());
         putSubTaskResponse.setId(id);
         return putSubTaskResponse;
     }

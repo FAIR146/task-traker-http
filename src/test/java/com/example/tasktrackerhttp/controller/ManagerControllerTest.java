@@ -6,6 +6,7 @@ import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import com.example.tasktrackerhttp.service.Manager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,9 @@ class ManagerControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
+    @Autowired
+    private Manager manager;
 
     @Test
     public void putAndGetTask () throws Exception {

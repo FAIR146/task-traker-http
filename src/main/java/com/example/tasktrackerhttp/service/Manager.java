@@ -21,6 +21,7 @@ public class Manager  {
         return taskDao.addEpic(name, description);
     }
 
+    //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
     public long addSubTask(long epicId, String name, String description, Status status) {
         return taskDao.addSubTask(epicId, name, description, status);
     }
@@ -92,10 +93,13 @@ public class Manager  {
         taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id, String name, String description, Status status) {
-        SubTask subTask = new SubTask(getEpicById(id));
+        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
+        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
+
         subTask.setDescription(description);
         subTask.setStatus(status);
         subTask.setName(name);
+        subTask.setId(subtaskForUpdate.getId());
         taskDao.updateSubTask(subTask);
     }
 

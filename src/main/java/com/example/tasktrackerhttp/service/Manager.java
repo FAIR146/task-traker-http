@@ -1,8 +1,12 @@
-package com.example.tasktrackerhttp;
-import org.springframework.stereotype.Component;
+package com.example.tasktrackerhttp.service;
+import com.example.tasktrackerhttp.dao.InMemoryTaskDao;
+import com.example.tasktrackerhttp.dao.TaskDao;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,8 +21,9 @@ public class Manager  {
         return taskDao.addEpic(name, description);
     }
 
-    public long addSubTask(long id, String name, String description, Status status) {
-        return taskDao.addSubTask(id, name, description, status);
+    //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
+    public long addSubTask(long epicId, String name, String description, Status status) {
+        return taskDao.addSubTask(epicId, name, description, status);
     }
 
     public void removeEpicById(long id) {
@@ -88,10 +93,13 @@ public class Manager  {
         taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id, String name, String description, Status status) {
-        SubTask subTask = new SubTask(getEpicById(id));
+        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
+        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
+
         subTask.setDescription(description);
         subTask.setStatus(status);
         subTask.setName(name);
+        subTask.setId(subtaskForUpdate.getId());
         taskDao.updateSubTask(subTask);
     }
 

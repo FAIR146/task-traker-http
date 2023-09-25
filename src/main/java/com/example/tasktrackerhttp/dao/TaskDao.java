@@ -1,4 +1,9 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dao;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
+
 import java.util.List;
 
 

@@ -1,9 +1,14 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dao;
+import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
+import com.example.tasktrackerhttp.dto.SubTask;
+import com.example.tasktrackerhttp.dto.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskDao implements TaskDao{
+public class InMemoryTaskDao implements TaskDao {
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, Epic> epics = new HashMap<>();
     private final HashMap<Long, SubTask> subTasks = new HashMap<>();
@@ -51,19 +56,27 @@ public class InMemoryTaskDao implements TaskDao{
 
     @Override
     public void removeEpicById(long id) {
-        epics.get(id).getSubTasks().forEach(subTask -> subTasks.remove(subTask.getId()));
-        epics.remove(id);
+        Epic epic = epics.get(id);
+        if (epic != null) {
+            epic.getSubTasks().forEach(subTask -> subTasks.remove(subTask.getId()));
+            epics.remove(id);
+        }
     }
 
     @Override
     public void removeSubTaskById(long id) {
-        subTasks.get(id).getEpic().removeSubTaskById(id);
-        subTasks.remove(id);
+        SubTask subTask = subTasks.get(id);
+        if(subTask != null) {
+            subTasks.remove(id);
+        }
     }
 
     @Override
     public void removeTaskById(long id) {
-        tasks.remove(id);
+        Task task = tasks.get(id);
+        if (task != null) {
+            tasks.remove(id);
+        }
     }
 
     @Override

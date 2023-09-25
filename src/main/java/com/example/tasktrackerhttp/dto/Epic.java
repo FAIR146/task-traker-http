@@ -1,4 +1,5 @@
-package com.example.tasktrackerhttp;
+package com.example.tasktrackerhttp.dto;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -68,8 +68,12 @@ public class ManagerController {
         manager.removeAllSubTasks();
     }
     @GetMapping("/getEpicById")
-    public Epic getEpicById (@RequestParam long id) {
-        return manager.getEpicById(id);
+    public ResponseEntity<Epic> getEpicById (@RequestParam long id) {
+        Epic epic = manager.getEpicById(id);
+        if (epic == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(epic);
     }
     @GetMapping("/getTaskById")
     public ResponseEntity<Task> getTaskById (@RequestParam long id) {
@@ -80,8 +84,12 @@ public class ManagerController {
         return ResponseEntity.ok(task);
     }
     @GetMapping("/getSubTaskById")
-    public SubTask getSubTaskById (@RequestParam long id) {
-        return manager.getSubTaskById(id);
+    public ResponseEntity<SubTask> getSubTaskById (@RequestParam long id) {
+        SubTask subTask = manager.getSubTaskById(id);
+        if (subTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(subTask);
     }
     @GetMapping("/getAllTasks")
     public List<Task> getAllTasks () {

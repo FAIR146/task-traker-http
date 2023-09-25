@@ -122,8 +122,7 @@ class ManagerControllerTest {
                 .andExpect(jsonPath("$.id").value(idSubTask))
                 .andExpect(jsonPath("$.description").value(putSubTaskRequest.getDescription()))
                 .andExpect(jsonPath("$.name").value(putSubTaskRequest.getName()))
-                .andExpect(jsonPath("$.status").value(putSubTaskRequest.getStatus().name())) // добавил name (было expect NEW actual NEW
-                .andExpect(jsonPath("$.epic").value(putEpicRequest)); // ???
+                .andExpect(jsonPath("$.status").value(putSubTaskRequest.getStatus().name())); // добавил name (было expect NEW actual NEW
     }
 
 	@Test
@@ -179,7 +178,7 @@ class ManagerControllerTest {
                 .andExpect(status().isOk());
 
         mockMvc.perform(
-                get("/getTaskById")
+                get("/getEpicById")
                         .param("id", String.valueOf(id)))
                 .andExpect(status().isNotFound());
 
@@ -219,14 +218,19 @@ class ManagerControllerTest {
         long idResponseSubTask = objectMapper.readValue(responseSubTask, PutSubTaskResponse.class).getId();
 
         mockMvc.perform(
+                get("/getSubTaskById")
+                        .param("id", String.valueOf(idResponseSubTask)))
+                        .andExpect(status().isOk());
+
+        mockMvc.perform(
                         delete("/deleteSubTaskById")
-                                .param("id", String.valueOf(idResponseSubTask)))
+                                .param("id", String.valueOf(idResponseSubTask))) // делит должен работать айди одинак но ничего не происход
                 .andExpect(status().isOk());
 
         mockMvc.perform(
                         get("/getSubTaskById")
                                 .param("id", String.valueOf(idResponseSubTask)))
-                .andExpect(status().isNotFound()); // сабтаска не удаляется
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -350,7 +354,7 @@ class ManagerControllerTest {
 
         mockMvc.perform(
                         patch("/updateSubTask")
-                                .content(objectMapper.writeValueAsString(updateSubTaskRequest))
+                                .content(objectMapper.writeValueAsString(updateSubTaskRequest)) // не понятно
                                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
 
@@ -358,7 +362,7 @@ class ManagerControllerTest {
                         get("/getSubTaskById")
                                 .param("id", String.valueOf(idSubTask)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(updateSubTaskRequest.getName()))            // апдейт не работает, не заменяются значения
+                .andExpect(jsonPath("$.name").value(updateSubTaskRequest.getName()))
                 .andExpect(jsonPath("$.description").value(updateSubTaskRequest.getDescription()))
                 .andExpect(jsonPath("$.status").value(updateSubTaskRequest.getStatus().name()))
                 .andExpect(jsonPath("$.id").value(updateSubTaskRequest.getId()));

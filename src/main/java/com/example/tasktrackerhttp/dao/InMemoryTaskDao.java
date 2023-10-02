@@ -3,11 +3,13 @@ import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class InMemoryTaskDao implements TaskDao {
     private final HashMap<Long, Task> tasks = new HashMap<>();
     private final HashMap<Long, Epic> epics = new HashMap<>();

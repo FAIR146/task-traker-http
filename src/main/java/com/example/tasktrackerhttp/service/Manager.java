@@ -11,7 +11,12 @@ import java.util.List;
 
 @Service
 public class Manager  {
-    private final TaskDao taskDao = new InMemoryTaskDao();
+
+    private final TaskDao taskDao;
+    public Manager (TaskDao taskDao) {
+        this.taskDao = taskDao;
+    }
+
 
     public long addTask(String name, String description, Status status) {
         return taskDao.addTask(name,description,status);

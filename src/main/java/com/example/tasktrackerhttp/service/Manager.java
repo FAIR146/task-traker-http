@@ -1,112 +1,45 @@
 package com.example.tasktrackerhttp.service;
-import com.example.tasktrackerhttp.dao.InMemoryTaskDao;
-import com.example.tasktrackerhttp.dao.TaskDao;
+
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class Manager  {
+public interface Manager {
+    long addTask (String name, String description, Status status);
 
-    private final TaskDao taskDao;
-    public Manager (TaskDao taskDao) {
-        this.taskDao = taskDao;
-    }
+    long addEpic(String name, String description);
+
+    long addSubTask(long epicId, String name, String description, Status status);
 
 
-    public long addTask(String name, String description, Status status) {
-        return taskDao.addTask(name,description,status);
-    }
+    void removeEpicById(long id);
 
-    public long addEpic(String name, String description) {
-        return taskDao.addEpic(name, description);
-    }
+    void removeTaskById(long id);
 
-    //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
-    public long addSubTask(long epicId, String name, String description, Status status) {
-        return taskDao.addSubTask(epicId, name, description, status);
-    }
+    void removeSubTaskById(long id);
 
-    public void removeEpicById(long id) {
-        taskDao.removeEpicById(id);
-    }
+    void removeAllEpics();
+    void removeAllSubTasks();
 
-    public void removeTaskById(long id) {
-        taskDao.removeTaskById(id);
-    }
+    void removeAllTasks();
 
-    public void removeSubTaskById(long id) {
-        taskDao.removeSubTaskById(id);
-    }
+    Epic getEpicById(long id);
 
-    public void removeAllEpics() {
-        taskDao.removeAllEpics();
-    }
+    Task getTaskById(long id);
 
-    public void removeAllSubTasks() {
-        taskDao.removeAllSubTasks();
-    }
+    SubTask getSubTaskById(long id);
 
-    public void removeAllTasks() {
-        taskDao.removeAllTasks();
-    }
+    List<Epic> getAllEpics();
 
-    public Epic getEpicById(long id) {
-        return taskDao.getEpicById(id);
-    }
+    List<SubTask> getAllSubTasks();
 
-    public Task getTaskById(long id) {
-        return taskDao.getTaskById(id);
-    }
+    List<Task> getAllTasks();
+    void updateTask (long id, String name, String description, Status status);
+    void updateEpic (long id, String name, String description);
+    void updateSubTask (long id, String name, String description, Status status);
 
-    public SubTask getSubTaskById(long id) {
-        return taskDao.getSubTaskById(id);
-    }
-
-    public List<Epic> getAllEpics() {
-        return taskDao.getAllEpics();
-    }
-
-    public List<SubTask> getAllSubTasks() {
-        return taskDao.getAllSubTasks();
-    }
-
-    public List<Task> getAllTasks() {
-        return taskDao.getAllTasks();
-    }
-    public void updateTask (long id, String name, String description, Status status) {
-        Task task = new Task();
-        task.setName(name);
-        task.setDescription(description);
-        task.setStatus(status);
-        task.setId(id);
-        taskDao.updateTask(task);
-    }
-    public void updateEpic (long id, String name, String description) {
-        Epic epic = new Epic();
-        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
-        epic.setName(name);
-        epic.setDescription(description);
-        epic.setId(id);
-        for (SubTask subTask:subTasks) {
-            epic.addSubTask(subTask);
-        }
-        taskDao.updateEpic(epic);
-    }
-    public void updateSubTask (long id, String name, String description, Status status) {
-        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
-        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
-
-        subTask.setDescription(description);
-        subTask.setStatus(status);
-        subTask.setName(name);
-        subTask.setId(subtaskForUpdate.getId());
-        taskDao.updateSubTask(subTask);
-    }
 
 }
-

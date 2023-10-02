@@ -2,11 +2,8 @@ package com.example.tasktrackerhttp.controller;
 
 import com.example.tasktrackerhttp.controller.request.put.*;
 import com.example.tasktrackerhttp.controller.response.*;
-import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
-import com.example.tasktrackerhttp.dto.SubTask;
-import com.example.tasktrackerhttp.dto.Task;
-import com.example.tasktrackerhttp.service.Manager;
+import com.example.tasktrackerhttp.service.ManagerImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ManagerControllerTest {
+class ManagerImplControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private Manager manager;
+
 
     @Test
     public void putAndGetTask () throws Exception {

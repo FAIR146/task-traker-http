@@ -1,14 +1,18 @@
 package com.example.tasktrackerhttp.service;
 import com.example.tasktrackerhttp.dto.*;
-import com.example.tasktrackerhttp.service.Manager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagerTest {
-    Manager manager = new Manager();
+@SpringBootTest
+public class ManagerImplTest {
+
+    @Autowired
+    private Manager manager;
     @Test
     public void answer () {
         List<Integer> list = new ArrayList<>();

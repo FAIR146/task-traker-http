@@ -18,16 +18,28 @@ public class ManagerImpl implements Manager {
 
 
     public long addTask(String name, String description, Status status) {
-        return taskDao.addTask(name,description,status);
+        Task task = new Task();
+        task.setName(name);
+        task.setDescription(description);
+        task.setStatus(status);
+        return taskDao.addTask(task);
     }
 
     public long addEpic(String name, String description) {
-        return taskDao.addEpic(name, description);
+        Epic epic = new Epic();
+        epic.setName(name);
+        epic.setDescription(description);
+        return taskDao.addEpic(epic);
     }
 
     //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
-    public long addSubTask(long epicId, String name, String description, Status status) {
-        return taskDao.addSubTask(epicId, name, description, status);
+    public long addSubTask(int epicId, String name, String description, Status status) {
+        SubTask subTask = new SubTask();
+        subTask.setEpicId(epicId);
+        subTask.setName(name);
+        subTask.setDescription(description);
+        subTask.setStatus(status);
+        return taskDao.addSubTask(subTask);
     }
 
     public void removeEpicById(long id) {
@@ -86,25 +98,25 @@ public class ManagerImpl implements Manager {
         taskDao.updateTask(task);
     }
     public void updateEpic (long id, String name, String description) {
-        Epic epic = new Epic();
-        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
-        epic.setName(name);
-        epic.setDescription(description);
-        epic.setId(id);
-        for (SubTask subTask:subTasks) {
-            epic.addSubTask(subTask);
-        }
-        taskDao.updateEpic(epic);
+//        Epic epic = new Epic();
+//        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasksId();
+//        epic.setName(name);
+//        epic.setDescription(description);
+//        epic.setId(id);
+//        for (SubTask subTask:subTasks) {
+//            epic.addSubTask(subTask);
+//        }
+//        taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id, String name, String description, Status status) {
-        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
-        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
-
-        subTask.setDescription(description);
-        subTask.setStatus(status);
-        subTask.setName(name);
-        subTask.setId(subtaskForUpdate.getId());
-        taskDao.updateSubTask(subTask);
+//        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
+//        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
+//
+//        subTask.setDescription(description);
+//        subTask.setStatus(status);
+//        subTask.setName(name);
+//        subTask.setId(subtaskForUpdate.getId());
+//        taskDao.updateSubTask(subTask);
     }
 
 }

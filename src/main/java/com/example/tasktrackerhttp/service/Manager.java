@@ -12,7 +12,7 @@ public interface Manager {
 
     long addEpic(String name, String description);
 
-    long addSubTask(long epicId, String name, String description, Status status);
+    long addSubTask(int epicId, String name, String description, Status status);
 
 
     void removeEpicById(long id);

@@ -109,7 +109,7 @@ public class ManagerImplTest {
         long idEpic =  manager.addEpic("1", "1");
         long idSubTask = manager.addSubTask(idEpic, "2" , "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
-        List<SubTask> subTasks = epic.getSubTasks();
+        List<SubTask> subTasks = epic.getSubTasksId();
         Assertions.assertTrue(subTasks.stream().anyMatch(subTask -> subTask.getId() == idSubTask));
         manager.removeSubTaskById(idSubTask);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);

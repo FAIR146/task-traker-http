@@ -4,12 +4,12 @@ package com.example.tasktrackerhttp.dto;
 
 public class SubTask extends Task {
 
-    private int epicId;
+    private long epicId;
 
-    public void setEpicId (int epicId) {
+    public void setEpicId (long epicId) {
         this.epicId = epicId;
     }
-    public int getEpicId () {
+    public long getEpicId () {
         return epicId;
     }
 

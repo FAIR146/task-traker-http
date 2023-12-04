@@ -4,7 +4,9 @@ import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import jakarta.annotation.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -29,6 +31,23 @@ public class DataBaseTaskDao implements TaskDao {
         task.setDescription(rs.getString("description"));
         task.setStatus(Status.valueOf(rs.getString("status")));
         return task;
+    };
+    private final RowMapper<Epic> epicRowMapper = (rs, rowNum) -> {
+        Epic epic = new Epic();
+        epic.setId(rs.getLong("id"));
+        epic.setName(rs.getString("name"));
+        epic.setDescription(rs.getString("description"));
+        return epic;
+    };
+    private final RowMapper<SubTask> subTaskRowMapper = (rs, rowNum) -> {
+        SubTask subTask = new SubTask();
+        subTask.setId(rs.getLong("id"));
+        subTask.setName(rs.getString("name"));
+        subTask.setDescription(rs.getString("description"));
+        subTask.setStatus(Status.valueOf(rs.getString("status")));
+        subTask.setEpicId(rs.getInt("epic_id"));
+        return subTask;
+
     };
     DataBaseTaskDao (JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -127,36 +146,53 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public List<Epic> getAllEpics() {
-        String sql = "SELECT * FROM epic";
-        return null;
+        String sql = "SELECT epic.id, epic.name, description, status.name AS status " +
+                "FROM epic JOIN status ON status.id = epic.status_id";
+        List<Epic> epics = jdbcTemplate.query(sql, epicRowMapper);
+        return epics;
     }
 
     @Override
     public List<SubTask> getAllSubTasks() {
-        jdbcTemplate.update("SELECT * FROM subTask");
-        return null;
+        String sql = "SELECT subtask.id, subtask.name, description, status.name AS status " +
+                "FROM subtask JOIN status ON status.id = subtask.status_id";
+        List<SubTask> subTasks = jdbcTemplate.query(sql, subTaskRowMapper);
+        return subTasks;
     }
 
     @Override
     public Epic getEpicById(long id) {
-        String sql = "SELECT * FROM epic WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-        return null;
+        String sql = "SELECT id, name, description FROM epic WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, epicRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public SubTask getSubTaskById(long id) {
-        String sql = "SELECT * FROM subTask WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-        return null;
+        String sql = "SELECT subtask.id, subtask.name, description, status.name AS status, subtask.epic_id " +
+                "FROM subtask JOIN status ON status.id = subTask.status_id WHERE subtask.id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, subTaskRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
+    @Nullable
     @Override
     public Task getTaskById(long id) {
-        String sql = "SELECT * FROM task WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        String sql = "SELECT task.id,task.name, description, status.name AS status " +
+                "FROM task JOIN status ON status.id = task.status_id WHERE task.id = ?";
 
-        return null;
+        try {
+            return jdbcTemplate.queryForObject(sql, taskRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
 
     @Override

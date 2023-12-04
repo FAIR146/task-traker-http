@@ -70,16 +70,7 @@ public class Epic extends Task {
 //        subTasksId.removeIf(subTask -> subTask.getId() == id);
 //    }
 
-    @Override
-    public String toString() {
-        return "Epic{" + System.lineSeparator() +
-                "name=" + getName() + System.lineSeparator() +
-                "id=" + getId() + System.lineSeparator() +
-                "description=" + getDescription() + System.lineSeparator() +
-                "status=" + getStatus() + System.lineSeparator() +
-                "subTasks=" + subTasksId + System.lineSeparator() +
-                '}';
-    }
+
 
 }
 

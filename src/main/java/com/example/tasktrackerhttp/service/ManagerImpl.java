@@ -33,7 +33,7 @@ public class ManagerImpl implements Manager {
     }
 
     //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
-    public long addSubTask(int epicId, String name, String description, Status status) {
+    public long addSubTask (long epicId, String name, String description, Status status) {
         SubTask subTask = new SubTask();
         subTask.setEpicId(epicId);
         subTask.setName(name);

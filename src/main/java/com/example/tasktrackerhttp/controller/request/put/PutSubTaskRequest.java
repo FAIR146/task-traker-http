@@ -3,14 +3,14 @@ package com.example.tasktrackerhttp.controller.request.put;
 import com.example.tasktrackerhttp.dto.Status;
 
 public class PutSubTaskRequest extends AbstractPutRequest {
-    private int epicId;
+    private long epicId;
     private Status status;
 
-    public int getEpicId() {
+    public long getEpicId() {
         return epicId;
     }
 
-    public void setEpicId(int epicId) {
+    public void setEpicId(long epicId) {
         this.epicId = epicId;
     }
 

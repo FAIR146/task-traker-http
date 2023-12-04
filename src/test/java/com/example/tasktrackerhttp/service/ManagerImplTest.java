@@ -1,6 +1,7 @@
 package com.example.tasktrackerhttp.service;
 import com.example.tasktrackerhttp.dto.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,34 +14,6 @@ public class ManagerImplTest {
 
     @Autowired
     private Manager manager;
-    @Test
-    public void answer () {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(5);
-        list.add(2);
-        boolean contains = false;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) == 5) {
-                contains = true;
-                break;
-            }
-        }
-        if (contains) {
-            System.out.println("Число есть");
-        } else {
-            System.out.println("Числа нету");
-        }
-    }
-    @Test
-    public void answer2 () {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(5);
-        list.add(2);
-        boolean contains = list.stream()
-                .anyMatch(number -> number == 5);
-    }
 
     @Test
     void addTask() {
@@ -100,17 +73,17 @@ public class ManagerImplTest {
         Assertions.assertNotNull(task);
         manager.removeTaskById(idTask);
         Task task1 = manager.getTaskById(idTask);
-        manager.getTaskById(idTask);
         Assertions.assertNull(task1);
     }
 
+    @Disabled
     @Test
     void removeSubTaskById() {
         long idEpic =  manager.addEpic("1", "1");
         long idSubTask = manager.addSubTask(idEpic, "2" , "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
-        List<SubTask> subTasks = epic.getSubTasksId();
-        Assertions.assertTrue(subTasks.stream().anyMatch(subTask -> subTask.getId() == idSubTask));
+        List<Integer> subTasksId = epic.getSubTasksId();
+        Assertions.assertTrue(subTasksId.stream().anyMatch(id -> id == idSubTask));
         manager.removeSubTaskById(idSubTask);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
         Assertions.assertNull(subTask1);

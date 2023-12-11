@@ -34,9 +34,10 @@ public class ManagerImplTest {
         String description = "Собрать вещи";
         long idEpic = manager.addEpic(name,description);
         Epic epic = manager.getEpicById(idEpic);
+        Assertions.assertNotNull(epic);
         Assertions.assertEquals(idEpic, epic.getId());
         Assertions.assertEquals(name, epic.getName());
-        Assertions.assertEquals(description, epic.getDescription());;
+        Assertions.assertEquals(description, epic.getDescription());
     }
 
     @Test
@@ -44,11 +45,15 @@ public class ManagerImplTest {
         long epicId = manager.addEpic("1", "1");
         Epic epic = manager.getEpicById(epicId);
         Assertions.assertNotNull(epic);
+        List<Integer> subTasksId = epic.getSubTasksId();
         String name = "Одеться";
         String description = "Встать";
         Status status = Status.NEW;
         long idSubTask = manager.addSubTask(epicId, name, description, status);
+        Assertions.assertNull(subTasksId.stream().anyMatch( id -> id == idSubTask));
         SubTask subTask = manager.getSubTaskById(idSubTask);
+        Assertions.assertNotNull(subTasksId.stream().anyMatch(id -> id == idSubTask));
+        Assertions.assertEquals(epicId, subTask.getEpicId());
         Assertions.assertEquals(name, subTask.getName());
         Assertions.assertEquals(description, subTask.getDescription());
         Assertions.assertEquals(status, subTask.getStatus());
@@ -56,14 +61,21 @@ public class ManagerImplTest {
 
     @Test
     void removeEpicById() {
-        String name = "1";
-        String description = "1";
-        long idEpic = manager.addEpic(name, description);
+        long idEpic = manager.addEpic("1", "1");
+        long idSubTask = manager.addSubTask(idEpic, "2", "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
+        SubTask subTask = manager.getSubTaskById(idSubTask);
+        List<Integer> subtasksId = epic.getSubTasksId();
+        epic.setSubTasksId(subtasksId);
+        Assertions.assertTrue(subtasksId.stream().anyMatch(id -> id == idSubTask));
         Assertions.assertNotNull(epic);
+        Assertions.assertNotNull(subTask);
+        manager.removeSubTaskById(idSubTask);
         manager.removeEpicById(idEpic);
         Epic epic1 = manager.getEpicById(idEpic);
+        SubTask subTask1 = manager.getSubTaskById(idSubTask);
         Assertions.assertNull(epic1);
+        Assertions.assertNull(subTask1);
     }
 
     @Test
@@ -158,6 +170,13 @@ public class ManagerImplTest {
         String description = "1";
         long idEpic = manager.addEpic(name, description);
         Epic epic1 = manager.getEpicById(idEpic);
+        List<Integer> subTasks = epic1.getSubTasksId();
+//        boolean statusSubTasks = subTasks.stream().allMatch(subTasks -> subTasks.getStatus() == Status.DONE);
+//        if(statusSubTasks) {
+//            epic1.setStatus(Status.DONE);
+//        } else {
+//            epic1.setStatus(Status.IN_PROGRESS);
+//        }
         Assertions.assertNotNull(epic1);
     }
 
@@ -181,6 +200,7 @@ public class ManagerImplTest {
         Status status = Status.NEW;
         long idSubTask = manager.addSubTask(idEpic ,name, description, status);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
+        Assertions.assertEquals(idEpic, subTask1.getEpicId());
         Assertions.assertEquals(name, subTask1.getName());
         Assertions.assertEquals(description, subTask1.getDescription());
         Assertions.assertEquals(status, subTask1.getStatus());
@@ -257,9 +277,11 @@ public class ManagerImplTest {
         Task task1 = manager.getTaskById(idTask);
         Assertions.assertNotNull(task1);
         String name2 = "2";
-        task1.setName(name2   );
+        String description2 = "2";
+        task1.setName(name2);
+        task1.setDescription(description2);
         Assertions.assertEquals(name2, task1.getName());
-        Assertions.assertEquals(description, task1.getDescription());
+        Assertions.assertEquals(description2, task1.getDescription());
         Assertions.assertEquals(status, task1.getStatus());
     }
 

@@ -6,6 +6,7 @@ import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +36,10 @@ public class ManagerImpl implements Manager {
     //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
     public long addSubTask (long epicId, String name, String description, Status status) {
         SubTask subTask = new SubTask();
+        List<Long> subTasks = new ArrayList<>();
+        subTasks.add(subTask.getId());
+        Epic epic = taskDao.getEpicById(epicId);
+        epic.setSubTasksId(subTasks);
         subTask.setEpicId(epicId);
         subTask.setName(name);
         subTask.setDescription(description);
@@ -91,32 +96,38 @@ public class ManagerImpl implements Manager {
     }
     public void updateTask (long id, String name, String description, Status status) {
         Task task = new Task();
+        task.setId(id);
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
-        task.setId(id);
         taskDao.updateTask(task);
     }
     public void updateEpic (long id, String name, String description) {
-//        Epic epic = new Epic();
-//        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasksId();
-//        epic.setName(name);
-//        epic.setDescription(description);
-//        epic.setId(id);
-//        for (SubTask subTask:subTasks) {
-//            epic.addSubTask(subTask);
-//        }
-//        taskDao.updateEpic(epic);
+        Epic epic = new Epic();
+        List<Long> subTasks = taskDao.getEpicById(id).getSubTasksId();
+        epic.setName(name);
+        epic.setDescription(description);
+        epic.setId(id);
+        for (int i = 0; i < subTasks.size(); i++) {
+            try {
+                if (subTasks.get(i).equals(epic.getSubTasksId().get(i))) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                throw e;
+            }
+
+        }
+        taskDao.updateEpic(epic);
     }
-    public void updateSubTask (long id, String name, String description, Status status) {
-//        SubTask subtaskForUpdate = taskDao.getSubTaskById(id);
-//        SubTask subTask = new SubTask(getEpicById(subtaskForUpdate.getEpic().getId()));
-//
-//        subTask.setDescription(description);
-//        subTask.setStatus(status);
-//        subTask.setName(name);
-//        subTask.setId(subtaskForUpdate.getId());
-//        taskDao.updateSubTask(subTask);
+    public void updateSubTask (long id,  String name, String description, Status status) { //long epicId
+        SubTask subTask = taskDao.getSubTaskById(id);
+        subTask.setId(id);
+//       subTask.setEpicId(epicId);
+        subTask.setName(name);
+        subTask.setDescription(description);
+        subTask.setStatus(status);
+        taskDao.updateSubTask(subTask);
     }
 
 }

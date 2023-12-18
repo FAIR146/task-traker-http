@@ -197,16 +197,32 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public void updateTask(Task task) {
+        String sql = "UPDATE task SET " +
+                "name = ?, " +
+                "description = ?, " +
+                "status_id = (SELECT status.id FROM status WHERE name = ?) " +
+                "WHERE task.id = ?";
 
+
+        jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId());
     }
 
     @Override
     public void updateEpic(Epic epic) {
-
+        String sql = "UPDATE epic SET " +
+                "name = ?, " +
+                "description = ?";
+        jdbcTemplate.update(sql, epic.getName(), epic.getDescription());
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) {
-
+    public void updateSubTask (SubTask subTask) {
+        String sql = "UPDATE subTask SET " +
+                "name = ?, " +
+                "description = ?, " +
+//                "epic_id = ? " +
+                "status_id = (SELECT status.id FROM status WHERE name = ?) " +
+                "WHERE subTaks.id = ?";
+        jdbcTemplate.update(sql, subTask.getName(), subTask.getDescription(), subTask.getStatus().name(), subTask.getId()); // subTask.getEpicId()
     }
 }

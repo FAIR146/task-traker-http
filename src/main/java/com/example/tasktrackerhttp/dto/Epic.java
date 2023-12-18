@@ -6,12 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Epic extends Task {
-    private List<Integer> subTasksId = new ArrayList<>();
+    private List<Long> subTasksId = new ArrayList<>();
 
-    public List<Integer> getSubTasksId() {
+    public List<Long> getSubTasksId() {
         return subTasksId;
     }
-    public void setSubTasksId (List<Integer> subTasksId) {
+    public void setSubTasksId (List<Long> subTasksId) {
         this.subTasksId = subTasksId;
     }
 

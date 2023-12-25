@@ -37,6 +37,7 @@ public class DataBaseTaskDao implements TaskDao {
         epic.setId(rs.getLong("id"));
         epic.setName(rs.getString("name"));
         epic.setDescription(rs.getString("description"));
+
         return epic;
     };
     private final RowMapper<SubTask> subTaskRowMapper = (rs, rowNum) -> {
@@ -163,8 +164,13 @@ public class DataBaseTaskDao implements TaskDao {
     @Override
     public Epic getEpicById(long id) {
         String sql = "SELECT id, name, description FROM epic WHERE id = ?";
+        String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
+        List<Long> subTasksId = jdbcTemplate.queryForList(sqlGetSubTaskId, Long.class, id);
         try {
-            return jdbcTemplate.queryForObject(sql, epicRowMapper, id);
+//            return jdbcTemplate.queryForObject(sql, epicRowMapper, id);
+            Epic epic = jdbcTemplate.queryForObject(sql, epicRowMapper, id);
+            epic.setSubTasksId(subTasksId);
+            return epic;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -220,9 +226,12 @@ public class DataBaseTaskDao implements TaskDao {
         String sql = "UPDATE subTask SET " +
                 "name = ?, " +
                 "description = ?, " +
-//                "epic_id = ? " +
                 "status_id = (SELECT status.id FROM status WHERE name = ?) " +
-                "WHERE subTaks.id = ?";
+                "WHERE subTask.id = ?";
         jdbcTemplate.update(sql, subTask.getName(), subTask.getDescription(), subTask.getStatus().name(), subTask.getId()); // subTask.getEpicId()
+    }
+    @Override
+    public void  linkSubTaskToEpic (long id) {
+
     }
 }

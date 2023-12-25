@@ -47,19 +47,22 @@ public class ManagerImplTest {
     void addSubTask() {
         long epicId = manager.addEpic("1", "1");
         Epic epic = manager.getEpicById(epicId);
-        Assertions.assertNotNull(epic);
         List<Long> subTasksId = epic.getSubTasksId();
         String name = "Одеться";
         String description = "Встать";
         Status status = Status.NEW;
         long idSubTask = manager.addSubTask(epicId, name, description, status);
-        Assertions.assertTrue(subTasksId.stream().anyMatch( id -> id == idSubTask));
         SubTask subTask = manager.getSubTaskById(idSubTask);
-        Assertions.assertNotNull(subTasksId.stream().anyMatch(id -> id == idSubTask));
         Assertions.assertEquals(epicId, subTask.getEpicId());
         Assertions.assertEquals(name, subTask.getName());
         Assertions.assertEquals(description, subTask.getDescription());
         Assertions.assertEquals(status, subTask.getStatus());
+
+        Epic epicUpdate = manager.getEpicById(epicId);
+        List<Long> subTasksIdUpd = epicUpdate.getSubTasksId();
+        Assertions.assertTrue(subTasksIdUpd.stream().anyMatch( id -> id == idSubTask));
+        Assertions.assertNotNull(subTasksId.stream().anyMatch(id -> id == idSubTask));
+
     }
 
     @Test

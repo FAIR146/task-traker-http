@@ -108,16 +108,6 @@ public class ManagerImpl implements Manager {
         epic.setName(name);
         epic.setDescription(description);
         epic.setId(id);
-        for (int i = 0; i < subTasks.size(); i++) {
-            try {
-                if (subTasks.get(i).equals(epic.getSubTasksId().get(i))) {
-                    break;
-                }
-            } catch (IllegalArgumentException e) {
-                throw e;
-            }
-
-        }
         taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id,  String name, String description, Status status) { //long epicId

@@ -39,7 +39,7 @@ public interface Manager {
     List<Task> getAllTasks();
     void updateTask (long id, String name, String description, Status status);
     void updateEpic (long id, String name, String description);
-    void updateSubTask (long id, String name, String description, Status status);
+    void updateSubTask (long id, String name, String description, Status status); // long epicId
 
 
 }

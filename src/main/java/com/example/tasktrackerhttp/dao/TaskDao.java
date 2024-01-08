@@ -10,9 +10,9 @@ import java.util.List;
 
 
 public interface TaskDao {
-    long addTask (String name, String description, Status status);
-    long addEpic (String name, String description);
-    long addSubTask (long id ,String name, String description, Status status);
+    long addTask (Task task);
+    long addEpic (Epic epic);
+    long addSubTask (SubTask subTask);
     void removeEpicById (long id);
     void removeSubTaskById (long id);
     void removeTaskById (long id);

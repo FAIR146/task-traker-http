@@ -28,6 +28,5 @@ public interface TaskDao {
     void updateTask (Task task);
     void updateEpic (Epic epic);
     void updateSubTask (SubTask subTask);
-    void linkSubTaskToEpic (long id);
 
 }

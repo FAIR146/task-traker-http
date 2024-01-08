@@ -165,11 +165,14 @@ public class DataBaseTaskDao implements TaskDao {
     public Epic getEpicById(long id) {
         String sql = "SELECT id, name, description FROM epic WHERE id = ?";
         String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
+        String sqlGetAllSubTasksEpic = "SELECT id, name, description, status_id, epic_id FROM subTask WHERE epic_id = ?";
+        List<SubTask> subTasks = jdbcTemplate.query(sqlGetAllSubTasksEpic, subTaskRowMapper, id);
         List<Long> subTasksId = jdbcTemplate.queryForList(sqlGetSubTaskId, Long.class, id);
+
         try {
-//            return jdbcTemplate.queryForObject(sql, epicRowMapper, id);
             Epic epic = jdbcTemplate.queryForObject(sql, epicRowMapper, id);
             epic.setSubTasksId(subTasksId);
+            getEpicStatus(subTasks);
             return epic;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -230,8 +233,32 @@ public class DataBaseTaskDao implements TaskDao {
                 "WHERE subTask.id = ?";
         jdbcTemplate.update(sql, subTask.getName(), subTask.getDescription(), subTask.getStatus().name(), subTask.getId()); // subTask.getEpicId()
     }
-    @Override
-    public void  linkSubTaskToEpic (long id) {
+    public Status getEpicStatus (List<SubTask> list) {
 
+        int statusNew = 0;
+        int statusInProgress = 0;
+        int statusDone = 0;
+
+        for (int i = 0; i < list.size(); i++) {
+            Status currentStatus = list.get(i).getStatus();
+            if (currentStatus == Status.IN_PROGRESS) {
+                statusInProgress++;
+            } else if (currentStatus == Status.NEW) {
+                statusNew++;
+            } else if (currentStatus == Status.DONE) {
+                statusDone++;
+            }
+        }
+
+        Status status = Status.UNDEFINED;
+        if (statusInProgress == 0 && statusDone == 0) {
+            status = Status.NEW;
+        } else if (statusDone > 0){
+            status = Status.IN_PROGRESS;
+        } else if (statusNew == 0 && statusInProgress == 0) {
+            status = Status.DONE;
+        }
+        return status;
     }
+
 }

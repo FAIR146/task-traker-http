@@ -177,17 +177,7 @@ public class ManagerImplTest {
         Epic epic1 = manager.getEpicById(idEpic);
         List<Long> subTasks = epic1.getSubTasksId();
         List<Status> statuses = new ArrayList<>();
-        for (int i = 0; i < subTasks.size(); i++) {
-            Status status = manager.getSubTaskById(i).getStatus();
-            statuses.add(status);
-        }
-        for (int i = 0; i < statuses.size(); i++) {
-            if (statuses.get(i) == Status.DONE) {
-                epic1.setStatus(Status.DONE);
-            } else {
-                epic1.setStatus(Status.IN_PROGRESS);
-            }
-        }
+
         Assertions.assertNotNull(epic1);
     }
 
@@ -212,6 +202,7 @@ public class ManagerImplTest {
         Status status = Status.NEW;
         long idSubTask = manager.addSubTask(idEpic ,name, description, status);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
+        epic = manager.getEpicById(idEpic);
         List<Long> subTasksId = epic.getSubTasksId();
         Assertions.assertTrue(subTasksId.stream().anyMatch(subTask -> subTask == idSubTask));
         Assertions.assertEquals(idEpic, subTask1.getEpicId());

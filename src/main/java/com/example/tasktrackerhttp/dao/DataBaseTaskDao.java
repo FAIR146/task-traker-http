@@ -165,7 +165,7 @@ public class DataBaseTaskDao implements TaskDao {
     public Epic getEpicById(long id) {
         String sql = "SELECT id, name, description FROM epic WHERE id = ?";
         String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
-        String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, status, epic_id AS status " +
+        String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
                 "FROM subTask JOIN status ON status.id = subtask.id WHERE epic_id = ?";
         List<SubTask> subTasks = jdbcTemplate.query(sqlGetAllSubTasksEpic, subTaskRowMapper, id);
         List<Long> subTasksId = jdbcTemplate.queryForList(sqlGetSubTaskId, Long.class, id);
@@ -173,7 +173,7 @@ public class DataBaseTaskDao implements TaskDao {
         try {
             Epic epic = jdbcTemplate.queryForObject(sql, epicRowMapper, id);
             epic.setSubTasksId(subTasksId);
-            getEpicStatus(subTasks);
+            epic.setStatus(getEpicStatus(subTasks));
             return epic;
         } catch (EmptyResultDataAccessException e) {
             return null;

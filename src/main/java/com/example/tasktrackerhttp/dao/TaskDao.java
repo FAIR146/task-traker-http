@@ -14,9 +14,6 @@ public interface TaskDao {
     void removeEpicById (long id);
     void removeSubTaskById (long id);
     void removeTaskById (long id);
-    void removeAllTasks();
-    void removeAllEpics ();
-    void removeAllSubTasks ();
     List<Task> getAllTasks ();
     List<Epic> getAllEpics ();
     List<SubTask> getAllSubTasks ();

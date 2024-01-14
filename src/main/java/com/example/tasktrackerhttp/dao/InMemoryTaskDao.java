@@ -80,21 +80,6 @@ public class InMemoryTaskDao implements TaskDao {
     }
 
     @Override
-    public void removeAllTasks() {
-        tasks.clear();
-    }
-
-    @Override
-    public void removeAllEpics() {
-        epics.clear();
-    }
-
-    @Override
-    public void removeAllSubTasks() {
-        subTasks.clear();
-    }
-
-    @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }

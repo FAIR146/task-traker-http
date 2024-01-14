@@ -114,68 +114,6 @@ public class ManagerTest {
     }
 
     @Test
-    void removeAllEpics() {
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idEpic1 = manager.addEpic(name1, description1);
-        long idEpic2 = manager.addEpic(name2, description2);
-        Epic epic1 = manager.getEpicById(idEpic1);
-        Epic epic2 =  manager.getEpicById(idEpic2);
-        Assertions.assertNotNull(epic1);
-        Assertions.assertNotNull(epic2);
-        manager.removeAllEpics();
-        Epic epicFirst = manager.getEpicById(idEpic1);
-        Epic epicSecond = manager.getEpicById(idEpic2);
-        manager.getAllEpics();
-        Assertions.assertNull(epicFirst);
-        Assertions.assertNull(epicSecond);
-    }
-
-    @Test
-    void removeAllSubTasks() {
-        long idEpic1 = manager.addEpic("epic1","epic1");
-        long idEpic2 = manager.addEpic("epic2", "epic2");
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idSubTask1 = manager.addSubTask(idEpic1, name1, description1, Status.NEW);
-        long idSubtask2 = manager.addSubTask(idEpic2, name2, description2, Status.NEW);
-        SubTask subTask1 = manager.getSubTaskById(idSubTask1);
-        SubTask subTask2 = manager.getSubTaskById(idSubtask2);
-        Assertions.assertNotNull(subTask1);
-        Assertions.assertNotNull(subTask2);
-        manager.removeAllSubTasks();
-        SubTask subTaskFirst = manager.getSubTaskById(idSubTask1);
-        SubTask subTaskSecond = manager.getSubTaskById(idSubtask2);
-        manager.getAllSubTasks();
-        Assertions.assertNull(subTaskFirst);
-        Assertions.assertNull(subTaskSecond);
-    }
-
-    @Test
-    void removeAllTasks() {
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idTask1 = manager.addTask(name1, description1, Status.NEW);
-        long idTask2 = manager.addTask(name2, description2, Status.NEW);
-        Task task1 = manager.getTaskById(idTask1);
-        Task task2 = manager.getTaskById(idTask2);
-        Assertions.assertNotNull(task1);
-        Assertions.assertNotNull(task2);
-        manager.removeAllTasks();
-        Task taskFirst = manager.getSubTaskById(idTask1);
-        Task taskSecond = manager.getTaskById(idTask2);
-        manager.getAllTasks();
-        Assertions.assertNull(taskFirst);
-        Assertions.assertNull(taskSecond);
-    }
-
-    @Test
     void getEpicById() {
         String name = "1";
         String description = "1";

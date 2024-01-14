@@ -38,18 +38,6 @@ public class Manager  {
         taskDao.removeSubTaskById(id);
     }
 
-    public void removeAllEpics() {
-        taskDao.removeAllEpics();
-    }
-
-    public void removeAllSubTasks() {
-        taskDao.removeAllSubTasks();
-    }
-
-    public void removeAllTasks() {
-        taskDao.removeAllTasks();
-    }
-
     public Epic getEpicById(long id) {
         return taskDao.getEpicById(id);
     }

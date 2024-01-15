@@ -253,6 +253,7 @@ class ManagerImplControllerTest {
 
         UpdateTaskRequest updateTaskRequest = new UpdateTaskRequest();
         updateTaskRequest.setName("hh");
+        updateTaskRequest.setStatus(Status.IN_PROGRESS);
         updateTaskRequest.setDescription("tt");
         updateTaskRequest.setId(id);
 
@@ -269,7 +270,7 @@ class ManagerImplControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(updateTaskRequest.getName()))
                 .andExpect(jsonPath("$.description").value(updateTaskRequest.getDescription()))
-                .andExpect(jsonPath("$.status").value(updateTaskRequest.getStatus()))
+                .andExpect(jsonPath("$.status").value(updateTaskRequest.getStatus().name()))
                 .andExpect(jsonPath("$.id").value(updateTaskRequest.getId()));
     }
 

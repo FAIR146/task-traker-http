@@ -54,18 +54,7 @@ public class ManagerController {
     public void deleteSubTaskById (@RequestParam long id) {
         manager.removeSubTaskById(id);
     }
-    @DeleteMapping("/deleteAllTasks")
-    public void deleteAllTasks () {
-        manager.removeAllTasks();
-    }
-    @DeleteMapping("/deleteAllEpics")
-    public void deleteAllEpics () {
-        manager.removeAllEpics();
-    }
-    @DeleteMapping("/deleteAllSubTasks")
-    public void deleteAllSubTasks () {
-        manager.removeAllSubTasks();
-    }
+
     @GetMapping("/getEpicById")
     public ResponseEntity<Epic> getEpicById (@RequestParam long id) {
         Epic epic = manager.getEpicById(id);
@@ -89,18 +78,6 @@ public class ManagerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(subTask);
-    }
-    @GetMapping("/getAllTasks")
-    public List<Task> getAllTasks () {
-        return manager.getAllTasks();
-    }
-    @GetMapping("/getAllEpics")
-    public List<Epic> getAllEpics () {
-        return manager.getAllEpics();
-    }
-    @GetMapping("/getAllSubTasks")
-    public List<SubTask> getAllSubTasks () {
-        return manager.getAllSubTasks();
     }
     @PatchMapping("/updateEpic")
     public void updateEpic (@RequestBody UpdateEpicRequest updateEpicRequest) {

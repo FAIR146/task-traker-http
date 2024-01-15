@@ -123,45 +123,6 @@ public class DataBaseTaskDao implements TaskDao {
     }
 
     @Override
-    public void removeAllTasks() {
-        jdbcTemplate.update("DELETE FROM task");
-    }
-
-    @Override
-    public void removeAllEpics() {
-        jdbcTemplate.update("DELETE FROM epic");
-    }
-
-    @Override
-    public void removeAllSubTasks() {
-        jdbcTemplate.update("DELETE FROM subTask");
-    }
-
-    @Override
-    public List<Task> getAllTasks() {
-        String sql = "SELECT task.id,task.name, description, status.name AS status " +
-                "FROM task JOIN status ON status.id = task.status_id";
-        List<Task> tasks = jdbcTemplate.query(sql, taskRowMapper);
-        return tasks;
-    }
-
-    @Override
-    public List<Epic> getAllEpics() {
-        String sql = "SELECT epic.id, epic.name, description, status.name AS status " +
-                "FROM epic JOIN status ON status.id = epic.status_id";
-        List<Epic> epics = jdbcTemplate.query(sql, epicRowMapper);
-        return epics;
-    }
-
-    @Override
-    public List<SubTask> getAllSubTasks() {
-        String sql = "SELECT subtask.id, subtask.name, description, status.name AS status " +
-                "FROM subtask JOIN status ON status.id = subtask.status_id";
-        List<SubTask> subTasks = jdbcTemplate.query(sql, subTaskRowMapper);
-        return subTasks;
-    }
-
-    @Override
     public Epic getEpicById(long id) {
         String sql = "SELECT id, name, description FROM epic WHERE id = ?";
         String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";

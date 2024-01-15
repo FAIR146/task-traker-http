@@ -106,69 +106,6 @@ public class ManagerImplTest {
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
         Assertions.assertNull(subTask1);
     }
-
-    @Test
-    void removeAllEpics() {
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idEpic1 = manager.addEpic(name1, description1);
-        long idEpic2 = manager.addEpic(name2, description2);
-        Epic epic1 = manager.getEpicById(idEpic1);
-        Epic epic2 =  manager.getEpicById(idEpic2);
-        Assertions.assertNotNull(epic1);
-        Assertions.assertNotNull(epic2);
-        manager.removeAllEpics();
-        Epic epicFirst = manager.getEpicById(idEpic1);
-        Epic epicSecond = manager.getEpicById(idEpic2);
-        manager.getAllEpics();
-        Assertions.assertNull(epicFirst);
-        Assertions.assertNull(epicSecond);
-    }
-
-    @Test
-    void removeAllSubTasks() {
-        long idEpic1 = manager.addEpic("epic1","epic1");
-        long idEpic2 = manager.addEpic("epic2", "epic2");
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idSubTask1 = manager.addSubTask(idEpic1, name1, description1, Status.NEW);
-        long idSubtask2 = manager.addSubTask(idEpic2, name2, description2, Status.NEW);
-        SubTask subTask1 = manager.getSubTaskById(idSubTask1);
-        SubTask subTask2 = manager.getSubTaskById(idSubtask2);
-        Assertions.assertNotNull(subTask1);
-        Assertions.assertNotNull(subTask2);
-        manager.removeAllSubTasks();
-        SubTask subTaskFirst = manager.getSubTaskById(idSubTask1);
-        SubTask subTaskSecond = manager.getSubTaskById(idSubtask2);
-        manager.getAllSubTasks();
-        Assertions.assertNull(subTaskFirst);
-        Assertions.assertNull(subTaskSecond);
-    }
-
-    @Test
-    void removeAllTasks() {
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idTask1 = manager.addTask(name1, description1, Status.NEW);
-        long idTask2 = manager.addTask(name2, description2, Status.NEW);
-        Task task1 = manager.getTaskById(idTask1);
-        Task task2 = manager.getTaskById(idTask2);
-        Assertions.assertNotNull(task1);
-        Assertions.assertNotNull(task2);
-        manager.removeAllTasks();
-        Task taskFirst = manager.getSubTaskById(idTask1);
-        Task taskSecond = manager.getTaskById(idTask2);
-        manager.getAllTasks();
-        Assertions.assertNull(taskFirst);
-        Assertions.assertNull(taskSecond);
-    }
-
     @Test
     void getEpicById() {
         String name = "1";
@@ -209,68 +146,6 @@ public class ManagerImplTest {
         Assertions.assertEquals(name, subTask1.getName());
         Assertions.assertEquals(description, subTask1.getDescription());
         Assertions.assertEquals(status, subTask1.getStatus());
-    }
-
-    @Test
-    void getAllEpics() {
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        long idEpic1 = manager.addEpic(name1, description1);
-        long idEpic2 = manager.addEpic(name2, description2);
-        Epic epicFirst = manager.getEpicById(idEpic1);
-        Epic epicSecond = manager.getEpicById(idEpic2);
-        manager.getAllEpics();
-        Assertions.assertEquals(name1, epicFirst.getName());
-        Assertions.assertEquals(description1, epicFirst.getDescription());
-        Assertions.assertEquals(name2, epicSecond.getName());
-        Assertions.assertEquals(description2, epicSecond.getDescription());
-    }
-
-    @Test
-    void getAllSubTasks() {
-        long idEpic1 = manager.addEpic("epic1","epic1");
-        long idEpic2 = manager.addEpic("epic2", "epic2");
-        String name1 = "1";
-        String description1 = "1";
-        String name2 = "2";
-        String description2 = "2";
-        Status status1 = Status.NEW;
-        Status status2 = Status.NEW;
-        long idSubTask1 = manager.addSubTask(idEpic1, name1, description1, status1);
-        long idSubTask2 = manager.addSubTask(idEpic2, name2, description2, status2);
-        SubTask subTaskFirst = manager.getSubTaskById(idSubTask1);
-        SubTask subTaskSecond = manager.getSubTaskById(idSubTask2);
-        manager.getAllEpics();
-        Assertions.assertEquals(name1, subTaskFirst.getName());
-        Assertions.assertEquals(description1, subTaskFirst.getDescription());
-        Assertions.assertEquals(status1, subTaskFirst.getStatus());
-        Assertions.assertEquals(name2, subTaskSecond.getName());
-        Assertions.assertEquals(description2, subTaskSecond.getDescription());
-        Assertions.assertEquals(status2, subTaskSecond.getStatus());
-
-    }
-
-    @Test
-    void getAllTasks() {
-        String name1 = "1";
-        String description1 = "1";
-        Status status1 = Status.NEW;
-        String name2 = "2";
-        String description2 = "2";
-        Status status2 = Status.NEW;
-        long idTask1 = manager.addTask(name1, description1, status1);
-        long idTask2 = manager.addTask(name2, description2, status2);
-        Task taskFirst = manager.getTaskById(idTask1);
-        Task taskSecond = manager.getTaskById(idTask2);
-        manager.getAllTasks();
-        Assertions.assertEquals(name1, taskFirst.getName());
-        Assertions.assertEquals(description1, taskFirst.getDescription());
-        Assertions.assertEquals(status1, taskFirst.getStatus());
-        Assertions.assertEquals(name2, taskSecond.getName());
-        Assertions.assertEquals(description2, taskSecond.getDescription());
-        Assertions.assertEquals(status2, taskSecond.getStatus());
     }
 
     @Test

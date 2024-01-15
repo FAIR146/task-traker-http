@@ -59,18 +59,6 @@ public class ManagerImpl implements Manager {
         taskDao.removeSubTaskById(id);
     }
 
-    public void removeAllEpics() {
-        taskDao.removeAllEpics();
-    }
-
-    public void removeAllSubTasks() {
-        taskDao.removeAllSubTasks();
-    }
-
-    public void removeAllTasks() {
-        taskDao.removeAllTasks();
-    }
-
     public Epic getEpicById(long id) {
         return taskDao.getEpicById(id);
     }
@@ -83,17 +71,6 @@ public class ManagerImpl implements Manager {
         return taskDao.getSubTaskById(id);
     }
 
-    public List<Epic> getAllEpics() {
-        return taskDao.getAllEpics();
-    }
-
-    public List<SubTask> getAllSubTasks() {
-        return taskDao.getAllSubTasks();
-    }
-
-    public List<Task> getAllTasks() {
-        return taskDao.getAllTasks();
-    }
     public void updateTask (long id, String name, String description, Status status) {
         Task task = new Task();
         task.setId(id);

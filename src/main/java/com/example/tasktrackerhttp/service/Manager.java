@@ -20,23 +20,11 @@ public interface Manager {
     void removeTaskById(long id);
 
     void removeSubTaskById(long id);
-
-    void removeAllEpics();
-    void removeAllSubTasks();
-
-    void removeAllTasks();
-
     Epic getEpicById(long id);
 
     Task getTaskById(long id);
 
     SubTask getSubTaskById(long id);
-
-    List<Epic> getAllEpics();
-
-    List<SubTask> getAllSubTasks();
-
-    List<Task> getAllTasks();
     void updateTask (long id, String name, String description, Status status);
     void updateEpic (long id, String name, String description);
     void updateSubTask (long id, String name, String description, Status status); // long epicId

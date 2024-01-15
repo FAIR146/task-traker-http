@@ -211,7 +211,7 @@ public class DataBaseTaskDao implements TaskDao {
                 "name = ?, " +
                 "description = ?, " +
                 "status_id = (SELECT status.id FROM status WHERE name = ?) " +
-                "WHERE task.id = ?";
+                "WHERE id = ?";
 
 
         jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId());

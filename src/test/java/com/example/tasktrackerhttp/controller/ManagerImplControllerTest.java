@@ -1,9 +1,8 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.request.put.*;
-import com.example.tasktrackerhttp.controller.response.*;
+import com.example.tasktrackerhttp.controller.core.put.*;
+import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Status;
-import com.example.tasktrackerhttp.service.ManagerImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

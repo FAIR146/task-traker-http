@@ -29,5 +29,4 @@ public interface Manager {
     void updateEpic (long id, String name, String description);
     void updateSubTask (long id, String name, String description, Status status); // long epicId
 
-
 }

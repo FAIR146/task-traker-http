@@ -1,7 +1,7 @@
-package com.example.tasktrackerhttp.controller;
+package com.example.tasktrackerhttp.controller.core;
 
-import com.example.tasktrackerhttp.controller.request.put.*;
-import com.example.tasktrackerhttp.controller.response.*;
+import com.example.tasktrackerhttp.controller.core.put.*;
+import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
@@ -9,8 +9,6 @@ import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class ManagerController {

@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp.controller.request.put;
+package com.example.tasktrackerhttp.controller.core.put;
 
 import com.example.tasktrackerhttp.dto.Status;
 

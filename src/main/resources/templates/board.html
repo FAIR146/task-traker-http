@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Task Tracker</title>
+        <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+        <button th:each="task: ${tasks}" th:text="${task.getName()}">
+
+        </button>
+
+        <button class="btn waves-effect waves-light" type="button">OK</button>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </body>
+</html>

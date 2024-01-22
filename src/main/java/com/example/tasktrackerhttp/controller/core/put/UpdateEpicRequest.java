@@ -1,12 +1,9 @@
-package com.example.tasktrackerhttp.controller.request.put;
+package com.example.tasktrackerhttp.controller.core.put;
 
-import com.example.tasktrackerhttp.dto.Status;
-
-public class UpdateTaskRequest {
+public class UpdateEpicRequest {
     private String name;
     private String description;
     private long id;
-    private Status status;
 
     public String getName() {
         return name;
@@ -30,13 +27,5 @@ public class UpdateTaskRequest {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 }

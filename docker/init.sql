@@ -3,6 +3,12 @@ DROP TABLE IF EXISTS epic;
 DROP TABLE IF EXISTS task;
 DROP TABLE IF EXISTS status;
 
+--создание таблицы юзера
+create table "user" (
+    id serial primary key,
+    name varchar
+);
+
 
 --cоздание таблицы с статусами
 create table status (
@@ -15,7 +21,8 @@ create table task (
                       id serial primary key,
                       name varchar,
                       description varchar,
-                      status_id int REFERENCES status (id)
+                      status_id int REFERENCES status (id),
+                  user_id int REFERENCES "user" (id)
 );
 
 --создание таблицы с епиками
@@ -23,7 +30,8 @@ create table epic  (
                       id serial primary key,
                       name varchar,
                       description varchar,
-                      status_id int REFERENCES status (id)
+                      status_id int REFERENCES status (id),
+                        user_id int REFERENCES user (id)
 );
 
 --создание таблицы с сабтасками

@@ -124,7 +124,7 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public Epic getEpicById(long id) {
-        String sql = "SELECT id, name, description FROM epic WHERE id = ?";
+        String sql = "SELECT id, name, description, user_name FROM epic JOIN \"user\" ON user_name = user.id WHERE id = ?";
         String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
         String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
                 "FROM subTask JOIN status ON status.id = subtask.id WHERE epic_id = ?";
@@ -221,6 +221,9 @@ public class DataBaseTaskDao implements TaskDao {
             status = Status.DONE;
         }
         return status;
+    }
+    public List<Task> getTasksByUsername(String name) {
+        return null;
     }
 
 }

@@ -33,6 +33,7 @@ class ManagerImplControllerTest {
         putTaskRequest.setStatus(Status.NEW);
 
 
+
         String response = mockMvc.perform(
                         put("/putTask")
                                 .content(objectMapper.writeValueAsString(putTaskRequest))
@@ -52,7 +53,8 @@ class ManagerImplControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(putTaskRequest.getName()))
                 .andExpect(jsonPath("$.status").value(putTaskRequest.getStatus().name()))
-                .andExpect(jsonPath("$.description").value(putTaskRequest.getDescription()));
+                .andExpect(jsonPath("$.description").value(putTaskRequest.getDescription()))
+                .andExpect(jsonPath("$.userName").exists());
     }
 
     @Test
@@ -78,7 +80,8 @@ class ManagerImplControllerTest {
                 )
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(putEpicRequest.getName()))
-                .andExpect(jsonPath("$.description").value(putEpicRequest.getDescription()));
+                .andExpect(jsonPath("$.description").value(putEpicRequest.getDescription()))
+                .andExpect(jsonPath("$.userName").exists());
     }
     @Test
     public void putAndGetSubTask () throws Exception {

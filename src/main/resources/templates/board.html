@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
         <title>Task Tracker</title>
@@ -7,13 +7,29 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
-        <button th:each="task: ${tasks}" th:text="${task.getName()}">
+<!--        <button th:each="task: ${tasks}" th:text="${task.getName()}"></button>-->
 
-        </button>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo center">Logo</a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        <li><a href="sass.html">Sass</a></li>
+                        <li><a href="badges.html">Components</a></li>
+                        <li><a href="collapsible.html">JavaScript</a></li>
+                    </ul>
+                </div>
+            </nav>
 
-        <button class="btn waves-effect waves-light" type="button">OK</button>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-            <i class="material-icons right">send</i>
-        </button>
+<!--        <div class="table">-->
+<!--        <div class="caption">NEW</div>-->
+<!--        <div class="thead"></div>-->
+<!--            <div class="row">-->
+<!--                <div class="cell"> <button th:each="task: ${tasks}" th:text="${task.getName()}"></button> </div>-->
+<!--            </div>-->
+<!--        <div>-->
+
+        </div>
+    </div>
+
     </body>
 </html>

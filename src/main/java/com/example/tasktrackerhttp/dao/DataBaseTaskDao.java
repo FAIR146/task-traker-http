@@ -124,7 +124,8 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public Epic getEpicById(long id) {
-        String sql = "SELECT id, name, description, user_name FROM epic JOIN \"user\" ON user_name = user.id WHERE id = ?";
+        String sql = "SELECT epic.id, epic.description, status_id, user_id, \"user\".name AS user_name\n" +
+                "FROM epic JOIN \"user\" ON epic.user_id = \"user\".id WHERE epic.id = ?;";
         String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
         String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
                 "FROM subTask JOIN status ON status.id = subtask.id WHERE epic_id = ?";
@@ -155,8 +156,8 @@ public class DataBaseTaskDao implements TaskDao {
     @Nullable
     @Override
     public Task getTaskById(long id) {
-        String sql = "SELECT task.id,task.name, description, status.name AS status " +
-                "FROM task JOIN status ON status.id = task.status_id WHERE task.id = ?";
+        String sql = "SELECT task.id, task.name, description, status_id, user_id, \"user\".name AS user_name\n" +
+                "FROM task JOIN \"user\" ON task.user_id = \"user\".id WHERE task.id = ?;";
 
         try {
             return jdbcTemplate.queryForObject(sql, taskRowMapper, id);

@@ -6,7 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Epic extends Task {
-    private List<Long> subTasksId = new ArrayList<>();
+    private List<Long> subTasksId = new ArrayList<>(); // TODO а это убираем
+    private List<SubTask> subTasks = new ArrayList<>(); // TODO сделать так чтобы они считывались из базы данных
 
     public List<Long> getSubTasksId() {
         return subTasksId;
@@ -15,7 +16,11 @@ public class Epic extends Task {
         this.subTasksId = subTasksId;
     }
 
-//    public Status getStatus () {
+    public List<SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    //    public Status getStatus () {
 //        AtomicInteger countStatusNew = new AtomicInteger();
 //        AtomicInteger countStatusInProgress = new AtomicInteger();
 //        AtomicInteger countStatusDone = new AtomicInteger();

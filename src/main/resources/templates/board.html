@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-    <head>
-        <meta charset="UTF-8">
-        <title>Task Tracker</title>
-        <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    </head>
-    <body>
-<!--        <button th:each="task: ${tasks}" th:text="${task.getName()}"></button>-->
+<head>
+    <meta charset="UTF-8">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .table-container {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<div class="table-container">
+    TODO
+    <table class="highlight" th:each="epic: ${epics}">
 
-            <nav>
-                <div class="nav-wrapper">
-                    <a href="#" class="brand-logo center">Logo</a>
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-                        <li><a href="sass.html">Sass</a></li>
-                        <li><a href="badges.html">Components</a></li>
-                        <li><a href="collapsible.html">JavaScript</a></li>
-                    </ul>
-                </div>
-            </nav>
 
-<!--        <div class="table">-->
-<!--        <div class="caption">NEW</div>-->
-<!--        <div class="thead"></div>-->
-<!--            <div class="row">-->
-<!--                <div class="cell"> <button th:each="task: ${tasks}" th:text="${task.getName()}"></button> </div>-->
-<!--            </div>-->
-<!--        <div>-->
+        <tbody>
+        <tr>
+            <th>
+                <a th:text="${epic.getName()}"></a>
+            </th>
+            <th>
+                <button>options</button>
+            </th>
+        </tr>
 
-        </div>
-    </div>
 
-    </body>
+        <tr th:each="subtask : ${epic.getSubTasks()}">
+            <th>
+                <a th:text="${subtask.getName()}"></a>
+            </th>
+            <th>
+                <p>
+                    <label>
+                        <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
+                        <span>Выполнена</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                        <span>Не выполнена</span>
+                    </label>
+                </p>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
 </html>

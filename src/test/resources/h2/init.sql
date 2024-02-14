@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS subtask;
 DROP TABLE IF EXISTS epic;
 DROP TABLE IF EXISTS task;
 DROP TABLE IF EXISTS status;
+DROP TABLE IF EXISTS "user";
 
 
 create table "user" (
@@ -21,7 +22,7 @@ create table task (
                       name varchar,
                       description varchar,
                       status_id int REFERENCES status (id),
-                  user_id int REFERENCES "user" (id)
+                      user_id int REFERENCES "user" (id)
 );
 
 --создание таблицы с епиками
@@ -30,7 +31,7 @@ create table epic  (
                        name varchar,
                        description varchar,
                        status_id int REFERENCES status (id),
-                           user_id int REFERENCES "user" (id)
+                       user_id int REFERENCES "user" (id)
 );
 
 --создание таблицы с сабтасками

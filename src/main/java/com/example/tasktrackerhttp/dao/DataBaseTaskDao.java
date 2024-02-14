@@ -12,9 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.*;
 
 @Repository
@@ -126,15 +123,13 @@ public class DataBaseTaskDao implements TaskDao {
     public Epic getEpicById(long id) {
         String sql = "SELECT epic.id, epic.description, status_id, user_id, \"user\".name AS user_name\n" +
                 "FROM epic JOIN \"user\" ON epic.user_id = \"user\".id WHERE epic.id = ?;";
-        String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
         String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
                 "FROM subTask JOIN status ON status.id = subtask.id WHERE epic_id = ?";
         List<SubTask> subTasks = jdbcTemplate.query(sqlGetAllSubTasksEpic, subTaskRowMapper, id);
-        List<Long> subTasksId = jdbcTemplate.queryForList(sqlGetSubTaskId, Long.class, id);
 
         try {
             Epic epic = jdbcTemplate.queryForObject(sql, epicRowMapper, id);
-            epic.setSubTasksId(subTasksId);
+            epic.setSubTasks(subTasks);
             epic.setStatus(getEpicStatus(subTasks));
             return epic;
         } catch (EmptyResultDataAccessException e) {

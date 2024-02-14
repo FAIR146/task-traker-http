@@ -1,14 +1,12 @@
 package com.example.tasktrackerhttp.service;
 import com.example.tasktrackerhttp.dto.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @SpringBootTest
 public class ManagerImplTest {
@@ -35,8 +33,8 @@ public class ManagerImplTest {
         String description = "Собрать вещи";
         long idEpic = manager.addEpic(name,description);
         Epic epic = manager.getEpicById(idEpic);
-        List<Long> idSubTasks = epic.getSubTasksId();
-        Assertions.assertTrue(idSubTasks.isEmpty());
+        List<SubTask> subTasks = epic.getSubTasks();
+        Assertions.assertTrue(subTasks.isEmpty());
         Assertions.assertNotNull(epic);
         Assertions.assertEquals(idEpic, epic.getId());
         Assertions.assertEquals(name, epic.getName());
@@ -47,7 +45,7 @@ public class ManagerImplTest {
     void addSubTask() {
         long epicId = manager.addEpic("1", "1");
         Epic epic = manager.getEpicById(epicId);
-        List<Long> subTasksId = epic.getSubTasksId();
+        List<SubTask> subTasks = epic.getSubTasks();
         String name = "Одеться";
         String description = "Встать";
         Status status = Status.NEW;
@@ -59,9 +57,9 @@ public class ManagerImplTest {
         Assertions.assertEquals(status, subTask.getStatus());
 
         Epic epicUpdate = manager.getEpicById(epicId);
-        List<Long> subTasksIdUpd = epicUpdate.getSubTasksId();
-        Assertions.assertTrue(subTasksIdUpd.stream().anyMatch( id -> id == idSubTask));
-        Assertions.assertNotNull(subTasksId.stream().anyMatch(id -> id == idSubTask));
+        List<SubTask> subTasksUpd = epicUpdate.getSubTasks();
+        Assertions.assertTrue(subTasksUpd.stream().anyMatch( subTask1 -> subTask1 == subTask));
+        Assertions.assertNotNull(subTasks.stream().anyMatch(subTask1 -> subTask1 == subTask));
 
     }
 
@@ -71,9 +69,9 @@ public class ManagerImplTest {
         long idSubTask = manager.addSubTask(idEpic, "2", "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
         SubTask subTask = manager.getSubTaskById(idSubTask);
-        List<Long> subtasksId = epic.getSubTasksId();
-        epic.setSubTasksId(subtasksId);
-        Assertions.assertTrue(subtasksId.stream().anyMatch(id -> id == idSubTask));
+        List<SubTask> subtasks = epic.getSubTasks();
+        epic.setSubTasks(subtasks);
+        Assertions.assertTrue(subtasks.stream().anyMatch(subTask1 -> subTask1 == subTask));
         Assertions.assertNotNull(epic);
         Assertions.assertNotNull(subTask);
         manager.removeSubTaskById(idSubTask);
@@ -100,8 +98,8 @@ public class ManagerImplTest {
         long idEpic =  manager.addEpic("1", "1");
         long idSubTask = manager.addSubTask(idEpic, "2" , "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
-        List<Long> subTasksId = epic.getSubTasksId();
-        Assertions.assertTrue(subTasksId.stream().anyMatch(id -> id == idSubTask));
+        List<SubTask> subTasks = epic.getSubTasks();
+        Assertions.assertTrue(subTasks.stream().anyMatch(subTask -> subTask == subTasks));
         manager.removeSubTaskById(idSubTask);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
         Assertions.assertNull(subTask1);
@@ -112,7 +110,7 @@ public class ManagerImplTest {
         String description = "1";
         long idEpic = manager.addEpic(name, description);
         Epic epic1 = manager.getEpicById(idEpic);
-        List<Long> subTasks = epic1.getSubTasksId();
+        List<SubTask> subTasks = epic1.getSubTasks();
         List<Status> statuses = new ArrayList<>();
 
         Assertions.assertNotNull(epic1);
@@ -140,8 +138,8 @@ public class ManagerImplTest {
         long idSubTask = manager.addSubTask(idEpic ,name, description, status);
         SubTask subTask1 = manager.getSubTaskById(idSubTask);
         epic = manager.getEpicById(idEpic);
-        List<Long> subTasksId = epic.getSubTasksId();
-        Assertions.assertTrue(subTasksId.stream().anyMatch(subTask -> subTask == idSubTask));
+        List<SubTask> subTasks = epic.getSubTasks();
+        Assertions.assertTrue(subTasks.stream().anyMatch(subTask -> subTask == subTask1));
         Assertions.assertEquals(idEpic, subTask1.getEpicId());
         Assertions.assertEquals(name, subTask1.getName());
         Assertions.assertEquals(description, subTask1.getDescription());

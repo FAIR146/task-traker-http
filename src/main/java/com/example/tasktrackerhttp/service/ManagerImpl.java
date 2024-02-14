@@ -36,10 +36,10 @@ public class ManagerImpl implements Manager {
     //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
     public long addSubTask (long epicId, String name, String description, Status status) {
         SubTask subTask = new SubTask();
-        List<Long> subTasks = new ArrayList<>();
-        subTasks.add(subTask.getId());
+        List<SubTask> subTasks = new ArrayList<>();
+        subTasks.add(subTask);
         Epic epic = taskDao.getEpicById(epicId);
-        epic.setSubTasksId(subTasks);
+        epic.setSubTasks(subTasks);
         subTask.setEpicId(epicId);
         subTask.setName(name);
         subTask.setDescription(description);
@@ -81,7 +81,7 @@ public class ManagerImpl implements Manager {
     }
     public void updateEpic (long id, String name, String description) {
         Epic epic = new Epic();
-        List<Long> subTasks = taskDao.getEpicById(id).getSubTasksId();
+        List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
         epic.setName(name);
         epic.setDescription(description);
         epic.setId(id);

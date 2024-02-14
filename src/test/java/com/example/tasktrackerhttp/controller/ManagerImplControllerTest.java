@@ -1,9 +1,8 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.request.put.*;
-import com.example.tasktrackerhttp.controller.response.*;
+import com.example.tasktrackerhttp.controller.core.put.*;
+import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Status;
-import com.example.tasktrackerhttp.service.ManagerImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ class ManagerImplControllerTest {
         putTaskRequest.setStatus(Status.NEW);
 
 
+
         String response = mockMvc.perform(
                         put("/putTask")
                                 .content(objectMapper.writeValueAsString(putTaskRequest))
@@ -53,7 +53,8 @@ class ManagerImplControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(putTaskRequest.getName()))
                 .andExpect(jsonPath("$.status").value(putTaskRequest.getStatus().name()))
-                .andExpect(jsonPath("$.description").value(putTaskRequest.getDescription()));
+                .andExpect(jsonPath("$.description").value(putTaskRequest.getDescription()))
+                .andExpect(jsonPath("$.userName").exists());
     }
 
     @Test
@@ -79,7 +80,8 @@ class ManagerImplControllerTest {
                 )
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(putEpicRequest.getName()))
-                .andExpect(jsonPath("$.description").value(putEpicRequest.getDescription()));
+                .andExpect(jsonPath("$.description").value(putEpicRequest.getDescription()))
+                .andExpect(jsonPath("$.userName").exists());
     }
     @Test
     public void putAndGetSubTask () throws Exception {

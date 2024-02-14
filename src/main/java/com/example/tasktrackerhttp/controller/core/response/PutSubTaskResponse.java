@@ -1,4 +1,6 @@
-package com.example.tasktrackerhttp.controller.response;
+package com.example.tasktrackerhttp.controller.core.response;
+
+import com.example.tasktrackerhttp.dto.Status;
 
 public class PutSubTaskResponse {
     private long id;

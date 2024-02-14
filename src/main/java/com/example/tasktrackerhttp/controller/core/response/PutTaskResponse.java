@@ -1,6 +1,6 @@
-package com.example.tasktrackerhttp.controller.response;
+package com.example.tasktrackerhttp.controller.core.response;
 
-public class PutEpicResponse {
+public class PutTaskResponse {
     private long id;
 
     public long getId() {

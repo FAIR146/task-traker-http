@@ -12,9 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.*;
 
 @Repository
@@ -30,16 +27,19 @@ public class DataBaseTaskDao implements TaskDao {
         task.setName(rs.getString("name"));
         task.setDescription(rs.getString("description"));
         task.setStatus(Status.valueOf(rs.getString("status")));
+        task.setUserName(rs.getString("user_name"));
         return task;
     };
     private final RowMapper<Epic> epicRowMapper = (rs, rowNum) -> {
         Epic epic = new Epic();
         epic.setId(rs.getLong("id"));
-        epic.setName(rs.getString("name"));
+        epic.setName(rs.getString("epic_name"));
         epic.setDescription(rs.getString("description"));
+        epic.setUserName(rs.getString("user_name"));
 
         return epic;
     };
+
     private final RowMapper<SubTask> subTaskRowMapper = (rs, rowNum) -> {
         SubTask subTask = new SubTask();
         subTask.setId(rs.getLong("id"));
@@ -124,16 +124,17 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public Epic getEpicById(long id) {
-        String sql = "SELECT id, name, description FROM epic WHERE id = ?";
-        String sqlGetSubTaskId = "SELECT id FROM subTask WHERE epic_id = ?";
-        String sqlGetAllSubTasksEpic = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
-                "FROM subTask JOIN status ON status.id = subtask.id WHERE epic_id = ?";
-        List<SubTask> subTasks = jdbcTemplate.query(sqlGetAllSubTasksEpic, subTaskRowMapper, id);
-        List<Long> subTasksId = jdbcTemplate.queryForList(sqlGetSubTaskId, Long.class, id);
+        String getEpicSql = "SELECT epic.id, epic.name as epic_name, epic.description, status_id, user_id, \"user\".name AS user_name\n" +
+                "FROM epic JOIN \"user\" ON epic.user_id = \"user\".id WHERE epic.id = ?;";
+
+        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
+                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic_id = ?";
+
+        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, id);
 
         try {
-            Epic epic = jdbcTemplate.queryForObject(sql, epicRowMapper, id);
-            epic.setSubTasksId(subTasksId);
+            Epic epic = jdbcTemplate.queryForObject(getEpicSql, epicRowMapper, id);
+            epic.setSubTasks(subTasks);
             epic.setStatus(getEpicStatus(subTasks));
             return epic;
         } catch (EmptyResultDataAccessException e) {
@@ -155,8 +156,12 @@ public class DataBaseTaskDao implements TaskDao {
     @Nullable
     @Override
     public Task getTaskById(long id) {
-        String sql = "SELECT task.id,task.name, description, status.name AS status " +
-                "FROM task JOIN status ON status.id = task.status_id WHERE task.id = ?";
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.id = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, taskRowMapper, id);
@@ -221,6 +226,9 @@ public class DataBaseTaskDao implements TaskDao {
             status = Status.DONE;
         }
         return status;
+    }
+    public List<Task> getTasksByUsername(String name) {
+        return null;
     }
 
 }

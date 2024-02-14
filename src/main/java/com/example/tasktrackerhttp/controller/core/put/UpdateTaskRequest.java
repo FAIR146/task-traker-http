@@ -1,20 +1,12 @@
-package com.example.tasktrackerhttp.controller.response;
+package com.example.tasktrackerhttp.controller.core.put;
 
 import com.example.tasktrackerhttp.dto.Status;
 
-public class GetTaskResponse {
+public class UpdateTaskRequest {
     private String name;
     private String description;
-    private Status status;
     private long id;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private Status status;
 
     public String getName() {
         return name;
@@ -30,6 +22,14 @@ public class GetTaskResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Status getStatus() {

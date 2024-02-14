@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .table-container {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<center> <div class="table-container">
+    <h4>NEW</h4>
+    <table class="highlight" th:each="epic: ${epics}">
+
+
+        <tbody>
+        <tr  style="background: #00bcd4; border-radius: 30px;">
+            <th>
+                 <b><h6 th:text="${epic.getName()}"></h6></b>
+            </th>
+            <th>
+                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+            </th>
+        </tr>
+
+
+            <tr th:each="subtask : ${epic.getSubTasks()}" style="background: #f3f3f3; border-radius: 80px;">
+                <th>
+                    <h6 th:text="${subtask.getName()}"></h6>
+                </th>
+                <th>
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
+                            <span>Выполнена</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Не выполнена</span>
+                        </label>
+                    </p>
+                </th>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<div class="table-container">
+    <h4>TASKS</h4>
+    <table class="highlight" th:each="task: ${tasks}">
+        <tbody>
+        <tr  style="background: #00bcd4; border-radius: 30px;">
+            <th>
+                <h6 th:text="${task.getName()}"></h6>
+            </th>
+            <th>
+                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+            </th>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+    <div class="table-container">
+        <h4>DONE</h4>
+    </div>
+</center>
+</body>
+</html>

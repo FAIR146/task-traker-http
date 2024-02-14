@@ -2,20 +2,20 @@ package com.example.tasktrackerhttp.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Epic extends Task {
-    private List<Long> subTasksId = new ArrayList<>();
 
-    public List<Long> getSubTasksId() {
-        return subTasksId;
+    private List<SubTask> subTasks = new ArrayList<>(); // TODO сделать так чтобы они считывались из базы данных
+
+    public List<SubTask> getSubTasks() {
+        return subTasks;
     }
-    public void setSubTasksId (List<Long> subTasksId) {
-        this.subTasksId = subTasksId;
+    public void setSubTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
     }
 
-//    public Status getStatus () {
+    //    public Status getStatus () {
 //        AtomicInteger countStatusNew = new AtomicInteger();
 //        AtomicInteger countStatusInProgress = new AtomicInteger();
 //        AtomicInteger countStatusDone = new AtomicInteger();

@@ -23,5 +23,12 @@ public interface TaskDao {
     void updateTask (Task task);
     void updateEpic (Epic epic);
     void updateSubTask (SubTask subTask);
+    List<Task> getNewTaskByUserName(String username);
+    List<Task> getInProgressTaskByUserName(String username);
+    List<Task> getDoneTaskByUserName(String username);
 
+    // надо методами ниже, возможно, нужно подумать
+    List<Epic> getNewEpicByUserName(String username);
+    List<Epic> getInProgressEpicByUserName(String username);
+    List<Epic> getDoneEpicByUserName(String username);
 }

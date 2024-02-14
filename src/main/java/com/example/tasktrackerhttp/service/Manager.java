@@ -14,7 +14,6 @@ public interface Manager {
 
     long addSubTask(long epicId, String name, String description, Status status);
 
-
     void removeEpicById(long id);
 
     void removeTaskById(long id);
@@ -28,5 +27,4 @@ public interface Manager {
     void updateTask (long id, String name, String description, Status status);
     void updateEpic (long id, String name, String description);
     void updateSubTask (long id, String name, String description, Status status); // long epicId
-
 }

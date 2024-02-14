@@ -22,7 +22,7 @@ public class BoardController {
         log.info("Список dummy {}",taskList);
 
         model.addAttribute("epics", generateDummyEpics());
-        model.addAttribute("tasks",generateDummyTasks());
+        model.addAttribute("tasks", generateDummyTasks());
         return "board";
     }
 //    @GetMapping("/tasks")

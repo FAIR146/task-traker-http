@@ -8,7 +8,7 @@ public class Task {
     private String name;
     private String description;
     private Status status;
-
+    private String userName;
 }
 
 

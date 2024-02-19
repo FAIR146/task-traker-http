@@ -6,7 +6,6 @@ import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,18 +17,20 @@ public class ManagerImpl implements Manager {
     }
 
 
-    public long addTask(String name, String description, Status status) {
+    public long addTask (String name, String description, Status status, String userId) {
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
+        task.setUserName(userId);
         return taskDao.addTask(task);
     }
 
-    public long addEpic(String name, String description) {
+    public long addEpic(String name, String description, String userId) {
         Epic epic = new Epic();
         epic.setName(name);
         epic.setDescription(description);
+        epic.setUserName(userId);
         return taskDao.addEpic(epic);
     }
 
@@ -68,9 +69,10 @@ public class ManagerImpl implements Manager {
         return taskDao.getSubTaskById(id);
     }
 
-    public void updateTask (long id, String name, String description, Status status) {
+    public void updateTask (long id, String userId, String name, String description, Status status) {
         Task task = new Task();
         task.setId(id);
+        task.setUserName(userId);
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
@@ -92,6 +94,20 @@ public class ManagerImpl implements Manager {
         subTask.setDescription(description);
         subTask.setStatus(status);
         taskDao.updateSubTask(subTask);
+    }
+
+    @Override
+    public GetAllCreatedTasksByUser getAllCreatedTasksByUser(String userName) {
+        GetAllCreatedTasksByUser allCreatedTasksByUser = new GetAllCreatedTasksByUser();
+
+        List<Task> inProgressTasks = taskDao.getInProgressTaskByUserName(userName);
+        List<Task> newTasks = taskDao.getNewTaskByUserName(userName);
+        List<Task> doneTasks = taskDao.getDoneTaskByUserName(userName);
+
+        allCreatedTasksByUser.setInProgressTasks(inProgressTasks);
+        allCreatedTasksByUser.setNewTasks(newTasks);
+        allCreatedTasksByUser.setDoneTasks(doneTasks);
+        return allCreatedTasksByUser;
     }
 }
 

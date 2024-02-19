@@ -77,6 +77,7 @@ public class DataBaseTaskDao implements TaskDao {
             put("name", task.getName());
             put("description", task.getDescription());
             put("status_id", statusId);
+            put("user_name", task.getUserName());
         }};
         return simpleJdbcInsertTask.executeAndReturnKey(hashMap).longValue();
     }
@@ -86,6 +87,7 @@ public class DataBaseTaskDao implements TaskDao {
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", epic.getName());
             put("description", epic.getDescription());
+            put("user_name", epic.getUserName());
         }};
         return simpleJdbcInsertEpic.executeAndReturnKey(hashMap).longValue();
     }
@@ -180,7 +182,7 @@ public class DataBaseTaskDao implements TaskDao {
                 "WHERE id = ?";
 
 
-        jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId());
+        jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId(), task.getUserName());
     }
 
     @Override
@@ -200,6 +202,79 @@ public class DataBaseTaskDao implements TaskDao {
                 "WHERE subTask.id = ?";
         jdbcTemplate.update(sql, subTask.getName(), subTask.getDescription(), subTask.getStatus().name(), subTask.getId()); // subTask.getEpicId()
     }
+
+    @Override
+    public List<Task> getNewTaskByUserName(String username) {
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.status_id = 1 AND task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Task task = new Task();
+            task.setId(rs.getLong("id"));
+            task.setName(rs.getString("name"));
+            task.setDescription(rs.getString("description"));
+            task.setStatus(Status.valueOf(rs.getString("status")));
+            task.setUserName(rs.getString("user_name"));
+            return task;
+        });
+    }
+
+    @Override
+    public List<Task> getInProgressTaskByUserName(String username) {
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.status_id = 2 AND task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Task task = new Task();
+            task.setId(rs.getLong("id"));
+            task.setName(rs.getString("name"));
+            task.setDescription(rs.getString("description"));
+            task.setStatus(Status.valueOf(rs.getString("status")));
+            task.setUserName(rs.getString("user_name"));
+            return task;
+        });
+    }
+
+    @Override
+    public List<Task> getDoneTaskByUserName(String username) {
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.status_id = 3 AND task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Task task = new Task();
+            task.setId(rs.getLong("id"));
+            task.setName(rs.getString("name"));
+            task.setDescription(rs.getString("description"));
+            task.setStatus(Status.valueOf(rs.getString("status")));
+            task.setUserName(rs.getString("user_name"));
+            return task;
+        });
+    }
+
+    @Override
+    public List<Epic> getNewEpicByUserName(String username) {
+        return  null;
+    }
+
+    @Override
+    public List<Epic> getInProgressEpicByUserName(String username) {
+        return null;
+    }
+
+    @Override
+    public List<Epic> getDoneEpicByUserName(String username) {
+        return null;
+    }
+
     public Status getEpicStatus (List<SubTask> list) {
 
         int statusNew = 0;

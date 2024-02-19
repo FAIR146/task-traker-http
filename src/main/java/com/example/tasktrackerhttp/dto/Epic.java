@@ -5,8 +5,7 @@ import java.util.List;
 
 
 public class Epic extends Task {
-
-    private List<SubTask> subTasks = new ArrayList<>(); // TODO сделать так чтобы они считывались из базы данных
+    private List<SubTask> subTasks = new ArrayList<>();
 
     public List<SubTask> getSubTasks() {
         return subTasks;
@@ -14,6 +13,7 @@ public class Epic extends Task {
     public void setSubTasks(List<SubTask> subTasks) {
         this.subTasks = subTasks;
     }
+
 
     //    public Status getStatus () {
 //        AtomicInteger countStatusNew = new AtomicInteger();

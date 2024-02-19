@@ -21,14 +21,14 @@ public class ManagerController {
     @PutMapping("/putTask")
     public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest) {
         PutTaskResponse putTaskResponse = new PutTaskResponse();
-        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus());
+        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), putTaskRequest.getUserName());
         putTaskResponse.setId(id);
         return putTaskResponse;
     }
     @PutMapping("/putEpic")
     public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest) {
         PutEpicResponse putEpicResponse = new PutEpicResponse();
-        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription());
+        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), putEpicRequest.getUserName());
         putEpicResponse.setId(id);
         return putEpicResponse;
     }

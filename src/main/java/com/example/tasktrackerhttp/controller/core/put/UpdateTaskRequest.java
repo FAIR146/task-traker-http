@@ -39,4 +39,5 @@ public class UpdateTaskRequest {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 }

@@ -17,20 +17,20 @@ public class ManagerImpl implements Manager {
     }
 
 
-    public long addTask (String name, String description, Status status, String userId) {
+    public long addTask (String name, String description, Status status, String userName) {
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
-        task.setUserName(userId);
+        task.setUserName(userName);
         return taskDao.addTask(task);
     }
 
-    public long addEpic(String name, String description, String userId) {
+    public long addEpic(String name, String description, String userName) {
         Epic epic = new Epic();
         epic.setName(name);
         epic.setDescription(description);
-        epic.setUserName(userId);
+        epic.setUserName(userName);
         return taskDao.addEpic(epic);
     }
 
@@ -69,10 +69,9 @@ public class ManagerImpl implements Manager {
         return taskDao.getSubTaskById(id);
     }
 
-    public void updateTask (long id, String userId, String name, String description, Status status) {
+    public void updateTask (long id, String name, String description, Status status) {
         Task task = new Task();
         task.setId(id);
-        task.setUserName(userId);
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);

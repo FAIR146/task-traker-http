@@ -8,9 +8,9 @@ import com.example.tasktrackerhttp.dto.Task;
 import java.util.List;
 
 public interface Manager {
-    long addTask (String name, String description, Status status);
+    long addTask (String name, String description, Status status, String userName);
 
-    long addEpic(String name, String description);
+    long addEpic(String name, String description, String userName);
 
     long addSubTask(long epicId, String name, String description, Status status);
 

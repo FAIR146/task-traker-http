@@ -177,12 +177,12 @@ public class DataBaseTaskDao implements TaskDao {
     public void updateTask(Task task) {
         String sql = "UPDATE task SET " +
                 "name = ?, " +
-                "description = ?, " +
+                "description = ?," +
                 "status_id = (SELECT status.id FROM status WHERE name = ?) " +
                 "WHERE id = ?";
 
 
-        jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId(), task.getUserName());
+        jdbcTemplate.update(sql, task.getName(), task.getDescription(), task.getStatus().name(), task.getId());
     }
 
     @Override

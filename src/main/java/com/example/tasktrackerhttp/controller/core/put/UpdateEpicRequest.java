@@ -5,7 +5,6 @@ public class UpdateEpicRequest {
     private String description;
     private long id;
 
-
     public String getName() {
         return name;
     }
@@ -29,5 +28,4 @@ public class UpdateEpicRequest {
     public void setId(long id) {
         this.id = id;
     }
-
 }

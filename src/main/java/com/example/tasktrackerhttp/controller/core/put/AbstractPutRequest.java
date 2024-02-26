@@ -1,5 +1,5 @@
 package com.example.tasktrackerhttp.controller.core.put;
-
+import jakarta.servlet.http.HttpSession;
 public class AbstractPutRequest {
     private String name;
     private String description;
@@ -21,11 +21,11 @@ public class AbstractPutRequest {
         this.description = description;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserName(HttpSession session) {
+        return (String) session.getAttribute("login");
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(HttpSession session) {
+        this.userName = (String) session.getAttribute("login");
     }
 }

@@ -7,6 +7,7 @@ import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +20,18 @@ public class ManagerController {
     }
 
     @PutMapping("/putTask")
-    public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest) {
+    public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest, HttpSession session) {
         PutTaskResponse putTaskResponse = new PutTaskResponse();
-        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), putTaskRequest.getUserName());
+        String login = (String) session.getAttribute("login");
+        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), login);
         putTaskResponse.setId(id);
         return putTaskResponse;
     }
     @PutMapping("/putEpic")
-    public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest) {
+    public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest, HttpSession session) {
         PutEpicResponse putEpicResponse = new PutEpicResponse();
-        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), putEpicRequest.getUserName());
+        String login = (String) session.getAttribute("login");
+        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), login);
         putEpicResponse.setId(id);
         return putEpicResponse;
     }

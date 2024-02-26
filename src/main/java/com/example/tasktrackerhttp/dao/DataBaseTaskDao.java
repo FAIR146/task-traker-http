@@ -55,12 +55,12 @@ public class DataBaseTaskDao implements TaskDao {
 
         this.simpleJdbcInsertTask = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("task")
-                .usingColumns("name", "description", "status_id")
+                .usingColumns("name", "description", "status_id", "user_id")
                 .usingGeneratedKeyColumns("id");
 
         this.simpleJdbcInsertEpic = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("epic")
-                .usingColumns("name", "description")
+                .usingColumns("name", "description", "user_id")
                 .usingGeneratedKeyColumns("id");
 
         this.simpleJdbcInsertSubTask = new SimpleJdbcInsert(jdbcTemplate)
@@ -72,22 +72,27 @@ public class DataBaseTaskDao implements TaskDao {
     @Override
     public long addTask(Task task) {
         String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = 'NEW'";
+        String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
         int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
+        int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, task.getUserName());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", task.getName());
             put("description", task.getDescription());
             put("status_id", statusId);
-            put("user_name", task.getUserName());
+            put("user_id", userId);
         }};
         return simpleJdbcInsertTask.executeAndReturnKey(hashMap).longValue();
     }
 
     @Override
     public long addEpic(Epic epic) {
+        String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
+        int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, epic.getUserName());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", epic.getName());
             put("description", epic.getDescription());
             put("user_name", epic.getUserName());
+            put("user_id", userId);
         }};
         return simpleJdbcInsertEpic.executeAndReturnKey(hashMap).longValue();
     }
@@ -262,7 +267,16 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public List<Epic> getNewEpicByUserName(String username) {
-        return  null;
+        String sql = "SELECT name, description, \"user\".name AS user_name FROM epic " +
+                "JOIN \"user\" on epic.user_id = \"user\".id " +
+                "WHERE epic.status_id = 1 AND epic.user_name = ?";
+
+        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
+                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic.user_name = ?";
+
+        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, username);
+        
+
     }
 
     @Override
@@ -303,7 +317,38 @@ public class DataBaseTaskDao implements TaskDao {
         return status;
     }
     public List<Task> getTasksByUsername(String name) {
-        return null;
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Task task = new Task();
+            task.setId(rs.getLong("id"));
+            task.setName(rs.getString("name"));
+            task.setDescription(rs.getString("description"));
+            task.setStatus(Status.valueOf(rs.getString("status")));
+            task.setUserName(rs.getString("user_name"));
+            return task;
+        });
+    }
+
+    @Override
+    public List<Epic> getEpicByUsername(String name) {
+        String sql = "SELECT epic.id, epic.name, description,  \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Epic epic = new Epic();
+            epic.setId(rs.getLong("id"));
+            epic.setName(rs.getString("name"));
+            epic.setDescription(rs.getString("description"));
+            epic.setUserName(rs.getString("user_name"));
+            return epic;
+        });
     }
 
 }

@@ -20,6 +20,7 @@ public interface TaskDao {
     SubTask getSubTaskById (long id);
     Task getTaskById (long id);
     List<Task> getTasksByUsername(String name);
+    List<Epic> getEpicByUsername(String name);
     void updateTask (Task task);
     void updateEpic (Epic epic);
     void updateSubTask (SubTask subTask);

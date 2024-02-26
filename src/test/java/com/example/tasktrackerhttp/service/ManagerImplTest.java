@@ -1,4 +1,5 @@
 package com.example.tasktrackerhttp.service;
+import com.example.tasktrackerhttp.BaseTest;
 import com.example.tasktrackerhttp.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class ManagerImplTest {
+public class ManagerImplTest extends BaseTest {
 
     @Autowired
     private Manager manager;
@@ -17,10 +18,9 @@ public class ManagerImplTest {
     @Test
     void addTask() {
         String name = "Сходить в школу";
-        String userName = "Антон";
         String description = "Собарться и пойти в школу";
         Status status = Status.NEW;
-        long idTask = manager.addTask(name, description, status, userName);
+        long idTask = manager.addTask(name, description, status, TEST_USERNAME);
         Task task = manager.getTaskById(idTask);
         Assertions.assertEquals(idTask, task.getId());
         Assertions.assertEquals(name, task.getName());
@@ -31,9 +31,8 @@ public class ManagerImplTest {
     @Test
     void addEpic() {
         String name = "Поехать в лес";
-        String userName = "жегя";
         String description = "Собрать вещи";
-        long idEpic = manager.addEpic(name,description, userName);
+        long idEpic = manager.addEpic(name,description, TEST_USERNAME);
         Epic epic = manager.getEpicById(idEpic);
         List<SubTask> subTasks = epic.getSubTasks();
         Assertions.assertTrue(subTasks.isEmpty());
@@ -45,7 +44,7 @@ public class ManagerImplTest {
 
     @Test
     void addSubTask() {
-        long epicId = manager.addEpic("1", "1", "fff");
+        long epicId = manager.addEpic("1", "1", TEST_USERNAME);
 
         String name = "Одеться";
         String description = "Встать";
@@ -69,7 +68,7 @@ public class ManagerImplTest {
 
     @Test
     void removeEpicById() {
-        long idEpic = manager.addEpic("1", "1", "anna");
+        long idEpic = manager.addEpic("1", "1", TEST_USERNAME);
         long idSubTask = manager.addSubTask(idEpic, "2", "2", Status.NEW);
         manager.removeEpicById(idEpic);
 
@@ -81,7 +80,7 @@ public class ManagerImplTest {
 
     @Test
     void removeTaskById() {
-        long idTask = manager.addTask("1", "1", Status.NEW, "Никита");
+        long idTask = manager.addTask("1", "1", Status.NEW, TEST_USERNAME);
         Task task = manager.getTaskById(idTask);
         Assertions.assertNotNull(task);
         manager.removeTaskById(idTask);
@@ -92,7 +91,7 @@ public class ManagerImplTest {
 
     @Test
     void removeSubTaskById() {
-        long idEpic =  manager.addEpic("1", "1", "ura");
+        long idEpic =  manager.addEpic("1", "1", TEST_USERNAME);
         long idSubTask = manager.addSubTask(idEpic, "2" , "2", Status.NEW);
         Epic epic = manager.getEpicById(idEpic);
         List<SubTask> subTasks = epic.getSubTasks();
@@ -107,9 +106,8 @@ public class ManagerImplTest {
     @Test
     void getEpicById() {
         String name = "1";
-        String userName = "Tolya";
         String description = "1";
-        long idEpic = manager.addEpic(name, description, userName);
+        long idEpic = manager.addEpic(name, description, TEST_USERNAME);
         Epic epic1 = manager.getEpicById(idEpic);
         List<SubTask> subTasks = epic1.getSubTasks();
         List<Status> statuses = new ArrayList<>();
@@ -120,10 +118,9 @@ public class ManagerImplTest {
     @Test
     void getTaskById() {
         String name = "1";
-        String userName = "Валера";
         String description = "1";
         Status status = Status.NEW;
-        long idTask = manager.addTask(name, description, status,userName);
+        long idTask = manager.addTask(name, description, status, TEST_USERNAME);
         Task task1 = manager.getTaskById(idTask);
         Assertions.assertEquals(name, task1.getName());
         Assertions.assertEquals(description, task1.getDescription());
@@ -132,7 +129,7 @@ public class ManagerImplTest {
 
     @Test
     void getSubTaskById() {
-        long idEpic = manager.addEpic("1", "1", "maks");
+        long idEpic = manager.addEpic("1", "1", TEST_USERNAME);
 
         String name = "1";
         String description = "1";
@@ -151,10 +148,9 @@ public class ManagerImplTest {
     @Test
     void updateTask() {
         String name1 = "name1";
-        String userName1 = "Дима";
         String description = "description1";
         Status status = Status.NEW;
-        long idTask = manager.addTask(name1, description, status, userName1);
+        long idTask = manager.addTask(name1, description, status, TEST_USERNAME);
         Task taskOriginal = manager.getTaskById(idTask);
         Assertions.assertNotNull(taskOriginal);
         String name2 = "name2";
@@ -169,9 +165,8 @@ public class ManagerImplTest {
     @Test
     void updateEpic() {
         String name1 = "name1";
-        String userName1 = "stas";
         String description = "description1";
-        long idEpic = manager.addEpic(name1, description, userName1);
+        long idEpic = manager.addEpic(name1, description, TEST_USERNAME);
         Epic epicOriginal = manager.getEpicById(idEpic);
         Assertions.assertNotNull(epicOriginal);
         String name2 = "name2";
@@ -183,7 +178,7 @@ public class ManagerImplTest {
 
     @Test
     void updateSubTask() {
-        long idEpic = manager.addEpic("1", "1", "valera");
+        long idEpic = manager.addEpic("1", "1", TEST_USERNAME);
         String name1 = "1";
         String description = "1";
         Status status = Status.NEW;

@@ -15,43 +15,26 @@ public class Epic extends Task {
         this.subTasks = subTasks;
     }
 
-
-    public Status getStatus () {
-        AtomicInteger countStatusNew = new AtomicInteger();
-        AtomicInteger countStatusInProgress = new AtomicInteger();
-        AtomicInteger countStatusDone = new AtomicInteger();
-        subTasksId.stream()
-                .map(Task::getEpicStatus)
-                .forEach(status -> {
-                    if (status == Status.NEW) {
-                        countStatusNew.getAndIncrement();
-                    } else if (status == Status.IN_PROGRESS) {
-                        countStatusInProgress.getAndIncrement();
-                    } else if (status == Status.DONE) {
-                        countStatusDone.getAndIncrement();
-                    }
-                });
-        return calculateStatus(countStatusNew.get(), countStatusInProgress.get(), countStatusDone.get());
-    }
-        public Status getEpicStatus () {
+    public Status getEpicStatus () {
         List<Status> subTasksStatus = new ArrayList<>();
         subTasks.forEach(subTask -> subTasksStatus.add(subTask.getStatus()));
         int countStatusNew = 0;
         int countStatusInProgress = 0;
         int countStatusDone = 0;
-        for (int i = 0; i < subTasksStatus.size(); i++) {
-            if (subTasksStatus.get(i) == Status.NEW) {
+        for (Status tasksStatus : subTasksStatus) {
+            if (tasksStatus == Status.NEW) {
                 countStatusNew++;
             }
-            if (subTasksStatus.get(i) == Status.IN_PROGRESS) {
+            if (tasksStatus == Status.IN_PROGRESS) {
                 countStatusInProgress++;
             }
-            if (subTasksStatus.get(i) == Status.DONE) {
+            if (tasksStatus == Status.DONE) {
                 countStatusDone++;
             }
         }
         return calculateStatus(countStatusNew, countStatusInProgress, countStatusDone);
     }
+
     private Status calculateStatus (int statusNew, int statusInProgress, int statusDone) {
         if (statusInProgress > 0) {
             return Status.IN_PROGRESS;
@@ -64,7 +47,6 @@ public class Epic extends Task {
         }
         return Status.IN_PROGRESS;
     }
-
 }
 
 

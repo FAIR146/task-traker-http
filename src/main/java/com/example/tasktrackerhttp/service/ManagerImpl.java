@@ -102,11 +102,19 @@ public class ManagerImpl implements Manager {
         List<Task> inProgressTasks = taskDao.getInProgressTaskByUserName(userName);
         List<Task> newTasks = taskDao.getNewTaskByUserName(userName);
         List<Task> doneTasks = taskDao.getDoneTaskByUserName(userName);
+        List<Epic> newEpics = taskDao.getNewEpicByUserName(userName);
+        List<Epic> inProgressEpics = taskDao.getInProgressEpicByUserName(userName);
+        List<Epic> doneEpics = taskDao.getDoneEpicByUserName(userName);
 
         allCreatedTasksByUser.setInProgressTasks(inProgressTasks);
         allCreatedTasksByUser.setNewTasks(newTasks);
         allCreatedTasksByUser.setDoneTasks(doneTasks);
+        allCreatedTasksByUser.setNewEpic(newEpics);
+        allCreatedTasksByUser.setInProgressEpic(inProgressEpics);
+        allCreatedTasksByUser.setDoneEpic(doneEpics);
         return allCreatedTasksByUser;
     }
+
+
 }
 

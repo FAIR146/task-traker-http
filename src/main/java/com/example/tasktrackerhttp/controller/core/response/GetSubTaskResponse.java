@@ -2,12 +2,12 @@ package com.example.tasktrackerhttp.controller.core.response;
 
 import com.example.tasktrackerhttp.dto.Status;
 
-public class GetTaskResponse {
+public class GetSubTaskResponse {
+    private long id;
+    private long epicId;
     private String name;
     private String description;
     private Status status;
-    private long id;
-    private String userName;
 
     public long getId() {
         return id;
@@ -15,6 +15,14 @@ public class GetTaskResponse {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(long epicId) {
+        this.epicId = epicId;
     }
 
     public String getName() {
@@ -39,13 +47,5 @@ public class GetTaskResponse {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 }

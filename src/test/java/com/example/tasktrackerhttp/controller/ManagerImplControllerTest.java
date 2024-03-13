@@ -61,6 +61,7 @@ class ManagerImplControllerTest extends BaseAuthenticatedControllerTest {
     public void putAndGetEpic () throws Exception {
         PutEpicRequest putEpicRequest = new PutEpicRequest();
         putEpicRequest.setName("ff");
+        putEpicRequest.setUserName("sdf");
         putEpicRequest.setDescription("ss");
 
         String response = mockMvc.perform(

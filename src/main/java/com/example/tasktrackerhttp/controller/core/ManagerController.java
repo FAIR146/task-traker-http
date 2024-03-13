@@ -58,28 +58,45 @@ public class ManagerController {
     }
 
     @GetMapping("/getEpicById")
-    public ResponseEntity<Epic> getEpicById (@RequestParam long id) {
+    public ResponseEntity<GetEpicResponse> getEpicById (@RequestParam long id) {
         Epic epic = manager.getEpicById(id);
         if (epic == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(epic);
+        GetEpicResponse getEpicResponse = new GetEpicResponse();
+        getEpicResponse.setId(epic.getId());
+        getEpicResponse.setName(epic.getName());
+        getEpicResponse.setDescription(epic.getDescription());
+        return ResponseEntity.ok(getEpicResponse);
     }
     @GetMapping("/getTaskById")
-    public ResponseEntity<Task> getTaskById (@RequestParam long id) {
+    public ResponseEntity<GetTaskResponse> getTaskById (@RequestParam long id) {
         Task task = manager.getTaskById(id);
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(task);
+        GetTaskResponse getTaskResponse = new GetTaskResponse();
+        getTaskResponse.setName(task.getName());
+        getTaskResponse.setDescription(task.getDescription());
+        getTaskResponse.setStatus(task.getStatus());
+        getTaskResponse.setId(task.getId());
+        getTaskResponse.setUserName(task.getUserName());
+        return ResponseEntity.ok(getTaskResponse);
+
     }
     @GetMapping("/getSubTaskById")
-    public ResponseEntity<SubTask> getSubTaskById (@RequestParam long id) {
+    public ResponseEntity<GetSubTaskResponse> getSubTaskById (@RequestParam long id) {
         SubTask subTask = manager.getSubTaskById(id);
         if (subTask == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(subTask);
+        GetSubTaskResponse getSubTaskResponse = new GetSubTaskResponse();
+        getSubTaskResponse.setId(subTask.getId());
+        getSubTaskResponse.setEpicId(subTask.getEpicId());
+        getSubTaskResponse.setDescription(subTask.getDescription());
+        getSubTaskResponse.setName(subTask.getName());
+        getSubTaskResponse.setStatus(subTask.getStatus());
+        return ResponseEntity.ok(getSubTaskResponse);
     }
     @PatchMapping("/updateEpic")
     public void updateEpic (@RequestBody UpdateEpicRequest updateEpicRequest) {

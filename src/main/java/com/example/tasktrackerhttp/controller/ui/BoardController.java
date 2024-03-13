@@ -1,7 +1,10 @@
 package com.example.tasktrackerhttp.controller.ui;
 
+import com.example.tasktrackerhttp.controller.core.ManagerController;
+import com.example.tasktrackerhttp.dao.TaskDao;
 import com.example.tasktrackerhttp.dto.*;
 import com.example.tasktrackerhttp.service.Manager;
+import com.example.tasktrackerhttp.service.ManagerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +16,7 @@ import java.util.List;
 @Controller
 @Slf4j
 public class BoardController {
-
+    private Manager manager;
     @GetMapping("/tasks")
     public String drawTasks(Model model) {
         List<Epic> epicList = generateDummyEpics();
@@ -28,7 +31,6 @@ public class BoardController {
 
     private List<Epic> generateDummyEpics() {
         return new ArrayList<>() {{
-            add(createEpic1());
             add(createEpic2());
         }};
     }
@@ -59,13 +61,13 @@ public class BoardController {
         Epic epic = new Epic();
         epic.setDescription("Описание эпика");
         epic.setId(123);
-        epic.setName("Name of epic");
+        epic.setName("Встать 1");
 
         SubTask subTask = new SubTask() {{
             setStatus(Status.NEW);
             setId(1);
-            setName("1 subtask name");
-            setDescription("1 subtask description");
+            setName("Проснуться 1");
+            setDescription("1 описание");
         }};
 
         SubTask subTask2 = new SubTask() {{

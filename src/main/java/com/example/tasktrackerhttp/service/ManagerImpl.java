@@ -6,6 +6,7 @@ import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -97,16 +98,83 @@ public class ManagerImpl implements Manager {
 
     @Override
     public GetAllCreatedTasksByUser getAllCreatedTasksByUser(String userName) {
-        GetAllCreatedTasksByUser allCreatedTasksByUser = new GetAllCreatedTasksByUser();
+        List<Task> inProgressTasks = taskDao.getTaskByStatusAndUserName(Status.IN_PROGRESS, userName);
+        List<Task> newTasks = taskDao.getTaskByStatusAndUserName(Status.NEW, userName);
+        List<Task> doneTasks = taskDao.getTaskByStatusAndUserName(Status.DONE, userName);
 
-        List<Task> inProgressTasks = taskDao.getInProgressTaskByUserName(userName);
-        List<Task> newTasks = taskDao.getNewTaskByUserName(userName);
-        List<Task> doneTasks = taskDao.getDoneTaskByUserName(userName);
-
-        allCreatedTasksByUser.setInProgressTasks(inProgressTasks);
-        allCreatedTasksByUser.setNewTasks(newTasks);
-        allCreatedTasksByUser.setDoneTasks(doneTasks);
-        return allCreatedTasksByUser;
+        return GetAllCreatedTasksByUser.builder()
+                .newTasks(newTasks)
+                .inProgressTasks(inProgressTasks)
+                .doneTasks(doneTasks)
+                .build();
     }
+
+    public GetAllCreatedTasksByUser getAllCreatedEpicsByUser(String userName) { // TODO заменить return type
+        List<Epic> userEpics = taskDao.getEpicByUsername(userName);
+        //TODO разделить эпики по статусам на разные списки
+
+        return null;
+    }
+
+    private Status getEpicStatus (List<SubTask> list) {
+
+        int statusNew = 0;
+        int statusInProgress = 0;
+        int statusDone = 0;
+
+        for (int i = 0; i < list.size(); i++) {
+            Status currentStatus = list.get(i).getStatus();
+            if (currentStatus == Status.IN_PROGRESS) {
+                statusInProgress++;
+            } else if (currentStatus == Status.NEW) {
+                statusNew++;
+            } else if (currentStatus == Status.DONE) {
+                statusDone++;
+            }
+        }
+
+        Status status = Status.UNDEFINED;
+        if (statusInProgress == 0 && statusDone == 0) {
+            status = Status.NEW;
+        } else if (statusDone > 0){
+            status = Status.IN_PROGRESS;
+        } else if (statusNew == 0 && statusInProgress == 0) {
+            status = Status.DONE;
+        }
+        return status;
+    }
+
+//    public Status getEpicStatus () {
+//        List<Status> subTasksStatus = new ArrayList<>();
+//        subTasks.forEach(subTask -> subTasksStatus.add(subTask.getStatus()));
+//        int countStatusNew = 0;
+//        int countStatusInProgress = 0;
+//        int countStatusDone = 0;
+//        for (Status tasksStatus : subTasksStatus) {
+//            if (tasksStatus == Status.NEW) {
+//                countStatusNew++;
+//            }
+//            if (tasksStatus == Status.IN_PROGRESS) {
+//                countStatusInProgress++;
+//            }
+//            if (tasksStatus == Status.DONE) {
+//                countStatusDone++;
+//            }
+//        }
+//        return calculateStatus(countStatusNew, countStatusInProgress, countStatusDone);
+//    }
+//
+//    private Status calculateStatus (int statusNew, int statusInProgress, int statusDone) {
+//        if (statusInProgress > 0) {
+//            return Status.IN_PROGRESS;
+//        }
+//        if (statusInProgress == 0 && statusDone == 0) {
+//            return Status.NEW;
+//        }
+//        if (statusInProgress == 0 && statusNew == 0) {
+//            return Status.DONE;
+//        }
+//        return Status.IN_PROGRESS;
+//    }
 }
 

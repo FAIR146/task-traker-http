@@ -142,7 +142,6 @@ public class DataBaseTaskDao implements TaskDao {
         try {
             Epic epic = jdbcTemplate.queryForObject(getEpicSql, epicRowMapper, id);
             epic.setSubTasks(subTasks);
-            epic.setStatus(getEpicStatus(subTasks));
             return epic;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -209,60 +208,14 @@ public class DataBaseTaskDao implements TaskDao {
     }
 
     @Override
-    public List<Task> getNewTaskByUserName(String username) {
+    public List<Task> getTaskByStatusAndUserName(Status status, String username) {
         String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
                 "FROM " +
                 "task " +
                 "JOIN status ON status.id = task.status_id " +
                 "JOIN \"user\" on task.user_id = \"user\".id " +
-                "WHERE task.status_id = 1 AND task.user_name = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Task task = new Task();
-            task.setId(rs.getLong("id"));
-            task.setName(rs.getString("name"));
-            task.setDescription(rs.getString("description"));
-            task.setStatus(Status.valueOf(rs.getString("status")));
-            task.setUserName(rs.getString("user_name"));
-            return task;
-        });
-    }
-
-    @Override
-    public List<Task> getInProgressTaskByUserName(String username) {
-        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
-                "FROM " +
-                "task " +
-                "JOIN status ON status.id = task.status_id " +
-                "JOIN \"user\" on task.user_id = \"user\".id " +
-                "WHERE task.status_id = 2 AND task.user_name = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Task task = new Task();
-            task.setId(rs.getLong("id"));
-            task.setName(rs.getString("name"));
-            task.setDescription(rs.getString("description"));
-            task.setStatus(Status.valueOf(rs.getString("status")));
-            task.setUserName(rs.getString("user_name"));
-            return task;
-        });
-    }
-
-    @Override
-    public List<Task> getDoneTaskByUserName(String username) {
-        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
-                "FROM " +
-                "task " +
-                "JOIN status ON status.id = task.status_id " +
-                "JOIN \"user\" on task.user_id = \"user\".id " +
-                "WHERE task.status_id = 3 AND task.user_name = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Task task = new Task();
-            task.setId(rs.getLong("id"));
-            task.setName(rs.getString("name"));
-            task.setDescription(rs.getString("description"));
-            task.setStatus(Status.valueOf(rs.getString("status")));
-            task.setUserName(rs.getString("user_name"));
-            return task;
-        });
+                "WHERE task.status_id = ? AND task.user_name = ?";
+        return jdbcTemplate.query(sql, taskRowMapper, status.name(), username);
     }
 
     @Override
@@ -289,33 +242,7 @@ public class DataBaseTaskDao implements TaskDao {
         return null;
     }
 
-    public Status getEpicStatus (List<SubTask> list) {
 
-        int statusNew = 0;
-        int statusInProgress = 0;
-        int statusDone = 0;
-
-        for (int i = 0; i < list.size(); i++) {
-            Status currentStatus = list.get(i).getStatus();
-            if (currentStatus == Status.IN_PROGRESS) {
-                statusInProgress++;
-            } else if (currentStatus == Status.NEW) {
-                statusNew++;
-            } else if (currentStatus == Status.DONE) {
-                statusDone++;
-            }
-        }
-
-        Status status = Status.UNDEFINED;
-        if (statusInProgress == 0 && statusDone == 0) {
-            status = Status.NEW;
-        } else if (statusDone > 0){
-            status = Status.IN_PROGRESS;
-        } else if (statusNew == 0 && statusInProgress == 0) {
-            status = Status.DONE;
-        }
-        return status;
-    }
     public List<Task> getTasksByUsername(String name) {
         String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
                 "FROM " +
@@ -341,6 +268,8 @@ public class DataBaseTaskDao implements TaskDao {
                 "task " +
                 "JOIN \"user\" on task.user_id = \"user\".id " +
                 "WHERE task.user_name = ?";
+
+        //TODO наполнить сабтасками
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Epic epic = new Epic();
             epic.setId(rs.getLong("id"));

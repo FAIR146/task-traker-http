@@ -3,6 +3,7 @@ package com.example.tasktrackerhttp.controller.core;
 import com.example.tasktrackerhttp.controller.core.put.*;
 import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
 import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
@@ -100,6 +101,14 @@ public class ManagerController {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return  ResponseEntity.ok(getAllCreatedTasksByUser);
+    }
+    @GetMapping("/getAllCreatedEpicsByUser")
+    public  ResponseEntity<GetAllCreatedEpicsByUser> getallCreatedEpicsByUser (@RequestParam String name) {
+        GetAllCreatedEpicsByUser getAllCreatedEpicsByUser = manager.getAllCreatedEpicsByUser(name);
+        if(getAllCreatedEpicsByUser == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(getAllCreatedEpicsByUser);
     }
 
 }

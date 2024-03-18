@@ -219,27 +219,15 @@ public class DataBaseTaskDao implements TaskDao {
     }
 
     @Override
-    public List<Epic> getNewEpicByUserName(String username) {
-        String sql = "SELECT name, description, \"user\".name AS user_name FROM epic " +
-                "JOIN \"user\" on epic.user_id = \"user\".id " +
-                "WHERE epic.status_id = 1 AND epic.user_name = ?";
+    public List<Epic> getEpicByStatusAndUserName (Status status, String userName) {
+//        String sql = "SELECT epic.id, epic.name, description, \"user\".name as user_name" +
+//                "FROM" +
+//                "epic" +
+//                "JOIN \"user\" on epic.user_id = \"user\".id " +
+//                "WHERE epic.user_name = ?";
 
-        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
-                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic.user_name = ?";
 
-        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, username);
-
-        return null;
-    }
-
-    @Override
-    public List<Epic> getInProgressEpicByUserName(String username) {
-        return null;
-    }
-
-    @Override
-    public List<Epic> getDoneEpicByUserName(String username) {
-        return null;
+        return jdbcTemplate.query(sql, epicRowMapper, status.name(), userName);
     }
 
 
@@ -272,8 +260,26 @@ public class DataBaseTaskDao implements TaskDao {
         //TODO наполнить сабтасками
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Epic epic = new Epic();
+
+            SubTask subTask1 = new SubTask();
+            subTask1.setName("name1");
+            subTask1.setDescription("desc1");
+            subTask1.setStatus(Status.NEW);
+            subTask1.setEpicId(epic.getId());
+
+            SubTask subTask2 = new SubTask();
+            subTask2.setName("name2");
+            subTask2.setDescription("desc2");
+            subTask2.setStatus(Status.NEW);
+            subTask2.setEpicId(epic.getId());
+
+            List<SubTask> subTasks = new ArrayList<>();
+            subTasks.add(subTask1);
+            subTasks.add(subTask2);
+
             epic.setId(rs.getLong("id"));
             epic.setName(rs.getString("name"));
+            epic.setSubTasks(subTasks);
             epic.setDescription(rs.getString("description"));
             epic.setUserName(rs.getString("user_name"));
             return epic;

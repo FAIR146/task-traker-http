@@ -109,11 +109,35 @@ public class ManagerImpl implements Manager {
                 .build();
     }
 
-    public GetAllCreatedTasksByUser getAllCreatedEpicsByUser(String userName) { // TODO заменить return type
-        List<Epic> userEpics = taskDao.getEpicByUsername(userName);
+    @Override
+    public GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName) { // TODO заменить return type
         //TODO разделить эпики по статусам на разные списки
+        List<Epic> epicList = taskDao.getEpicByUsername(userName);
 
-        return null;
+        List<Epic> newEpics = new ArrayList<>();
+        List<Epic> inProgressEpics = new ArrayList<>();
+        List<Epic> doneEpics = new ArrayList<>();
+
+
+        for (int i = 0; i < epicList.size(); i++){
+            Epic epic = epicList.get(i);
+            List<SubTask> subTasks = epic.getSubTasks();
+            Status status = getEpicStatus(subTasks);
+
+            if (status == Status.NEW) {
+                newEpics.add(epic);
+            } else if (status == Status.IN_PROGRESS) {
+                inProgressEpics.add(epic);
+            } else if (status == Status.DONE) {
+                doneEpics.add(epic);
+            }
+        }
+
+        return GetAllCreatedEpicsByUser.builder()
+                .inProgressEpic(inProgressEpics)
+                .newEpic(newEpics)
+                .doneEpic(doneEpics)
+                .build();
     }
 
     private Status getEpicStatus (List<SubTask> list) {
@@ -143,38 +167,4 @@ public class ManagerImpl implements Manager {
         }
         return status;
     }
-
-//    public Status getEpicStatus () {
-//        List<Status> subTasksStatus = new ArrayList<>();
-//        subTasks.forEach(subTask -> subTasksStatus.add(subTask.getStatus()));
-//        int countStatusNew = 0;
-//        int countStatusInProgress = 0;
-//        int countStatusDone = 0;
-//        for (Status tasksStatus : subTasksStatus) {
-//            if (tasksStatus == Status.NEW) {
-//                countStatusNew++;
-//            }
-//            if (tasksStatus == Status.IN_PROGRESS) {
-//                countStatusInProgress++;
-//            }
-//            if (tasksStatus == Status.DONE) {
-//                countStatusDone++;
-//            }
-//        }
-//        return calculateStatus(countStatusNew, countStatusInProgress, countStatusDone);
-//    }
-//
-//    private Status calculateStatus (int statusNew, int statusInProgress, int statusDone) {
-//        if (statusInProgress > 0) {
-//            return Status.IN_PROGRESS;
-//        }
-//        if (statusInProgress == 0 && statusDone == 0) {
-//            return Status.NEW;
-//        }
-//        if (statusInProgress == 0 && statusNew == 0) {
-//            return Status.DONE;
-//        }
-//        return Status.IN_PROGRESS;
-//    }
 }
-

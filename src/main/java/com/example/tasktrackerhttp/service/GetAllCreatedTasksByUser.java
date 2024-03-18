@@ -12,7 +12,5 @@ public class GetAllCreatedTasksByUser {
     private List<Task> inProgressTasks;
     private List<Task> newTasks;
     private List<Task> doneTasks;
-    private List<Epic> inProgressEpic;
-    private List<Epic> newEpic;
-    private List<Epic> doneEpic;
+
 }

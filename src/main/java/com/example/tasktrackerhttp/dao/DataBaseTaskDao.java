@@ -134,10 +134,7 @@ public class DataBaseTaskDao implements TaskDao {
         String getEpicSql = "SELECT epic.id, epic.name as epic_name, epic.description, user_id, \"user\".name AS user_name\n" +
                 "FROM epic JOIN \"user\" ON epic.user_id = \"user\".id WHERE epic.id = ?;";
 
-        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
-                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic_id = ?";
-
-        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, id);
+        List<SubTask> subTasks = getSubTasksByEpicId(id);
 
         try {
             Epic epic = jdbcTemplate.queryForObject(getEpicSql, epicRowMapper, id);
@@ -214,22 +211,9 @@ public class DataBaseTaskDao implements TaskDao {
                 "task " +
                 "JOIN status ON status.id = task.status_id " +
                 "JOIN \"user\" on task.user_id = \"user\".id " +
-                "WHERE task.status_id = ? AND task.user_name = ?";
+                "WHERE status.name = ? AND \"user\".name = ?";
         return jdbcTemplate.query(sql, taskRowMapper, status.name(), username);
     }
-
-    @Override
-    public List<Epic> getEpicByStatusAndUserName (Status status, String userName) {
-//        String sql = "SELECT epic.id, epic.name, description, \"user\".name as user_name" +
-//                "FROM" +
-//                "epic" +
-//                "JOIN \"user\" on epic.user_id = \"user\".id " +
-//                "WHERE epic.user_name = ?";
-
-
-        return jdbcTemplate.query(sql, epicRowMapper, status.name(), userName);
-    }
-
 
     public List<Task> getTasksByUsername(String name) {
         String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
@@ -259,31 +243,23 @@ public class DataBaseTaskDao implements TaskDao {
 
         //TODO наполнить сабтасками
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Epic epic = new Epic();
+            Epic epic = epicRowMapper.mapRow(rs, rowNum);
+            if (epic != null) {
+                List<SubTask> subTasks = getSubTasksByEpicId(epic.getId());
+                epic.setSubTasks(subTasks);
+            }
 
-            SubTask subTask1 = new SubTask();
-            subTask1.setName("name1");
-            subTask1.setDescription("desc1");
-            subTask1.setStatus(Status.NEW);
-            subTask1.setEpicId(epic.getId());
-
-            SubTask subTask2 = new SubTask();
-            subTask2.setName("name2");
-            subTask2.setDescription("desc2");
-            subTask2.setStatus(Status.NEW);
-            subTask2.setEpicId(epic.getId());
-
-            List<SubTask> subTasks = new ArrayList<>();
-            subTasks.add(subTask1);
-            subTasks.add(subTask2);
-
-            epic.setId(rs.getLong("id"));
-            epic.setName(rs.getString("name"));
-            epic.setSubTasks(subTasks);
-            epic.setDescription(rs.getString("description"));
-            epic.setUserName(rs.getString("user_name"));
             return epic;
         });
+    }
+    @Override
+    public List<SubTask> getSubTasksByEpicId (long id) {
+        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
+                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic_id = ?";
+
+        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, id);
+
+        return subTasks;
     }
 
 }

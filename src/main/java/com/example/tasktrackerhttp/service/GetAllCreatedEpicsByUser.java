@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @Builder
 public class GetAllCreatedEpicsByUser {
-    private List<Epic> inProgressEpic;
-    private List<Epic> newEpic;
-    private List<Epic> doneEpic;
+    private List<Epic> inProgressEpics;
+    private List<Epic> newEpics;
+    private List<Epic> doneEpics;
 }

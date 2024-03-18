@@ -16,7 +16,7 @@ public class ManagerImplTest extends BaseTest {
     private Manager manager;
 
     @Test
-    void addTask() {
+    void addTaskNewStatus() {
         String name = "Сходить в школу";
         String description = "Собарться и пойти в школу";
         Status status = Status.NEW;
@@ -26,6 +26,24 @@ public class ManagerImplTest extends BaseTest {
         Assertions.assertEquals(name, task.getName());
         Assertions.assertEquals(description, task.getDescription());
         Assertions.assertEquals(status, task.getStatus());
+    }
+
+    @Test
+    void addTaskDoneStatus() {
+        String name = "Сходить в школу";
+        String description = "Собарться и пойти в школу";
+        Status status = Status.DONE;
+        long idTask = manager.addTask(name, description, status, TEST_USERNAME);
+        Task task = manager.getTaskById(idTask);
+        Assertions.assertEquals(idTask, task.getId());
+        Assertions.assertEquals(name, task.getName());
+        Assertions.assertEquals(description, task.getDescription());
+        Assertions.assertEquals(status, task.getStatus());
+    }
+
+    @Test
+    void addTaskInProgressStatus() {
+
     }
 
     @Test
@@ -43,7 +61,7 @@ public class ManagerImplTest extends BaseTest {
     }
 
     @Test
-    void addSubTask() {
+    void addSubTaskNew() {
         long epicId = manager.addEpic("1", "1", TEST_USERNAME);
 
         String name = "Одеться";
@@ -63,6 +81,16 @@ public class ManagerImplTest extends BaseTest {
 
 
         Assertions.assertTrue(subTasks.stream().anyMatch(st -> st.getId() == idSubTask));
+
+    }
+
+    @Test
+    void addSubTaskInProgress() {
+
+    }
+
+    @Test
+    void addSubTaskDone() {
 
     }
 
@@ -104,15 +132,18 @@ public class ManagerImplTest extends BaseTest {
 
     }
     @Test
-    void getEpicById() {
-        String name = "1";
-        String description = "1";
-        long idEpic = manager.addEpic(name, description, TEST_USERNAME);
-        Epic epic1 = manager.getEpicById(idEpic);
-        List<SubTask> subTasks = epic1.getSubTasks();
-        List<Status> statuses = new ArrayList<>();
+    void getEpicByIdNewStatus() {
 
-        Assertions.assertNotNull(epic1);
+    }
+
+    @Test
+    void getEpicByIdInProgressStatus() {
+
+    }
+
+    @Test
+    void getEpicByIdDoneStatus() {
+
     }
 
     @Test
@@ -192,6 +223,27 @@ public class ManagerImplTest extends BaseTest {
         Assertions.assertEquals(description, subTaskUpdated.getDescription());
         Assertions.assertEquals(status, subTaskUpdated.getStatus());
     }
+    @Test
+    void getAllCreatedTasksByUser () {
+        long idTask1 = manager.addTask("name11", "get all with new status", Status.NEW, TEST_USERNAME);
+        long idTask2 = manager.addTask("name2", "get all with in progress status", Status.IN_PROGRESS, TEST_USERNAME);
+        long idTask3 = manager.addTask("name3", "get all with done status", Status.DONE, TEST_USERNAME);
 
+        GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(TEST_USERNAME);
+
+        Assertions.assertTrue(getAllCreatedTasksByUser.getNewTasks().stream().anyMatch(task -> task.getId() == idTask1));
+        Assertions.assertTrue(getAllCreatedTasksByUser.getNewTasks().stream().allMatch(task -> task.getStatus() == Status.NEW));
+
+        Assertions.assertTrue(getAllCreatedTasksByUser.getInProgressTasks().stream().anyMatch(task -> task.getId() == idTask2));
+        Assertions.assertTrue(getAllCreatedTasksByUser.getInProgressTasks().stream().allMatch(task -> task.getStatus() == Status.IN_PROGRESS));
+
+       Assertions.assertTrue(getAllCreatedTasksByUser.getDoneTasks().stream().anyMatch(task -> task.getId() == idTask3));
+       Assertions.assertTrue(getAllCreatedTasksByUser.getInProgressTasks().stream().allMatch(task -> task.getStatus() == Status.DONE));
+    }
+
+    @Test
+    void getAllCreatedEpicsByUser () {
+
+    }
 }
 

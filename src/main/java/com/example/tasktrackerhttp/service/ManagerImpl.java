@@ -110,8 +110,7 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName) { // TODO заменить return type
-        //TODO разделить эпики по статусам на разные списки
+    public GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName) {
         List<Epic> epicList = taskDao.getEpicByUsername(userName);
 
         List<Epic> newEpics = new ArrayList<>();
@@ -119,10 +118,8 @@ public class ManagerImpl implements Manager {
         List<Epic> doneEpics = new ArrayList<>();
 
 
-        for (int i = 0; i < epicList.size(); i++){
-            Epic epic = epicList.get(i);
-            List<SubTask> subTasks = epic.getSubTasks();
-            Status status = getEpicStatus(subTasks);
+        for (Epic epic : epicList) {
+            Status status = getEpicStatus(epic.getSubTasks());
 
             if (status == Status.NEW) {
                 newEpics.add(epic);
@@ -134,9 +131,9 @@ public class ManagerImpl implements Manager {
         }
 
         return GetAllCreatedEpicsByUser.builder()
-                .inProgressEpic(inProgressEpics)
-                .newEpic(newEpics)
-                .doneEpic(doneEpics)
+                .inProgressEpics(inProgressEpics)
+                .newEpics(newEpics)
+                .doneEpics(doneEpics)
                 .build();
     }
 
@@ -146,8 +143,8 @@ public class ManagerImpl implements Manager {
         int statusInProgress = 0;
         int statusDone = 0;
 
-        for (int i = 0; i < list.size(); i++) {
-            Status currentStatus = list.get(i).getStatus();
+        for (SubTask subTask : list) {
+            Status currentStatus = subTask.getStatus();
             if (currentStatus == Status.IN_PROGRESS) {
                 statusInProgress++;
             } else if (currentStatus == Status.NEW) {

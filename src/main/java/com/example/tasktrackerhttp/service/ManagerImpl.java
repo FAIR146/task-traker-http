@@ -119,7 +119,7 @@ public class ManagerImpl implements Manager {
 
 
         for (Epic epic : epicList) {
-            Status status = getEpicStatus(epic.getSubTasks());
+            Status status = getEpicStatus(epic);
 
             if (status == Status.NEW) {
                 newEpics.add(epic);
@@ -137,13 +137,14 @@ public class ManagerImpl implements Manager {
                 .build();
     }
 
-    private Status getEpicStatus(List<SubTask> list) {
+    @Override
+    public Status getEpicStatus(Epic epic) {
 
         int statusNew = 0;
         int statusInProgress = 0;
         int statusDone = 0;
 
-        for (SubTask subTask : list) {
+        for (SubTask subTask : epic.getSubTasks()) {
             Status currentStatus = subTask.getStatus();
             if (currentStatus == Status.IN_PROGRESS) {
                 statusInProgress++;
@@ -157,10 +158,10 @@ public class ManagerImpl implements Manager {
         Status status = Status.UNDEFINED;
         if (statusInProgress == 0 && statusDone == 0) {
             status = Status.NEW;
-        } else if (statusDone > 0){
-            status = Status.IN_PROGRESS;
         } else if (statusNew == 0 && statusInProgress == 0) {
             status = Status.DONE;
+        } else if (statusInProgress > 0 || statusDone > 0 && statusNew != 0){
+            status = Status.IN_PROGRESS;
         }
         return status;
     }

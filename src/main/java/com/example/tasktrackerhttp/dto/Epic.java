@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Epic extends AbstractEntity implements BelongsUser{
+public class Epic extends AbstractEntity implements BelongsUser {
     private List<SubTask> subTasks;
     private String userName;
 

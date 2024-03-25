@@ -73,7 +73,7 @@ public class DataBaseTaskDao implements TaskDao {
     public long addTask(Task task) {
         String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = ?";
         String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
-        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
+        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class, task.getStatus().name());
         int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, task.getUserName());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", task.getName());
@@ -99,8 +99,8 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public long addSubTask(SubTask subTask) {
-        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = 'NEW'";
-        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
+        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = ?";
+        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class, subTask.getStatus().name());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", subTask.getName());
             put("description", subTask.getDescription());
@@ -235,11 +235,11 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public List<Epic> getEpicByUsername(String name) {
-        String sql = "SELECT epic.id, epic.name, description, \"user\".name as user_name " +
+        String sql = "SELECT epic.id, epic.name as epic_name, epic.description, \"user\".name as user_name " +
                 "FROM " +
                 "epic " +
                 "JOIN \"user\" on epic.user_id = \"user\".id " +
-                "WHERE epic.user_name = ?";
+                "WHERE \"user\".name = ?";
 
         //TODO наполнить сабтасками
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -250,7 +250,7 @@ public class DataBaseTaskDao implements TaskDao {
             }
 
             return epic;
-        });
+        }, name);
     }
     @Override
     public List<SubTask> getSubTasksByEpicId (long id) {

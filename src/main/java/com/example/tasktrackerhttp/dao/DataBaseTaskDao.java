@@ -55,12 +55,12 @@ public class DataBaseTaskDao implements TaskDao {
 
         this.simpleJdbcInsertTask = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("task")
-                .usingColumns("name", "description", "status_id")
+                .usingColumns("name", "description", "status_id", "user_id")
                 .usingGeneratedKeyColumns("id");
 
         this.simpleJdbcInsertEpic = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("epic")
-                .usingColumns("name", "description")
+                .usingColumns("name", "description", "user_id")
                 .usingGeneratedKeyColumns("id");
 
         this.simpleJdbcInsertSubTask = new SimpleJdbcInsert(jdbcTemplate)
@@ -71,29 +71,36 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public long addTask(Task task) {
-        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = 'NEW'";
-        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
+        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = ?";
+        String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
+        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class, task.getStatus().name());
+        int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, task.getUserName());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", task.getName());
             put("description", task.getDescription());
             put("status_id", statusId);
+            put("user_id", userId);
         }};
         return simpleJdbcInsertTask.executeAndReturnKey(hashMap).longValue();
     }
 
     @Override
     public long addEpic(Epic epic) {
+        String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
+        int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, epic.getUserName());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", epic.getName());
             put("description", epic.getDescription());
+            put("user_name", epic.getUserName());
+            put("user_id", userId);
         }};
         return simpleJdbcInsertEpic.executeAndReturnKey(hashMap).longValue();
     }
 
     @Override
     public long addSubTask(SubTask subTask) {
-        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = 'NEW'";
-        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
+        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = ?";
+        int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class, subTask.getStatus().name());
         HashMap<String, Object> hashMap = new HashMap<>(){{
             put("name", subTask.getName());
             put("description", subTask.getDescription());
@@ -124,18 +131,14 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public Epic getEpicById(long id) {
-        String getEpicSql = "SELECT epic.id, epic.name as epic_name, epic.description, status_id, user_id, \"user\".name AS user_name\n" +
+        String getEpicSql = "SELECT epic.id, epic.name as epic_name, epic.description, user_id, \"user\".name AS user_name\n" +
                 "FROM epic JOIN \"user\" ON epic.user_id = \"user\".id WHERE epic.id = ?;";
 
-        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
-                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic_id = ?";
-
-        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, id);
+        List<SubTask> subTasks = getSubTasksByEpicId(id);
 
         try {
             Epic epic = jdbcTemplate.queryForObject(getEpicSql, epicRowMapper, id);
             epic.setSubTasks(subTasks);
-            epic.setStatus(getEpicStatus(subTasks));
             return epic;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -175,7 +178,7 @@ public class DataBaseTaskDao implements TaskDao {
     public void updateTask(Task task) {
         String sql = "UPDATE task SET " +
                 "name = ?, " +
-                "description = ?, " +
+                "description = ?," +
                 "status_id = (SELECT status.id FROM status WHERE name = ?) " +
                 "WHERE id = ?";
 
@@ -200,35 +203,63 @@ public class DataBaseTaskDao implements TaskDao {
                 "WHERE subTask.id = ?";
         jdbcTemplate.update(sql, subTask.getName(), subTask.getDescription(), subTask.getStatus().name(), subTask.getId()); // subTask.getEpicId()
     }
-    public Status getEpicStatus (List<SubTask> list) {
 
-        int statusNew = 0;
-        int statusInProgress = 0;
-        int statusDone = 0;
-
-        for (int i = 0; i < list.size(); i++) {
-            Status currentStatus = list.get(i).getStatus();
-            if (currentStatus == Status.IN_PROGRESS) {
-                statusInProgress++;
-            } else if (currentStatus == Status.NEW) {
-                statusNew++;
-            } else if (currentStatus == Status.DONE) {
-                statusDone++;
-            }
-        }
-
-        Status status = Status.UNDEFINED;
-        if (statusInProgress == 0 && statusDone == 0) {
-            status = Status.NEW;
-        } else if (statusDone > 0){
-            status = Status.IN_PROGRESS;
-        } else if (statusNew == 0 && statusInProgress == 0) {
-            status = Status.DONE;
-        }
-        return status;
+    @Override
+    public List<Task> getTaskByStatusAndUserName(Status status, String username) {
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE status.name = ? AND \"user\".name = ?";
+        return jdbcTemplate.query(sql, taskRowMapper, status.name(), username);
     }
+
     public List<Task> getTasksByUsername(String name) {
-        return null;
+        String sql = "SELECT task.id, task.name, description, status.name AS status, \"user\".name as user_name " +
+                "FROM " +
+                "task " +
+                "JOIN status ON status.id = task.status_id " +
+                "JOIN \"user\" on task.user_id = \"user\".id " +
+                "WHERE task.user_name = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Task task = new Task();
+            task.setId(rs.getLong("id"));
+            task.setName(rs.getString("name"));
+            task.setDescription(rs.getString("description"));
+            task.setStatus(Status.valueOf(rs.getString("status")));
+            task.setUserName(rs.getString("user_name"));
+            return task;
+        });
+    }
+
+    @Override
+    public List<Epic> getEpicByUsername(String name) {
+        String sql = "SELECT epic.id, epic.name as epic_name, epic.description, \"user\".name as user_name " +
+                "FROM " +
+                "epic " +
+                "JOIN \"user\" on epic.user_id = \"user\".id " +
+                "WHERE \"user\".name = ?";
+
+        //TODO наполнить сабтасками
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Epic epic = epicRowMapper.mapRow(rs, rowNum);
+            if (epic != null) {
+                List<SubTask> subTasks = getSubTasksByEpicId(epic.getId());
+                epic.setSubTasks(subTasks);
+            }
+
+            return epic;
+        }, name);
+    }
+    @Override
+    public List<SubTask> getSubTasksByEpicId (long id) {
+        String getSubtasksSql = "SELECT subtask.id, subtask.name, subtask.description, epic_id, status.name AS status " +
+                "FROM subTask JOIN status ON subTask.status_id = status.id WHERE epic_id = ?";
+
+        List<SubTask> subTasks = jdbcTemplate.query(getSubtasksSql, subTaskRowMapper, id);
+
+        return subTasks;
     }
 
 }

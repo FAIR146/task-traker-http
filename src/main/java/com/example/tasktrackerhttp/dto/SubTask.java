@@ -2,7 +2,7 @@ package com.example.tasktrackerhttp.dto;
 
 
 
-public class SubTask extends Task {
+public class SubTask extends EntityWithStatus {
 
     private long epicId;
 

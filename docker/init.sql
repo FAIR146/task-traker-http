@@ -30,7 +30,6 @@ create table epic  (
                       id serial primary key,
                       name varchar,
                       description varchar,
-                      status_id int REFERENCES status (id),
                         user_id int REFERENCES user (id)
 );
 

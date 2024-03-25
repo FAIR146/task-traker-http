@@ -1,5 +1,5 @@
 package com.example.tasktrackerhttp.controller.core.put;
-
+import jakarta.servlet.http.HttpSession;
 public class AbstractPutRequest {
     private String name;
     private String description;

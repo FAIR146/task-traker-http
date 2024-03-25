@@ -8,9 +8,9 @@ import com.example.tasktrackerhttp.dto.Task;
 import java.util.List;
 
 public interface Manager {
-    long addTask (String name, String description, Status status);
+    long addTask (String name, String description, Status status, String userName);
 
-    long addEpic(String name, String description);
+    long addEpic(String name, String description, String userName);
 
     long addSubTask(long epicId, String name, String description, Status status);
 
@@ -26,5 +26,9 @@ public interface Manager {
     SubTask getSubTaskById(long id);
     void updateTask (long id, String name, String description, Status status);
     void updateEpic (long id, String name, String description);
-    void updateSubTask (long id, String name, String description, Status status); // long epicId
+    void updateSubTask (long id, String name, String description, Status status);
+    GetAllCreatedTasksByUser getAllCreatedTasksByUser(String userName);
+    GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName);
+    Status getEpicStatus(Epic epic);
+
 }

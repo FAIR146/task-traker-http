@@ -1,14 +1,15 @@
 package com.example.tasktrackerhttp.dto;
 
-import lombok.Data;
 
-@Data
-public class Task {
-    private long id;
-    private String name;
-    private String description;
-    private Status status;
+
+public class Task extends EntityWithStatus implements BelongsUser{
     private String userName;
+    public String getUserName () {
+        return userName;
+    }
+    public void setUserName (String userName) {
+        this.userName = userName;
+    }
 }
 
 

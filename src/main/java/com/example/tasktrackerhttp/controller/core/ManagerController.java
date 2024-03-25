@@ -3,9 +3,12 @@ package com.example.tasktrackerhttp.controller.core;
 import com.example.tasktrackerhttp.controller.core.put.*;
 import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +21,18 @@ public class ManagerController {
     }
 
     @PutMapping("/putTask")
-    public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest) {
+    public PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest, HttpSession session) {
         PutTaskResponse putTaskResponse = new PutTaskResponse();
-        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus());
+        String login = (String) session.getAttribute("login");
+        long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), login);
         putTaskResponse.setId(id);
         return putTaskResponse;
     }
     @PutMapping("/putEpic")
-    public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest) {
+    public PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest, HttpSession session) {
         PutEpicResponse putEpicResponse = new PutEpicResponse();
-        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription());
+        String login = (String) session.getAttribute("login");
+        long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), login);
         putEpicResponse.setId(id);
         return putEpicResponse;
     }
@@ -88,6 +93,22 @@ public class ManagerController {
     @PatchMapping ("/updateSubTask")
     public void  updateSubTask (@RequestBody UpdateSubTaskRequest updateSubTaskRequest) {
         manager.updateSubTask(updateSubTaskRequest.getId(), updateSubTaskRequest.getName(), updateSubTaskRequest.getDescription(), updateSubTaskRequest.getStatus());
+    }
+    @GetMapping("/getAllCreatedTasksByUser")
+    public  ResponseEntity<GetAllCreatedTasksByUser> getAllCreatedTasksByUser (@RequestParam String name) {
+        GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(name);
+        if (getAllCreatedTasksByUser == null) {
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return  ResponseEntity.ok(getAllCreatedTasksByUser);
+    }
+    @GetMapping("/getAllCreatedEpicsByUser")
+    public  ResponseEntity<GetAllCreatedEpicsByUser> getallCreatedEpicsByUser (@RequestParam String name) {
+        GetAllCreatedEpicsByUser getAllCreatedEpicsByUser = manager.getAllCreatedEpicsByUser(name);
+        if(getAllCreatedEpicsByUser == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(getAllCreatedEpicsByUser);
     }
 
 }

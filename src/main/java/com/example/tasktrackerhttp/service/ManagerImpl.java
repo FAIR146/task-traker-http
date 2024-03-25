@@ -18,18 +18,20 @@ public class ManagerImpl implements Manager {
     }
 
 
-    public long addTask(String name, String description, Status status) {
+    public long addTask (String name, String description, Status status, String userName) {
         Task task = new Task();
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
+        task.setUserName(userName);
         return taskDao.addTask(task);
     }
 
-    public long addEpic(String name, String description) {
+    public long addEpic(String name, String description, String userName) {
         Epic epic = new Epic();
         epic.setName(name);
         epic.setDescription(description);
+        epic.setUserName(userName);
         return taskDao.addEpic(epic);
     }
 
@@ -82,16 +84,85 @@ public class ManagerImpl implements Manager {
         epic.setName(name);
         epic.setDescription(description);
         epic.setId(id);
+        epic.setSubTasks(subTasks);
         taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id,  String name, String description, Status status) { //long epicId
         SubTask subTask = taskDao.getSubTaskById(id);
         subTask.setId(id);
-//       subTask.setEpicId(epicId);
         subTask.setName(name);
         subTask.setDescription(description);
         subTask.setStatus(status);
         taskDao.updateSubTask(subTask);
     }
-}
 
+    @Override
+    public GetAllCreatedTasksByUser getAllCreatedTasksByUser(String userName) {
+        List<Task> inProgressTasks = taskDao.getTaskByStatusAndUserName(Status.IN_PROGRESS, userName);
+        List<Task> newTasks = taskDao.getTaskByStatusAndUserName(Status.NEW, userName);
+        List<Task> doneTasks = taskDao.getTaskByStatusAndUserName(Status.DONE, userName);
+
+        return GetAllCreatedTasksByUser.builder()
+                .newTasks(newTasks)
+                .inProgressTasks(inProgressTasks)
+                .doneTasks(doneTasks)
+                .build();
+    }
+
+    @Override
+    public GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName) {
+        List<Epic> epicList = taskDao.getEpicByUsername(userName);
+
+        List<Epic> newEpics = new ArrayList<>();
+        List<Epic> inProgressEpics = new ArrayList<>();
+        List<Epic> doneEpics = new ArrayList<>();
+
+
+        for (Epic epic : epicList) {
+            Status status = getEpicStatus(epic);
+
+            if (status == Status.NEW) {
+                newEpics.add(epic);
+            } else if (status == Status.IN_PROGRESS) {
+                inProgressEpics.add(epic);
+            } else if (status == Status.DONE) {
+                doneEpics.add(epic);
+            }
+        }
+
+        return GetAllCreatedEpicsByUser.builder()
+                .inProgressEpics(inProgressEpics)
+                .newEpics(newEpics)
+                .doneEpics(doneEpics)
+                .build();
+    }
+
+    @Override
+    public Status getEpicStatus(Epic epic) {
+
+        int statusNew = 0;
+        int statusInProgress = 0;
+        int statusDone = 0;
+
+        for (SubTask subTask : epic.getSubTasks()) {
+            Status currentStatus = subTask.getStatus();
+            if (currentStatus == Status.IN_PROGRESS) {
+                statusInProgress++;
+            } else if (currentStatus == Status.NEW) {
+                statusNew++;
+            } else if (currentStatus == Status.DONE) {
+                statusDone++;
+            }
+        }
+
+        Status status = Status.UNDEFINED;
+        if (statusInProgress == 0 && statusDone == 0) {
+            status = Status.NEW;
+        } else if (statusNew == 0 && statusInProgress == 0) {
+            status = Status.DONE;
+        } else if (statusInProgress > 0 || statusDone > 0 && statusNew != 0){
+            status = Status.IN_PROGRESS;
+        }
+        return status;
+    }
+}

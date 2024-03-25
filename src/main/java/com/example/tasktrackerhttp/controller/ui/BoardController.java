@@ -25,15 +25,7 @@ public class BoardController {
         model.addAttribute("tasks", generateDummyTasks());
         return "board";
     }
-//    @GetMapping("/tasks")
-//    public String drawUserName(Model model) {
-//        model.addAttribute("name", userGetName());
-//         return null;
-//    }
 
-//    private String userGetName () {
-//        return null; /*user.getName(); */
-//    }
     private List<Epic> generateDummyEpics() {
         return new ArrayList<>() {{
             add(createEpic1());
@@ -112,5 +104,13 @@ public class BoardController {
         epic.getSubTasks().add(subTask2);
         return epic;
     }
+//    @GetMapping("/tasks")
+//    public String drawUserName(Model model) {
+//        model.addAttribute("name", userGetName());
+//         return null;
+//    }
 
+//    private String userGetName () {
+//        return null; /*user.getName(); */
+//    }
 }

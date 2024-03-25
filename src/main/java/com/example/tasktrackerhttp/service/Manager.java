@@ -29,4 +29,5 @@ public interface Manager {
     void updateSubTask (long id, String name, String description, Status status);
     GetAllCreatedTasksByUser getAllCreatedTasksByUser(String userName);
     GetAllCreatedEpicsByUser getAllCreatedEpicsByUser(String userName);
+
 }

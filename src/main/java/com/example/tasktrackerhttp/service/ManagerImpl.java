@@ -84,12 +84,12 @@ public class ManagerImpl implements Manager {
         epic.setName(name);
         epic.setDescription(description);
         epic.setId(id);
+        epic.setSubTasks(subTasks);
         taskDao.updateEpic(epic);
     }
     public void updateSubTask (long id,  String name, String description, Status status) { //long epicId
         SubTask subTask = taskDao.getSubTaskById(id);
         subTask.setId(id);
-//       subTask.setEpicId(epicId);
         subTask.setName(name);
         subTask.setDescription(description);
         subTask.setStatus(status);
@@ -137,7 +137,7 @@ public class ManagerImpl implements Manager {
                 .build();
     }
 
-    private Status getEpicStatus (List<SubTask> list) {
+    private Status getEpicStatus(List<SubTask> list) {
 
         int statusNew = 0;
         int statusInProgress = 0;

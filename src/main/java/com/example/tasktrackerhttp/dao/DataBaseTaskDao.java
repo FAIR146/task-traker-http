@@ -71,7 +71,7 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public long addTask(Task task) {
-        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = 'NEW'";
+        String sqlSelectStatusIdByName = "SELECT id FROM status WHERE name = ?";
         String sqlGetUserIdByUserName = "SELECT id FROM \"user\" WHERE name = ?";
         int statusId = jdbcTemplate.queryForObject(sqlSelectStatusIdByName, Integer.class);
         int userId = jdbcTemplate.queryForObject(sqlGetUserIdByUserName, Integer.class, task.getUserName());
@@ -235,11 +235,11 @@ public class DataBaseTaskDao implements TaskDao {
 
     @Override
     public List<Epic> getEpicByUsername(String name) {
-        String sql = "SELECT epic.id, epic.name, description,  \"user\".name as user_name " +
+        String sql = "SELECT epic.id, epic.name, description, \"user\".name as user_name " +
                 "FROM " +
-                "task " +
-                "JOIN \"user\" on task.user_id = \"user\".id " +
-                "WHERE task.user_name = ?";
+                "epic " +
+                "JOIN \"user\" on epic.user_id = \"user\".id " +
+                "WHERE epic.user_name = ?";
 
         //TODO наполнить сабтасками
         return jdbcTemplate.query(sql, (rs, rowNum) -> {

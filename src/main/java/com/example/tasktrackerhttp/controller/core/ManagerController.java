@@ -82,7 +82,6 @@ public class ManagerController {
         getTaskResponse.setId(task.getId());
         getTaskResponse.setUserName(task.getUserName());
         return ResponseEntity.ok(getTaskResponse);
-
     }
     @GetMapping("/getSubTaskById")
     public ResponseEntity<GetSubTaskResponse> getSubTaskById (@RequestParam long id) {

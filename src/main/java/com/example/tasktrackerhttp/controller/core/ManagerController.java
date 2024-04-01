@@ -6,6 +6,9 @@ import com.example.tasktrackerhttp.controller.core.put.PutTaskRequest;
 import com.example.tasktrackerhttp.controller.core.put.UpdateEpicRequest;
 import com.example.tasktrackerhttp.controller.core.put.UpdateSubTaskRequest;
 import com.example.tasktrackerhttp.controller.core.put.UpdateTaskRequest;
+import com.example.tasktrackerhttp.controller.core.response.GetEpicResponse;
+import com.example.tasktrackerhttp.controller.core.response.GetSubTaskResponse;
+import com.example.tasktrackerhttp.controller.core.response.GetTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutEpicResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutSubTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutTaskResponse;
@@ -44,13 +47,13 @@ public interface ManagerController {
     void deleteSubTaskById (@RequestParam long id);
 
     @GetMapping("/getEpicById")
-    ResponseEntity<Epic> getEpicById (@RequestParam long id);
+    ResponseEntity<GetEpicResponse> getEpicById (@RequestParam long id);
 
     @GetMapping("/getTaskById")
-    ResponseEntity<Task> getTaskById (@RequestParam long id);
+    ResponseEntity<GetTaskResponse> getTaskById (@RequestParam long id);
 
     @GetMapping("/getSubTaskById")
-    ResponseEntity<SubTask> getSubTaskById (@RequestParam long id);
+    ResponseEntity<GetSubTaskResponse> getSubTaskById (@RequestParam long id);
 
     @PatchMapping("/updateEpic")
     void updateEpic (@RequestBody UpdateEpicRequest updateEpicRequest);

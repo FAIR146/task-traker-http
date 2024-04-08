@@ -61,6 +61,7 @@ public class BoardController {
         epic.setId(123);
         epic.setName("Name of epic");
 
+
         SubTask subTask = new SubTask() {{
             setStatus(Status.NEW);
             setId(1);
@@ -75,8 +76,12 @@ public class BoardController {
             setDescription("2 subtask description");
         }};
 
-        epic.getSubTasks().add(subTask);
-        epic.getSubTasks().add(subTask2);
+        List<SubTask> subTasks = new ArrayList<>();
+        subTasks.add(subTask2);
+        subTasks.add(subTask);
+
+        epic.setSubTasks(subTasks);
+
         return epic;
     }
 
@@ -100,8 +105,11 @@ public class BoardController {
             setDescription("4 subtask description");
         }};
 
-        epic.getSubTasks().add(subTask);
-        epic.getSubTasks().add(subTask2);
+        List<SubTask> subTasks = new ArrayList<>();
+        subTasks.add(subTask2);
+        subTasks.add(subTask);
+
+        epic.setSubTasks(subTasks);
         return epic;
     }
 //    @GetMapping("/tasks")

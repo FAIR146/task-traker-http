@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ManagerControllerImpl implements ManagerController {
     private final Manager manager;
@@ -60,28 +62,54 @@ public class ManagerControllerImpl implements ManagerController {
     }
 
     @Override
-    public ResponseEntity<Epic> getEpicById (long id) {
+    public ResponseEntity<GetEpicResponse> getEpicById (@RequestParam long id) {
         Epic epic = manager.getEpicById(id);
         if (epic == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(epic);
+        GetEpicResponse getEpicResponse = new GetEpicResponse();
+        getEpicResponse.setId(epic.getId());
+        getEpicResponse.setName(epic.getName());
+        getEpicResponse.setDescription(epic.getDescription());
+        getEpicResponse.setUserName(epic.getUserName());
+        getEpicResponse.setSubTasks(epic.getSubTasks().stream().map(subTask -> {
+            GetSubTaskResponse getSubTaskResponse = new GetSubTaskResponse();
+            getSubTaskResponse.setStatus(subTask.getStatus());
+            getSubTaskResponse.setDescription(subTask.getDescription());
+            getSubTaskResponse.setId(subTask.getId());
+            getSubTaskResponse.setName(subTask.getName());
+            getSubTaskResponse.setEpicId(subTask.getEpicId());
+            return getSubTaskResponse;
+        }).toList());
+        return ResponseEntity.ok(getEpicResponse);
     }
     @Override
-    public ResponseEntity<Task> getTaskById (long id) {
+    public ResponseEntity<GetTaskResponse> getTaskById (@RequestParam long id) {
         Task task = manager.getTaskById(id);
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(task);
+        GetTaskResponse getTaskResponse = new GetTaskResponse();
+        getTaskResponse.setName(task.getName());
+        getTaskResponse.setDescription(task.getDescription());
+        getTaskResponse.setStatus(task.getStatus());
+        getTaskResponse.setId(task.getId());
+        getTaskResponse.setUserName(task.getUserName());
+        return ResponseEntity.ok(getTaskResponse);
     }
     @Override
-    public ResponseEntity<SubTask> getSubTaskById (long id) {
+    public ResponseEntity<GetSubTaskResponse> getSubTaskById (@RequestParam long id) {
         SubTask subTask = manager.getSubTaskById(id);
         if (subTask == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(subTask);
+        GetSubTaskResponse getSubTaskResponse = new GetSubTaskResponse();
+        getSubTaskResponse.setId(subTask.getId());
+        getSubTaskResponse.setEpicId(subTask.getEpicId());
+        getSubTaskResponse.setDescription(subTask.getDescription());
+        getSubTaskResponse.setName(subTask.getName());
+        getSubTaskResponse.setStatus(subTask.getStatus());
+        return ResponseEntity.ok(getSubTaskResponse);
     }
     @Override
     public void updateEpic (UpdateEpicRequest updateEpicRequest) {

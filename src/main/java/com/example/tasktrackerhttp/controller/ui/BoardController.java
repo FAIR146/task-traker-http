@@ -25,6 +25,11 @@ public class BoardController {
         this.manager = manager;
     }
 
+    @GetMapping("/board/test")
+    public String drawTasks(Model model) {
+        return "test";
+    }
+
     @GetMapping("/tasks")
     public String drawTasks(Model model, HttpSession httpSession) {
         String login = (String) httpSession.getAttribute("login");

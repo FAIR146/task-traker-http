@@ -11,47 +11,73 @@
             margin-right: 10px;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems, options);
+        });
+        $('.dropdown-trigger').dropdown();</script>
+
 </head>
-<center> <div class="table-container">
-    <h4>NEW</h4>
-    <table class="highlight" th:each="task: ${tasksNew}">
+<body>
+
+<a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+<ul id='dropdown1' class='dropdown-content'>
+    <li><a href="#!">one</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="#!">three</a></li>
+    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+</ul>
 
 
-        <tbody>
-        <tr  style="background: #00bcd4; border-radius: 30px;">
-            <th>
-                 <b><h6 th:text="${task.getName()}"></h6></b>
-            </th>
-            <th>
-                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
-            </th>
-        </tr>
-
-        </tbody>
-    </table>
-</div>
-<div class="table-container">
-    <h4>IN PROGRESS</h4>
-    <table class="highlight" th:each="task: ${tasksInProgress}">
-        <tbody>
-        <tr  style="background: #00bcd4; border-radius: 30px;">
-            <th>
-                <h6 th:text="${task.getName()}"></h6>
-            </th>
-            <th>
-                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
-            </th>
-        </tr>
+<center>
+    <div class="table-container">
+        <h4>NEW</h4>
+        <table class="highlight" th:each="task: ${tasksNew}">
 
 
-        </tbody>
-    </table>
-</div>
+            <tbody>
+            <tr style="background: #00bcd4; border-radius: 30px;">
+                <th>
+                    <b><h6 th:text="${task.getName()}"></h6></b>
+                </th>
+                <th>
+                    <!--                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>-->
+
+
+                    <!-- Dropdown Structure -->
+
+
+                </th>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="table-container">
+        <h4>IN PROGRESS</h4>
+        <table class="highlight" th:each="task: ${tasksInProgress}">
+            <tbody>
+            <tr style="background: #00bcd4; border-radius: 30px;">
+                <th>
+                    <h6 th:text="${task.getName()}"></h6>
+                </th>
+                <th>
+                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                </th>
+            </tr>
+
+
+            </tbody>
+        </table>
+    </div>
     <div class="table-container">
         <h4>DONE</h4>
         <table class="highlight" th:each="task: ${tasksDone}">
             <tbody>
-            <tr  style="background: #00bcd4; border-radius: 30px;">
+            <tr style="background: #00bcd4; border-radius: 30px;">
                 <th>
                     <h6 th:text="${task.getName()}"></h6>
                 </th>

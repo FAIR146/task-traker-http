@@ -31,6 +31,12 @@ public class BoardController {
     public String drawTasks(Model model) {
         return "test";
     }
+
+    @GetMapping("/createTask")
+    public String createTask (Model model) {
+        return "createTask";
+    }
+
     @GetMapping("/epics")
     public String drawEpics (Model model, HttpSession httpSession) {
         String login = (String) httpSession.getAttribute("login");

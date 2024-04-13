@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,31 +31,34 @@ public class BoardController {
     public String drawTasks(Model model) {
         return "test";
     }
+    @GetMapping("/epics")
+    public String drawEpics (Model model, HttpSession httpSession) {
+        String login = (String) httpSession.getAttribute("login");
+        GetAllCreatedEpicsByUser getAllCreatedEpicsByUser = manager.getAllCreatedEpicsByUser(login);
+
+        log.info("Список epic {}",getAllCreatedEpicsByUser);
+
+        model.addAttribute("epicsNew", getAllCreatedEpicsByUser.getNewEpics());
+        model.addAttribute("epicsInProgress", getAllCreatedEpicsByUser.getInProgressEpics());
+        model.addAttribute("epicsDone", getAllCreatedEpicsByUser.getDoneEpics());
+        return "epicsBoard";
+    }
 
     @GetMapping("/tasks")
     public String drawTasks(Model model, HttpSession httpSession) {
         String login = (String) httpSession.getAttribute("login");
         GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(login);;
-        GetAllCreatedEpicsByUser getAllCreatedEpicsByUser = manager.getAllCreatedEpicsByUser(login);
 
 
-        log.info("Список dummy {}", getAllCreatedTasksByUser);
-        log.info("Список dummy {}",getAllCreatedEpicsByUser);
+        log.info("Список task {}", getAllCreatedTasksByUser);
 
-        model.addAttribute("epicsNew", getAllCreatedEpicsByUser.getNewEpics());
-        model.addAttribute("epicsInProgress", getAllCreatedEpicsByUser.getInProgressEpics());
-        model.addAttribute("epicsDone", getAllCreatedEpicsByUser.getDoneEpics());
+
         model.addAttribute("tasksNew", getAllCreatedTasksByUser.getNewTasks());
         model.addAttribute("tasksInProgress", getAllCreatedTasksByUser.getInProgressTasks());
         model.addAttribute("tasksDone", getAllCreatedTasksByUser.getDoneTasks());
         return "board";
     }
 
-    private List<Epic> generateDummyEpics() {
-        return new ArrayList<>() {{
-
-        }};
-    }
     private List<Task> generateDummyTasks() {
         return new ArrayList<>(){{
             add(createTask1());

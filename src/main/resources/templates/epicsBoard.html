@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +18,7 @@
         $('.dropdown-trigger').dropdown();</script>
 
 <body>
-<form action="/epics">
+<form action="/tasks">
     <button>Переход по ссылке</button>
 </form>
 </body>
@@ -37,7 +36,7 @@
     <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
 </ul>
 
-<center><h1>TASKS</h1></center>
+<center><h1>EPICS</h1></center>
 <!DOCTYPE html>
 
 
@@ -46,21 +45,37 @@
 <center>
     <div class="table-container">
         <h4>NEW</h4>
-        <table class="highlight" th:each="task: ${tasksNew}">
+        <table class="highlight" th:each="epic: ${epicsNew}">
 
 
             <tbody>
-            <tr style="background: #00bcd4; border-radius: 30px;">
+            <tr  style="background: #00bcd4; border-radius: 30px;">
                 <th>
-                    <b><h6 th:text="${task.getName()}"></h6></b>
+                    <b><h6 th:text="${epic.getName()}"></h6></b>
                 </th>
                 <th>
-                    <!--                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>-->
+                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                </th>
+            </tr>
 
 
-                    <!-- Dropdown Structure -->
-
-
+            <tr th:each="subtask : ${epic.getSubTasks()}" style="background: #f3f3f3; border-radius: 80px;">
+                <th>
+                    <h6 th:text="${subtask.getName()}"></h6>
+                </th>
+                <th>
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
+                            <span>Выполнена</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Не выполнена</span>
+                        </label>
+                    </p>
                 </th>
             </tr>
 
@@ -69,11 +84,11 @@
     </div>
     <div class="table-container">
         <h4>IN PROGRESS</h4>
-        <table class="highlight" th:each="task: ${tasksInProgress}">
+        <table class="highlight" th:each="epic: ${epicsInProgress}">
             <tbody>
             <tr style="background: #00bcd4; border-radius: 30px;">
                 <th>
-                    <h6 th:text="${task.getName()}"></h6>
+                    <h6 th:text="${epic.getName()}"></h6>
                 </th>
                 <th>
                     <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
@@ -86,11 +101,11 @@
     </div>
     <div class="table-container">
         <h4>DONE</h4>
-        <table class="highlight" th:each="task: ${tasksDone}">
+        <table class="highlight" th:each="epic: ${epicsDone}">
             <tbody>
             <tr style="background: #00bcd4; border-radius: 30px;">
                 <th>
-                    <h6 th:text="${task.getName()}"></h6>
+                    <h6 th:text="${epic.getName()}"></h6>
                 </th>
                 <th>
                     <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>

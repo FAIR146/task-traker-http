@@ -10,13 +10,19 @@
 
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        var elems = document.querySelectorAll('.dropdown-trigger');-->
+<!--        var instances = M.Dropdown.init(elems, options);-->
+<!--    });-->
+
+<!--</script>-->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.dropdown-trigger');
-        var instances = M.Dropdown.init(elems, options);
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, options);
     });
-    $('.dropdown-trigger').dropdown();
 </script>
 
     <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
@@ -28,6 +34,22 @@
         <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
         <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
     </ul>
+
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+    <li>
+        <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+</ul>
+
 
 </body>
 </html>

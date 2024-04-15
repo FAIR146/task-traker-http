@@ -1,11 +1,17 @@
 package com.example.tasktrackerhttp.controller.core.put;
 
 import com.example.tasktrackerhttp.dto.Status;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateTaskRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
-    private long id;
+    @NotNull
+    private Long id;
+    @NotNull
     private Status status;
 
     public String getName() {

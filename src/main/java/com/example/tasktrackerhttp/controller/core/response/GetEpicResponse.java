@@ -1,7 +1,5 @@
 package com.example.tasktrackerhttp.controller.core.response;
 
-import com.example.tasktrackerhttp.dto.SubTask;
-
 import java.util.List;
 
 public class GetEpicResponse {

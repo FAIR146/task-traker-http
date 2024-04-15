@@ -1,7 +1,11 @@
 package com.example.tasktrackerhttp.controller.core.put;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotBlank;
+
 public class AbstractPutRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
 
     public String getName() {

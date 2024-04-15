@@ -1,20 +1,15 @@
 package com.example.tasktrackerhttp.dto;
 
-
-import jakarta.validation.constraints.NotNull;
-
 public class SubTask extends EntityWithStatus {
-
-    @NotNull
     private long epicId;
 
     public void setEpicId (long epicId) {
         this.epicId = epicId;
     }
+
     public long getEpicId () {
         return epicId;
     }
-
 
     @Override
     public String toString() {
@@ -27,5 +22,3 @@ public class SubTask extends EntityWithStatus {
                 '}';
     }
 }
-
-

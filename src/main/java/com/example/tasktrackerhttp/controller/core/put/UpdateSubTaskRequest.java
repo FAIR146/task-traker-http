@@ -9,9 +9,10 @@ public class UpdateSubTaskRequest {
     private String name;
     @NotBlank
     private String description;
+    @NotNull
     private Status status;
     @NotNull
-    private long id;
+    private Long id;
 
     public String getName() {
         return name;

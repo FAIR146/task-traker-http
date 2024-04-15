@@ -1,6 +1,5 @@
 package com.example.tasktrackerhttp.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

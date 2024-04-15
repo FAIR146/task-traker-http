@@ -1,8 +1,6 @@
 package com.example.tasktrackerhttp.dto;
 
 
-import jakarta.validation.constraints.NotNull;
-
 public class SubTask extends EntityWithStatus {
 
     private long epicId;

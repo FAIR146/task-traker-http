@@ -1,8 +1,6 @@
 package com.example.tasktrackerhttp.controller.core.response;
 
 import com.example.tasktrackerhttp.dto.Status;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class GetSubTaskResponse {
     private long id;

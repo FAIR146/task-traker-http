@@ -1,7 +1,5 @@
 package com.example.tasktrackerhttp.controller.core.response;
 
-import jakarta.validation.constraints.NotNull;
-
 public class PutTaskResponse {
     private long id;
     public long getId() {

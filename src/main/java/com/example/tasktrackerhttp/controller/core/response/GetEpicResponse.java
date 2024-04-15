@@ -1,6 +1,5 @@
 package com.example.tasktrackerhttp.controller.core.response;
 
-
 import java.util.List;
 
 public class GetEpicResponse {
@@ -8,7 +7,6 @@ public class GetEpicResponse {
     private String description;
     private long id;
     private String userName;
-
     private List<GetSubTaskResponse> subTasks;
 
     public List<GetSubTaskResponse> getSubTasks() {

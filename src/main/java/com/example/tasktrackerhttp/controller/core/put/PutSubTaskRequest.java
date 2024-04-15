@@ -1,8 +1,11 @@
 package com.example.tasktrackerhttp.controller.core.put;
 
 import com.example.tasktrackerhttp.dto.Status;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class PutSubTaskRequest extends AbstractPutRequest {
+    @NotNull
     private long epicId;
     private Status status;
 

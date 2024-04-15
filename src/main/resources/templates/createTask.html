@@ -11,6 +11,16 @@
       margin-right: 10px;
     }
   </style>
+  <script>
+    function toggleRadioButtons(radioButton) {
+      var radioButtons = document.querySelectorAll('.radio-button');
+      radioButtons.forEach(function(item) {
+        if (item !== radioButton) {
+          item.checked = false;
+        }
+      });
+    }
+  </script>
 </head>
 <body>
 
@@ -18,11 +28,69 @@
 
 <center><h4>Введите имя</h4></center>
 
-<center><input nameTask= "name" type="text"  placeholder="Введите имя"></center>
+<div style="width: 450px; margin: 0 auto;">
+  <input nameTask="nameTask" type="text" style="text-align: center; width: 100%;">
+</div>
 
 
 <center><h4>Введите описание</h4></center>
-<center><input nameTask= "description" type="text"  placeholder="Введите описание"></center>
+<div style="width: 450px; margin: 0 auto;">
+  <input descriptionTask="descriptionTask" type="text" style="text-align: center; width: 100%;">
+</div>
+
+<center><h4>Выберете статус</h4></center>
+
+<!--<center> <p>-->
+<!--  <label>-->
+<!--    <input type="checkbox" class="filled-in" checked="checked" />-->
+<!--    <span>NEW</span>-->
+<!--  </label>-->
+<!--</p>-->
+<!--</center>-->
+<!--<center> <p>-->
+<!--  <label>-->
+<!--    <input type="checkbox" class="filled-in" />-->
+<!--    <span>IN PROGRESS</span>-->
+<!--  </label>-->
+<!--</p>-->
+<!--</center>-->
+<!--<center> <p>-->
+<!--  <label>-->
+<!--    <input type="checkbox" class="filled-in"/>-->
+<!--    <span>DONE</span>-->
+<!--  </label>-->
+<!--</p>-->
+<!--</center>-->
+<center> <p>
+  <label>
+    <input type="radio" class="radio-button" name="status" checked="checked" onchange="toggleRadioButtons(this)" />
+    <span>NEW</span>
+  </label>
+</p>
+</center>
+
+<center> <p>
+  <label>
+    <input type="radio" class="radio-button" name="status" onchange="toggleRadioButtons(this)" />
+    <span>IN PROGRESS</span>
+  </label>
+</p>
+</center>
+
+<center> <p>
+  <label>
+    <input type="radio" class="radio-button" name="status" onchange="toggleRadioButtons(this)" />
+    <span>DONE</span>
+  </label>
+</p>
+</center>
+
+
+<center>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Создать
+    <i class="material-icons right">add_circle_outline</i>
+  </button>
+</center>
 
 </body>
 </html>

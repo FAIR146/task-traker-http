@@ -9,13 +9,16 @@ import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@Slf4j
 public class ManagerControllerImpl implements ManagerController {
     private final Manager manager;
     public ManagerControllerImpl(Manager manager) {
@@ -28,6 +31,7 @@ public class ManagerControllerImpl implements ManagerController {
         String login = (String) session.getAttribute("login");
         long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), login);
         putTaskResponse.setId(id);
+        log.info("Добавлена таска {}", putTaskResponse);
         return putTaskResponse;
     }
 
@@ -37,6 +41,7 @@ public class ManagerControllerImpl implements ManagerController {
         String login = (String) session.getAttribute("login");
         long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), login);
         putEpicResponse.setId(id);
+        log.info("Добавлен епик {}", putEpicResponse);
         return putEpicResponse;
     }
 
@@ -45,20 +50,24 @@ public class ManagerControllerImpl implements ManagerController {
         PutSubTaskResponse putSubTaskResponse = new PutSubTaskResponse();
         long id = manager.addSubTask(putSubTaskRequest.getEpicId(), putSubTaskRequest.getName(), putSubTaskRequest.getDescription(), putSubTaskRequest.getStatus());
         putSubTaskResponse.setId(id);
+        log.info("Добавлена сабтаска {}", putSubTaskRequest);
         return putSubTaskResponse;
     }
     @Override
     public void deleteEpicById (long id) {
         manager.removeEpicById(id);
+        log.info("Удален епик с id{}", id);
     }
     @Override
     public void deleteTaskById (long id) {
         manager.removeTaskById(id);
+        log.info("Удалена таска с id{}", id);
 
     }
     @Override
     public void deleteSubTaskById (long id) {
         manager.removeSubTaskById(id);
+        log.info("Удалена сабтаска с id{}", id);
     }
 
     @Override
@@ -81,6 +90,7 @@ public class ManagerControllerImpl implements ManagerController {
             getSubTaskResponse.setEpicId(subTask.getEpicId());
             return getSubTaskResponse;
         }).toList());
+        log.info("Получен епик {}", getEpicResponse);
         return ResponseEntity.ok(getEpicResponse);
     }
     @Override
@@ -95,6 +105,7 @@ public class ManagerControllerImpl implements ManagerController {
         getTaskResponse.setStatus(task.getStatus());
         getTaskResponse.setId(task.getId());
         getTaskResponse.setUserName(task.getUserName());
+        log.info("Получена таска {}", getTaskResponse);
         return ResponseEntity.ok(getTaskResponse);
     }
     @Override
@@ -109,19 +120,23 @@ public class ManagerControllerImpl implements ManagerController {
         getSubTaskResponse.setDescription(subTask.getDescription());
         getSubTaskResponse.setName(subTask.getName());
         getSubTaskResponse.setStatus(subTask.getStatus());
+        log.info("Получена сабТаска {}", getSubTaskResponse);
         return ResponseEntity.ok(getSubTaskResponse);
     }
     @Override
     public void updateEpic (UpdateEpicRequest updateEpicRequest) {
         manager.updateEpic(updateEpicRequest.getId(), updateEpicRequest.getName(), updateEpicRequest.getDescription());
+        log.info("Обновлен епик {}", updateEpicRequest);
     }
     @Override
     public void updateTask (UpdateTaskRequest updateTaskRequest) {
         manager.updateTask(updateTaskRequest.getId(), updateTaskRequest.getName(), updateTaskRequest.getDescription(), updateTaskRequest.getStatus());
+        log.info("Обновлена таска {}", updateTaskRequest);
     }
     @Override
     public void  updateSubTask (UpdateSubTaskRequest updateSubTaskRequest) {
         manager.updateSubTask(updateSubTaskRequest.getId(), updateSubTaskRequest.getName(), updateSubTaskRequest.getDescription(), updateSubTaskRequest.getStatus());
+        log.info("Обновлена сабТаска {}", updateSubTaskRequest);
     }
     @Override
     public  ResponseEntity<GetAllCreatedTasksByUser> getAllCreatedTasksByUser (String name) {
@@ -129,6 +144,7 @@ public class ManagerControllerImpl implements ManagerController {
         if (getAllCreatedTasksByUser == null) {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info("Получены все таски юзера {}", getAllCreatedTasksByUser);
         return  ResponseEntity.ok(getAllCreatedTasksByUser);
     }
     @Override
@@ -137,6 +153,7 @@ public class ManagerControllerImpl implements ManagerController {
         if(getAllCreatedEpicsByUser == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info("Получены все епики юзера {}", getAllCreatedEpicsByUser);
         return ResponseEntity.ok(getAllCreatedEpicsByUser);
     }
 

@@ -1,11 +1,17 @@
 package com.example.tasktrackerhttp.controller.core.response;
 
 import com.example.tasktrackerhttp.dto.Status;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class GetSubTaskResponse {
+    @NotNull
     private long id;
+    @NotNull
     private long epicId;
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
     private Status status;
 

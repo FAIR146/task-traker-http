@@ -8,13 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class GetEpicResponse {
-    @NotBlank
     private String name;
-    @NotBlank
     private String description;
-    @NotNull
     private long id;
-    @NotBlank
     private String userName;
 
     private List<GetSubTaskResponse> subTasks;

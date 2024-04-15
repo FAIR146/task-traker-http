@@ -10,7 +10,8 @@ public class UpdateTaskRequest {
     @NotBlank
     private String description;
     @NotNull
-    private long id;
+    private Long id;
+    @NotNull
     private Status status;
 
     public String getName() {

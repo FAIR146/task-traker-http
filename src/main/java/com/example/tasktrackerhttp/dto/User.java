@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class User {
-    @NotNull
+
     private final int id;
-    @NotBlank
+
     private String name;
 
 }

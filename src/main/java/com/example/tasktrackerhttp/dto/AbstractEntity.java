@@ -6,12 +6,9 @@ import lombok.Data;
 
 @Data
 public abstract class AbstractEntity {
-    @NotNull
-    private long id;
-    @NotBlank
-    private String name;
-    @NotBlank
-    private String description;
 
+    private long id;
+    private String name;
+    private String description;
     private String userName;
 }

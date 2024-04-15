@@ -9,7 +9,7 @@ public class UpdateEpicRequest {
     @NotBlank
     private String description;
     @NotNull
-    private long id;
+    private Long id;
 
     public String getName() {
         return name;

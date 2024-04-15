@@ -18,6 +18,7 @@ import com.example.tasktrackerhttp.dto.Task;
 import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
 import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,45 +30,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ManagerController {
     @PutMapping("/putTask")
-    PutTaskResponse putTask (@RequestBody PutTaskRequest putTaskRequest, HttpSession session);
+    PutTaskResponse putTask (@Valid @RequestBody PutTaskRequest putTaskRequest, HttpSession session);
 
     @PutMapping("/putEpic")
-    PutEpicResponse putEpic (@RequestBody PutEpicRequest putEpicRequest, HttpSession session);
+    PutEpicResponse putEpic (@Valid @RequestBody PutEpicRequest putEpicRequest, HttpSession session);
 
     @PutMapping("/putSubTask")
-    PutSubTaskResponse addSubTask (@RequestBody PutSubTaskRequest putSubTaskRequest);
+    PutSubTaskResponse addSubTask (@Valid @RequestBody PutSubTaskRequest putSubTaskRequest);
 
     @DeleteMapping("/deleteEpicById")
-    void deleteEpicById (@RequestParam long id);
+    void deleteEpicById (@Valid @RequestParam long id);
 
     @DeleteMapping("/deleteTaskById")
-    void deleteTaskById (@RequestParam long id);
+    void deleteTaskById (@Valid @RequestParam long id);
 
     @DeleteMapping("/deleteSubTaskById")
-    void deleteSubTaskById (@RequestParam long id);
+    void deleteSubTaskById (@Valid @RequestParam long id);
 
     @GetMapping("/getEpicById")
-    ResponseEntity<GetEpicResponse> getEpicById (@RequestParam long id);
+    ResponseEntity<GetEpicResponse> getEpicById (@Valid @RequestParam long id);
 
     @GetMapping("/getTaskById")
-    ResponseEntity<GetTaskResponse> getTaskById (@RequestParam long id);
+    ResponseEntity<GetTaskResponse> getTaskById (@Valid @RequestParam long id);
 
     @GetMapping("/getSubTaskById")
-    ResponseEntity<GetSubTaskResponse> getSubTaskById (@RequestParam long id);
+    ResponseEntity<GetSubTaskResponse> getSubTaskById (@Valid @RequestParam long id);
 
     @PatchMapping("/updateEpic")
-    void updateEpic (@RequestBody UpdateEpicRequest updateEpicRequest);
+    void updateEpic (@Valid @RequestBody UpdateEpicRequest updateEpicRequest);
 
     @PatchMapping("/updateTask")
-    void updateTask (@RequestBody UpdateTaskRequest updateTaskRequest);
+    void updateTask (@Valid @RequestBody UpdateTaskRequest updateTaskRequest);
 
     @PatchMapping ("/updateSubTask")
-    void updateSubTask (@RequestBody UpdateSubTaskRequest updateSubTaskRequest);
+    void updateSubTask (@Valid @RequestBody UpdateSubTaskRequest updateSubTaskRequest);
 
     @GetMapping("/getAllCreatedTasksByUser")
-    ResponseEntity<GetAllCreatedTasksByUser> getAllCreatedTasksByUser (@RequestParam String name);
+    ResponseEntity<GetAllCreatedTasksByUser> getAllCreatedTasksByUser (@Valid @RequestParam String name);
 
     @GetMapping("/getAllCreatedEpicsByUser")
-    ResponseEntity<GetAllCreatedEpicsByUser> getallCreatedEpicsByUser (@RequestParam String name);
+    ResponseEntity<GetAllCreatedEpicsByUser> getallCreatedEpicsByUser (@Valid @RequestParam String name);
 
 }

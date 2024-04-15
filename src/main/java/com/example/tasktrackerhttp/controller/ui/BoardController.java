@@ -59,7 +59,6 @@ public class BoardController {
         String login = (String) httpSession.getAttribute("login");
         GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(login);;
 
-
         log.info("Список task {}", getAllCreatedTasksByUser);
 
 

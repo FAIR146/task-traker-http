@@ -40,6 +40,18 @@ public class BoardController {
     public String createEpic (Model model) {
         return "createEpic";
     }
+    @GetMapping("/updTask")
+    public String updTask (Model model) {
+        return "updTask";
+    }
+    @GetMapping("/updEpic")
+    public String updEpic (Model model) {
+        return "updEpic";
+    }
+    @GetMapping("/createSubTask")
+    public String createSubTask (Model model) {
+        return "createSubTask";
+    }
 
     @GetMapping("/epics")
     public String drawEpics (Model model, HttpSession httpSession) {

@@ -5,10 +5,17 @@
     <title>Task Tracker</title>
     <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script th:src="@{/js/materialize.js}"></script>
     <style>
         .table-container {
             display: inline-block;
             margin-right: 10px;
+        }
+    </style>
+
+    <style>
+        .btn {
+            margin-bottom: 10px;
         }
     </style>
     <script>
@@ -16,7 +23,8 @@
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems, options);
         });
-        $('.dropdown-trigger').dropdown();</script>
+        $('.dropdown-trigger').dropdown();
+    </script>
 
 
 <body>
@@ -69,10 +77,29 @@
                     <b><h6 th:text="${task.getName()}"></h6></b>
                 </th>
                 <th>
-                    <!--                <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>-->
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя таски</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить таску</button>
 
 
-                    <!-- Dropdown Structure -->
+
+                            <form action="/updTask">
+                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
 
 
                 </th>
@@ -90,7 +117,29 @@
                     <h6 th:text="${task.getName()}"></h6>
                 </th>
                 <th>
-                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal2" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя таски</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить таску</button>
+
+
+
+                            <form action="/updTask">
+                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
                 </th>
             </tr>
 
@@ -107,7 +156,29 @@
                     <h6 th:text="${task.getName()}"></h6>
                 </th>
                 <th>
-                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal3" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя таски</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить таску</button>
+
+
+
+                            <form action="/updTask">
+                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
                 </th>
             </tr>
 
@@ -117,4 +188,7 @@
     </div>
 </center>
 </body>
+<script>
+    M.AutoInit();
+</script>
 </html>

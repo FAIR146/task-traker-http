@@ -4,18 +4,30 @@
     <title>Task Tracker</title>
     <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script th:src="@{/js/materialize.js}"></script>
+
     <style>
         .table-container {
             display: inline-block;
             margin-right: 10px;
         }
     </style>
+
+    <style>
+        .btn {
+            margin-bottom: 10px;
+        }
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems, options);
         });
-        $('.dropdown-trigger').dropdown();</script>
+        $('.dropdown-trigger').dropdown();
+    </script>
+
+
 
 <body>
 <form action="/tasks">
@@ -51,9 +63,6 @@
 <center><h1>EPICS</h1></center>
 <!DOCTYPE html>
 
-
-
-
 <center>
     <div class="table-container">
         <h4>NEW</h4>
@@ -66,10 +75,40 @@
                     <b><h6 th:text="${epic.getName()}"></h6></b>
                 </th>
                 <th>
-                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal3" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя епик</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить епик</button>
+
+                            <form action="/updEpic">
+                                <button class="waves-effect waves-light btn">Изменить епик</button>
+                            </form>
+
+                            <form action="/createSubTask">
+                                <button class="waves-effect waves-light btn">Добавить подзадачу</button>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
+
+
                 </th>
             </tr>
 
+            <tr style="background: #f3f3f3; border-radius: 80px;">
+                <th colspan="2">
+                    <b>подзадачи:</b>
+                </th>
+            </tr>
 
             <tr th:each="subtask : ${epic.getSubTasks()}" style="background: #f3f3f3; border-radius: 80px;">
                 <th>
@@ -78,14 +117,22 @@
                 <th>
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
-                            <span>Выполнена</span>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Новая</span>
                         </label>
                     </p>
+
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
-                            <span>Не выполнена</span>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}"/>
+                            <span>В процессе</span>
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
+                            <span>Выполнена</span>
                         </label>
                     </p>
                 </th>
@@ -105,11 +152,39 @@
                     <b><h6 th:text="${epic.getName()}"></h6></b>
                 </th>
                 <th>
-                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal2" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя епик</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить епик</button>
+                            <form action="/updEpic">
+                                <button class="waves-effect waves-light btn">Изменить епик</button>
+                            </form>
+                            <form action="/createSubTask">
+                                <button class="waves-effect waves-light btn">Добавить подзадачу</button>
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
+
+
                 </th>
             </tr>
 
-
+            <tr style="background: #f3f3f3; border-radius: 80px;">
+                <th colspan="2">
+                    <b>подзадачи:</b>
+                </th>
+            </tr>
             <tr th:each="subtask : ${epic.getSubTasks()}" style="background: #f3f3f3; border-radius: 80px;">
                 <th>
                     <h6 th:text="${subtask.getName()}"></h6>
@@ -117,14 +192,22 @@
                 <th>
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
-                            <span>Выполнена</span>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Новая</span>
                         </label>
                     </p>
+
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
-                            <span>Не выполнена</span>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}"/>
+                            <span>В процессе</span>
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
+                            <span>Выполнена</span>
                         </label>
                     </p>
                 </th>
@@ -145,10 +228,39 @@
                     <b><h6 th:text="${epic.getName()}"></h6></b>
                 </th>
                 <th>
-                    <a class="grey waves-light btn-small"><i class="material-icons left">keyboard_arrow_down</i></a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Имя епик</h4>
+                            <p>Описание</p>
+
+                            <button class="waves-effect waves-light btn">Удалить епик</button>
+
+                            <form action="/updEpic">
+                                <button class="waves-effect waves-light btn">Изменить епик</button>
+                            </form>
+                            <form action="/createSubTask">
+                                <button class="waves-effect waves-light btn">Добавить подзадачу</button>
+                            </form>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+
+                        </div>
+                    </div>
+
+
                 </th>
             </tr>
-
+            <tr style="background: #f3f3f3; border-radius: 80px;">
+                <th colspan="2">
+                    <b>подзадачи:</b>
+                </th>
+            </tr>
 
             <tr th:each="subtask : ${epic.getSubTasks()}" style="background: #f3f3f3; border-radius: 80px;">
                 <th>
@@ -157,16 +269,25 @@
                 <th>
                     <p>
                         <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Новая</span>
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}"/>
+                            <span>В процессе</span>
+                        </label>
+                    </p>
+
+                    <p>
+                        <label>
                             <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
                             <span>Выполнена</span>
                         </label>
                     </p>
-                    <p>
-                        <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
-                            <span>Не выполнена</span>
-                        </label>
-                    </p>
+
                 </th>
             </tr>
 
@@ -177,5 +298,9 @@
 </center>
 
 </body>
+
+<script>
+    M.AutoInit();
+</script>
 
 </html>

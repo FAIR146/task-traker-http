@@ -99,6 +99,12 @@ public class BoardController {
         manager.removeTaskById(id);
         return "redirect:/tasks";
     }
+    @GetMapping("/deleteSubTaskById")
+    public String deleteSubTaskById(@RequestParam long subtaskId) {
+        manager.removeSubTaskById(subtaskId);
+        return "redirect:/epics";
+    }
+
 
     @GetMapping("/epics")
     public String drawEpics (Model model, HttpSession httpSession) {

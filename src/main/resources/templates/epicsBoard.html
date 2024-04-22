@@ -107,29 +107,52 @@
                     <h6 th:text="${subtask.getName()}"></h6>
                 </th>
                 <th>
-                    <form>
-                        <p>
-                            <label>
-                                <input th:name="${subtask.getId()}" value="NEW" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}" onchange="handleRadioChange(this)" />
-                                <span>Новая</span>
-                            </label>
-                        </p>
-                    </form>
+<!--                    <form>-->
+<!--                        <p>-->
+<!--                            <label>-->
+<!--                                <input th:name="${subtask.getId()}" value="NEW" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}" onchange="handleRadioChange(this)" />-->
+<!--                                <span>Новая</span>-->
+<!--                            </label>-->
+<!--                        </p>-->
+<!--                    </form>-->
 
+
+<!--                    <p>-->
+<!--                        <label>-->
+<!--                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}" onchange="handleRadioChange(this)"/>-->
+<!--                            <span>В процессе</span>-->
+<!--                        </label>-->
+<!--                    </p>-->
+
+<!--                    <p>-->
+<!--                        <label>-->
+<!--                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}" onchange="handleRadioChange(this)"/>-->
+<!--                            <span>Выполнена</span>-->
+<!--                        </label>-->
+<!--                    </p>-->
+                    <p>
+                        <label>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'NEW'}"/>
+                            <span>Новая</span>
+                        </label>
+                    </p>
 
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}" onchange="handleRadioChange(this)"/>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'IN_PROGRESS'}"/>
                             <span>В процессе</span>
                         </label>
                     </p>
 
                     <p>
                         <label>
-                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}" onchange="handleRadioChange(this)"/>
+                            <input th:name="${subtask.getId()}" type="radio" th:checked="${subtask.getStatus().name() == 'DONE'}"/>
                             <span>Выполнена</span>
                         </label>
                     </p>
+                    <form action="/deleteSubTaskById">
+                        <button name="subtaskId" th:value="${subtask.getId()}" class="waves-effect waves-light btn">Удалить подзадачу</button>
+                    </form>
                 </th>
             </tr>
 
@@ -209,6 +232,9 @@
                             <span>Выполнена</span>
                         </label>
                     </p>
+                    <form action="/deleteSubTaskById">
+                        <button name="subtaskId" th:value="${subtask.getId()}" class="waves-effect waves-light btn">Удалить подзадачу</button>
+                    </form>
                 </th>
             </tr>
 
@@ -268,6 +294,7 @@
                 <th>
                     <h6 th:text="${subtask.getName()}"></h6>
                 </th>
+
                 <th>
                     <p>
                         <label>
@@ -289,7 +316,9 @@
                             <span>Выполнена</span>
                         </label>
                     </p>
-
+                    <form action="/deleteSubTaskById">
+                        <button name="subtaskId" th:value="${subtask.getId()}" class="waves-effect waves-light btn">Удалить подзадачу</button>
+                    </form>
                 </th>
             </tr>
 
@@ -305,8 +334,8 @@
 
 <script>
     function handleRadioChange(radio) {
-        var subtaskId = radio.getAttribute('name');
-        var status = radio.;
+        var subtaskId = radio.value; // Получаем значение subtaskId через value атрибут
+        var status = radio.checked; // Получаем значение статуса через checked свойство
 
         // Выполняем запрос на бэкэнд
         $.ajax({

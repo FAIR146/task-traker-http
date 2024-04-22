@@ -53,6 +53,18 @@ public class BoardController {
         return "createSubTask";
     }
 
+    @GetMapping("/putTask")
+    public String putTask (@RequestParam String name, @RequestParam String description, @RequestParam Status status, HttpSession session) {
+        String login = (String) session.getAttribute("login");
+        manager.addTask(name, description, status, login);
+        return "redirect:/tasks";
+    }
+    @GetMapping("/deleteTaskById")
+    public String deleteTaskById (@RequestParam long id) {
+        manager.removeTaskById(id);
+        return "redirect:/tasks";
+    }
+
     @GetMapping("/epics")
     public String drawEpics (Model model, HttpSession httpSession) {
         String login = (String) httpSession.getAttribute("login");

@@ -49,15 +49,6 @@
 </head>
 <body>
 
-<!--<a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>-->
-<!--<ul id='dropdown1' class='dropdown-content'>-->
-<!--    <li><a href="#!">one</a></li>-->
-<!--    <li><a href="#!">two</a></li>-->
-<!--    <li class="divider" tabindex="-1"></li>-->
-<!--    <li><a href="#!">three</a></li>-->
-<!--    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>-->
-<!--    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>-->
-<!--</ul>-->
 
 <center><h1>TASKS</h1></center>
 <!DOCTYPE html>
@@ -72,21 +63,22 @@
 
 
             <tbody>
-            <tr style="background: #00bcd4; border-radius: 30px;">
+            <tr style="background: #2ebeb0; border-radius: 30px;">
                 <th>
                     <b><h6 th:text="${task.getName()}"></h6></b>
                 </th>
                 <th>
-                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" th:href="'#modal_' + ${task.getId()}"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
 
                     <!-- Modal Structure -->
-                    <div id="modal1" class="modal">
+                    <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
                             <h4>Имя таски</h4>
                             <p>Описание</p>
 
-                            <button class="waves-effect waves-light btn">Удалить таску</button>
-
+                            <form  action="/deleteTaskById" >
+                             <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
+                            </form>
 
 
                             <form action="/updTask">
@@ -97,7 +89,6 @@
                         </div>
                         <div class="modal-footer">
                             <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
-
                         </div>
                     </div>
 
@@ -112,21 +103,22 @@
         <h4>IN PROGRESS</h4>
         <table class="highlight" th:each="task: ${tasksInProgress}">
             <tbody>
-            <tr style="background: #00bcd4; border-radius: 30px;">
+            <tr style="background: #2ebeb0; border-radius: 30px;">
                 <th>
                     <h6 th:text="${task.getName()}"></h6>
                 </th>
                 <th>
-                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" th:href="'#modal_' + ${task.getId()}"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
 
                     <!-- Modal Structure -->
-                    <div id="modal2" class="modal">
+                    <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
                             <h4>Имя таски</h4>
                             <p>Описание</p>
 
-                            <button class="waves-effect waves-light btn">Удалить таску</button>
-
+                            <form  action="/deleteTaskById" >
+                                <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
+                            </form>
 
 
                             <form action="/updTask">
@@ -151,22 +143,22 @@
         <h4>DONE</h4>
         <table class="highlight" th:each="task: ${tasksDone}">
             <tbody>
-            <tr style="background: #00bcd4; border-radius: 30px;">
+            <tr style="background: #2ebeb0; border-radius: 30px;">
                 <th>
                     <h6 th:text="${task.getName()}"></h6>
                 </th>
                 <th>
-                    <a class="grey waves-effect waves-light btn modal-trigger" href="#modal1"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
+                    <a class="grey waves-effect waves-light btn modal-trigger" th:href="'#modal_' + ${task.getId()}"> <center><i class="material-icons right">more_horiz</i>info</center> </a>
 
                     <!-- Modal Structure -->
-                    <div id="modal3" class="modal">
+                    <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
                             <h4>Имя таски</h4>
                             <p>Описание</p>
 
-                            <button class="waves-effect waves-light btn">Удалить таску</button>
-
-
+                            <form  action="/deleteTaskById" >
+                                <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
+                            </form>
 
                             <form action="/updTask">
                                 <button class="waves-effect waves-light btn">Изменить таску</button>

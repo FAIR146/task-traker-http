@@ -41,16 +41,40 @@ public class BoardController {
         return "createEpic";
     }
     @GetMapping("/updTask")
-    public String updTask (Model model) {
+    public String updTask (Model model, @RequestParam long id) {
+        Task task = manager.getTaskById(id);
+        model.addAttribute("task", task);
         return "updTask";
     }
     @GetMapping("/updEpic")
-    public String updEpic (Model model) {
+    public String updEpic (Model model, @RequestParam long id) {
+        Epic epic = manager.getEpicById(id);
+        model.addAttribute("epic", epic);
         return "updEpic";
     }
+
+    @GetMapping("/updateTaskRequest")
+    public String updateTask(@RequestParam String name, @RequestParam String description, @RequestParam Status status, @RequestParam long id) {
+        manager.updateTask(id, name, description, status);
+        return "redirect:/tasks";
+    }
+    @GetMapping("/updateEpicRequest")
+    public String updateEpic (@RequestParam String name, @RequestParam String description, @RequestParam long id){
+        manager.updateEpic(id, name, description);
+        return "redirect:/epics";
+    }
+
+
     @GetMapping("/createSubTask")
-    public String createSubTask (Model model) {
+    public String createSubTask (Model model, @RequestParam long id) {
+        Epic epic = manager.getEpicById(id);
+        model.addAttribute("epic", epic);
         return "createSubTask";
+    }
+    @PostMapping("/putSubTask")
+    public String putSubTask(@RequestParam long id, @RequestParam String name, @RequestParam String description, @RequestParam Status status) {
+        manager.addSubTask(id, name, description, status);
+        return "redirect:/epics";
     }
 
     @GetMapping("/putTask")
@@ -58,6 +82,17 @@ public class BoardController {
         String login = (String) session.getAttribute("login");
         manager.addTask(name, description, status, login);
         return "redirect:/tasks";
+    }
+    @GetMapping("/putEpic")
+    public String putEpic (@RequestParam String name, @RequestParam String description, HttpSession session) {
+        String login = (String) session.getAttribute("login");
+        manager.addEpic(name, description, login);
+        return "redirect:/epics";
+    }
+    @GetMapping("/deleteEpicById")
+    public String deleteEpicById (@RequestParam long id) {
+        manager.removeEpicById(id);
+        return "redirect:/epics";
     }
     @GetMapping("/deleteTaskById")
     public String deleteTaskById (@RequestParam long id) {

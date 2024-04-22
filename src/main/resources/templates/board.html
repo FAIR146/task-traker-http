@@ -73,8 +73,8 @@
                     <!-- Modal Structure -->
                     <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
-                            <h4>Имя таски</h4>
-                            <p>Описание</p>
+                            <h4 th:text="${task.getName()}" ></h4>
+                            <p th:text="${task.getDescription()}"></p>
 
                             <form  action="/deleteTaskById" >
                              <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
@@ -82,7 +82,7 @@
 
 
                             <form action="/updTask">
-                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                                <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Изменить таску</button>
                             </form>
 
 
@@ -113,8 +113,8 @@
                     <!-- Modal Structure -->
                     <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
-                            <h4>Имя таски</h4>
-                            <p>Описание</p>
+                            <h4 th:text="${task.getName()}" ></h4>
+                            <p th:text="${task.getDescription()}"></p>
 
                             <form  action="/deleteTaskById" >
                                 <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
@@ -122,7 +122,7 @@
 
 
                             <form action="/updTask">
-                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                                <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Изменить таску</button>
                             </form>
 
 
@@ -153,15 +153,15 @@
                     <!-- Modal Structure -->
                     <div th:id="'modal_' + ${task.getId()}" class="modal">
                         <div class="modal-content">
-                            <h4>Имя таски</h4>
-                            <p>Описание</p>
+                            <h4 th:text="${task.getName()}" ></h4>
+                            <p th:text="${task.getDescription()}"></p>
 
                             <form  action="/deleteTaskById" >
                                 <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Удалить таску</button>
                             </form>
 
                             <form action="/updTask">
-                                <button class="waves-effect waves-light btn">Изменить таску</button>
+                                <button name="id" th:value="${task.getId()}" class="waves-effect waves-light btn">Изменить таску</button>
                             </form>
 
 

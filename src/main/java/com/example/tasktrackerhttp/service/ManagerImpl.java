@@ -80,10 +80,10 @@ public class ManagerImpl implements Manager {
     }
     public void updateEpic (long id, String name, String description) {
         Epic epic = new Epic();
+        epic.setId(id);
         List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
         epic.setName(name);
         epic.setDescription(description);
-        epic.setId(id);
         epic.setSubTasks(subTasks);
         taskDao.updateEpic(epic);
     }

@@ -27,16 +27,18 @@
 
 <center><h4>Введите имя</h4></center>
 
+<form action="/putSubTask" method="POST">
+    <input name="id" th:value="${epic.getId()}" type="text" hidden="hidden">
 
 <div style="width: 450px; margin: 0 auto;">
-    <input nameEpic="nameEpic" type="text" style="text-align: center; width: 100%;">
+    <input id="name" name="name" type="text" style="text-align: center; width: 100%;">
 </div>
 
 
 
 <center><h4>Введите описание</h4></center>
 <div style="width: 450px; margin: 0 auto;">
-    <input descriptionEpic="descriptionEpic" type="text" style="text-align: center; width: 100%;">
+    <input id="description" name="description" type="text" style="text-align: center; width: 100%;">
 </div>
 
 
@@ -44,7 +46,7 @@
 
 <center> <p>
     <label>
-        <input type="radio" class="radio-button" name="status" checked="checked" onchange="toggleRadioButtons(this)" />
+        <input type="radio" class="radio-button" name="status" value="NEW" checked="checked" onchange="toggleRadioButtons(this)" />
         <span>NEW</span>
     </label>
 </p>
@@ -52,7 +54,7 @@
 
 <center> <p>
     <label>
-        <input type="radio" class="radio-button" name="status" onchange="toggleRadioButtons(this)" />
+        <input type="radio" class="radio-button" name="status" value="IN_PROGRESS" onchange="toggleRadioButtons(this)" />
         <span>IN PROGRESS</span>
     </label>
 </p>
@@ -60,7 +62,7 @@
 
 <center> <p>
     <label>
-        <input type="radio" class="radio-button" name="status" onchange="toggleRadioButtons(this)" />
+        <input type="radio" class="radio-button" name="status" value="DONE" onchange="toggleRadioButtons(this)" />
         <span>DONE</span>
     </label>
 </p>
@@ -71,6 +73,6 @@
         <i class="material-icons right">add_circle_outline</i>
     </button>
 </center>
-
+</form>
 </body>
 </html>

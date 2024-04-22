@@ -3,6 +3,7 @@ package com.example.tasktrackerhttp.controller.core;
 import com.example.tasktrackerhttp.controller.core.put.*;
 import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
 import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
@@ -53,6 +54,12 @@ public class ManagerControllerImpl implements ManagerController {
         log.info("Добавлена сабтаска {}", putSubTaskRequest);
         return putSubTaskResponse;
     }
+
+    public void updateSubtaskStatus(long id, Status status) {
+        System.out.println();
+        //manager.updateSubtaskStatus();  UPDATE SUBTASK SET STATUS = "~STATUS~" WHERE id = ~id~;
+    }
+
     @Override
     public void deleteEpicById (long id) {
         manager.removeEpicById(id);

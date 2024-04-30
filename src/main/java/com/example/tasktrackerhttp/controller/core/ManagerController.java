@@ -13,6 +13,7 @@ import com.example.tasktrackerhttp.controller.core.response.PutEpicResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutSubTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutTaskResponse;
 import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
@@ -70,5 +71,8 @@ public interface ManagerController {
 
     @GetMapping("/getAllCreatedEpicsByUser")
     ResponseEntity<GetAllCreatedEpicsByUser> getallCreatedEpicsByUser (@Valid @RequestParam String name);
+
+    @GetMapping("/updateSubtaskStatus")
+    void updateSubtaskStatus(@RequestParam("subtaskId") long id, @RequestParam Status status);
 
 }

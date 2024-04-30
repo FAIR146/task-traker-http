@@ -27,6 +27,7 @@ public class AuthController {
     @PostMapping("/startAuth")
     public String startAuth(@RequestParam String login, HttpSession session) {
         session.setAttribute("login", login);
+
         return "redirect:/tasks";
     }
 }

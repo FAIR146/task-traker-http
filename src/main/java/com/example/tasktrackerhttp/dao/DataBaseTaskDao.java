@@ -190,8 +190,11 @@ public class DataBaseTaskDao implements TaskDao {
     public void updateEpic(Epic epic) {
         String sql = "UPDATE epic SET " +
                 "name = ?, " +
-                "description = ?";
-        jdbcTemplate.update(sql, epic.getName(), epic.getDescription());
+                "description = ? " +
+                "WHERE id = ?";
+
+
+        jdbcTemplate.update(sql, epic.getName(), epic.getDescription(), epic.getId());
     }
 
     @Override

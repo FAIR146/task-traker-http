@@ -1,5 +1,4 @@
 package com.example.tasktrackerhttp.service;
-import com.example.tasktrackerhttp.BaseTest;
 import com.example.tasktrackerhttp.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class ManagerImplTest extends BaseTest {
+public class ManagerImplTest {
 
     @Autowired
     private Manager manager;
+    private final static String TEST_USERNAME = "test_user";
 
     @Test
     void addTaskNewStatus() {

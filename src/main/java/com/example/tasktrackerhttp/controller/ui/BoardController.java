@@ -9,6 +9,8 @@ import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.service.ManagerImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,14 +80,14 @@ public class BoardController {
     }
 
     @GetMapping("/putTask")
-    public String putTask (@RequestParam String name, @RequestParam String description, @RequestParam Status status, HttpSession session) {
-        String login = (String) session.getAttribute("login");
+    public String putTask (@RequestParam String name, @RequestParam String description, @RequestParam Status status, @AuthenticationPrincipal UserDetails userDetails) {
+        String login = userDetails.getUsername();
         manager.addTask(name, description, status, login);
         return "redirect:/tasks";
     }
     @GetMapping("/putEpic")
-    public String putEpic (@RequestParam String name, @RequestParam String description, HttpSession session) {
-        String login = (String) session.getAttribute("login");
+    public String putEpic (@RequestParam String name, @RequestParam String description, @AuthenticationPrincipal UserDetails userDetails) {
+        String login = userDetails.getUsername();
         manager.addEpic(name, description, login);
         return "redirect:/epics";
     }
@@ -107,8 +109,8 @@ public class BoardController {
 
 
     @GetMapping("/epics")
-    public String drawEpics (Model model, HttpSession httpSession) {
-        String login = (String) httpSession.getAttribute("login");
+    public String drawEpics (Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        String login = userDetails.getUsername();
         GetAllCreatedEpicsByUser getAllCreatedEpicsByUser = manager.getAllCreatedEpicsByUser(login);
 
         log.info("Список epic {}",getAllCreatedEpicsByUser);
@@ -120,8 +122,8 @@ public class BoardController {
     }
 
     @GetMapping("/tasks")
-    public String drawTasks(Model model, HttpSession httpSession) {
-        String login = (String) httpSession.getAttribute("login");
+    public String drawTasks(Model model,@AuthenticationPrincipal UserDetails userDetails) {
+        String login = userDetails.getUsername();
         GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(login);;
 
         log.info("Список task {}", getAllCreatedTasksByUser);

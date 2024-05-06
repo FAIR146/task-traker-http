@@ -15,32 +15,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/tasks")
+                        .permitAll())
+
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/putTask").authenticated()
-                                .requestMatchers("/putEpic").authenticated()
-                                .requestMatchers("/putSubTask").authenticated()
-                                .requestMatchers("/deleteEpicById").authenticated()
-                                .requestMatchers("/deleteTaskById").authenticated()
-                                .requestMatchers("/deleteSubTaskById").authenticated()
-                                .requestMatchers("/getTaskById").authenticated()
-                                .requestMatchers("/getEpicById").authenticated()
-                                .requestMatchers("/getSubTaskById").authenticated()
-                                .requestMatchers("/updateEpic").authenticated()
-                                .requestMatchers("/updateTask").authenticated()
-                                .requestMatchers("/updateSubTask").authenticated()
-                                .requestMatchers("/getAllCreatedEpicsByUser").authenticated()
-                                .requestMatchers("/getAllCreatedTasksByUser").authenticated()
-                                .requestMatchers("/updateSubtaskStatus").authenticated()
+                                .anyRequest().authenticated()
                 )
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                .and()
-                .logout()
-                .permitAll()
-                .and()
                 .build();
     }
 

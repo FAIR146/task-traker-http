@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.example.tasktrackerhttp.dto.User user = userDao.findUserByLogin(username);
         return User.builder()
-                .username("user")
-                .password("password")
-                .roles("user")
+                .username(user.getName())
+                .password(user.getPassword())
+                .roles()
                 .build();
     }
 }

@@ -9,13 +9,20 @@
 <br>
 <body>
 <center><h1>LogIn</h1></center>
+<div th:if="${param.error}">
+    Invalid username and password.</div>
+<div th:if="${param.logout}">
+    You have been logged out.</div>
 <center>
-    <form action="/startAuth" method="post">
-<!--        <center><input name= "login" type="text"  placeholder="Введите имя" style="text-align: center"></center>-->
+    <form action="/login" method="post">
+        <!--        <center><input name= "login" type="text"  placeholder="Введите имя" style="text-align: center"></center>-->
         <div style="width: 450px; margin: 0 auto;">
-            <input name="login" type="text" placeholder="Введите имя" style="text-align: center; width: 100%;">
+            <input name="username" type="text" placeholder="Введите имя" style="text-align: center; width: 100%;">
+        </div>
+        <div style="width: 450px; margin: 0 auto;">
             <input name = "password" type="text" placeholder="Введите пароль" style="text-align: center"; width="100%">
         </div>
+
         <button class="btn waves-effect waves-light" type="submit" name="action">Submit
             <i class="material-icons right">send</i>
         </button>

@@ -1,32 +1,30 @@
 package com.example.tasktrackerhttp.controller;
 
-import com.example.tasktrackerhttp.controller.core.put.*;
-import com.example.tasktrackerhttp.controller.core.response.*;
+import com.example.tasktrackerhttp.controller.core.put.PutEpicRequest;
+import com.example.tasktrackerhttp.controller.core.put.PutSubTaskRequest;
+import com.example.tasktrackerhttp.controller.core.put.PutTaskRequest;
+import com.example.tasktrackerhttp.controller.core.put.UpdateEpicRequest;
+import com.example.tasktrackerhttp.controller.core.put.UpdateSubTaskRequest;
+import com.example.tasktrackerhttp.controller.core.put.UpdateTaskRequest;
+import com.example.tasktrackerhttp.controller.core.response.PutEpicResponse;
+import com.example.tasktrackerhttp.controller.core.response.PutSubTaskResponse;
+import com.example.tasktrackerhttp.controller.core.response.PutTaskResponse;
 import com.example.tasktrackerhttp.dto.Status;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class ManagerImplControllerTest extends BaseAuthenticatedControllerTest {
-
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
-
 
     @Test
     public void putAndGetTask () throws Exception {

@@ -11,6 +11,7 @@ create table "user" (
 );
 
 insert into "user" values (9999, 'test_user');
+insert into "user" values (10000, 'test_user2');
 
 --cоздание таблицы с статусами
 create table status (

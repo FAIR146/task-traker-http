@@ -5,8 +5,6 @@ import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
 
-import java.util.List;
-
 public interface Manager {
     long addTask (String name, String description, Status status, String userName);
 

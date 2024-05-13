@@ -1,12 +1,9 @@
 package com.example.tasktrackerhttp.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

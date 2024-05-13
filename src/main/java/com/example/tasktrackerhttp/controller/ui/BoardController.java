@@ -43,25 +43,39 @@ public class BoardController {
         return "createEpic";
     }
     @GetMapping("/updTask")
-    public String updTask (Model model, @RequestParam long id) {
+    public String updTask (Model model, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Task task = manager.getTaskById(id);
+        if (!task.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         model.addAttribute("task", task);
         return "updTask";
     }
     @GetMapping("/updEpic")
-    public String updEpic (Model model, @RequestParam long id) {
+    public String updEpic (Model model, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Epic epic = manager.getEpicById(id);
+        if(!epic.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         model.addAttribute("epic", epic);
         return "updEpic";
     }
 
     @GetMapping("/updateTaskRequest")
-    public String updateTask(@RequestParam String name, @RequestParam String description, @RequestParam Status status, @RequestParam long id) {
+    public String updateTask(@RequestParam String name, @RequestParam String description, @RequestParam Status status, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
+        Task task = manager.getTaskById(id);
+        if(!task.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.updateTask(id, name, description, status);
         return "redirect:/tasks";
     }
     @GetMapping("/updateEpicRequest")
-    public String updateEpic (@RequestParam String name, @RequestParam String description, @RequestParam long id){
+    public String updateEpic (@RequestParam String name, @RequestParam String description, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails){
+        Epic epic = manager.getEpicById(id);
+        if (!epic.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.updateEpic(id, name, description);
         return "redirect:/epics";
     }
@@ -74,7 +88,11 @@ public class BoardController {
         return "createSubTask";
     }
     @PostMapping("/putSubTask")
-    public String putSubTask(@RequestParam long id, @RequestParam String name, @RequestParam String description, @RequestParam Status status) {
+    public String putSubTask(@RequestParam long id, @RequestParam String name, @RequestParam String description, @RequestParam Status status, @AuthenticationPrincipal UserDetails userDetails) {
+        SubTask subTask = manager.getSubTaskById(id);
+        if (subTask.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.addSubTask(id, name, description, status);
         return "redirect:/epics";
     }
@@ -82,27 +100,45 @@ public class BoardController {
     @GetMapping("/putTask")
     public String putTask (@RequestParam String name, @RequestParam String description, @RequestParam Status status, @AuthenticationPrincipal UserDetails userDetails) {
         String login = userDetails.getUsername();
+        if (!login.equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.addTask(name, description, status, login);
         return "redirect:/tasks";
     }
     @GetMapping("/putEpic")
     public String putEpic (@RequestParam String name, @RequestParam String description, @AuthenticationPrincipal UserDetails userDetails) {
         String login = userDetails.getUsername();
+        if (!login.equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.addEpic(name, description, login);
         return "redirect:/epics";
     }
     @GetMapping("/deleteEpicById")
-    public String deleteEpicById (@RequestParam long id) {
+    public String deleteEpicById (@RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
+        Epic epic = manager.getEpicById(id);
+        if (!epic.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.removeEpicById(id);
         return "redirect:/epics";
     }
     @GetMapping("/deleteTaskById")
-    public String deleteTaskById (@RequestParam long id) {
+    public String deleteTaskById (@RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
+        Task task = manager.getTaskById(id);
+        if (!task.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.removeTaskById(id);
         return "redirect:/tasks";
     }
     @GetMapping("/deleteSubTaskById")
-    public String deleteSubTaskById(@RequestParam long subtaskId) {
+    public String deleteSubTaskById(@RequestParam long subtaskId, @AuthenticationPrincipal UserDetails userDetails) {
+        SubTask subTask = manager.getSubTaskById(subtaskId);
+        if (!subTask.getUserName().equals(userDetails.getUsername())) {
+            return "redirect:/login";
+        }
         manager.removeSubTaskById(subtaskId);
         return "redirect:/epics";
     }

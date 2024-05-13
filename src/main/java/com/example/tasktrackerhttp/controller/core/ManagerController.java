@@ -12,16 +12,13 @@ import com.example.tasktrackerhttp.controller.core.response.GetTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutEpicResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutSubTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutTaskResponse;
-import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
-import com.example.tasktrackerhttp.dto.SubTask;
-import com.example.tasktrackerhttp.dto.Task;
 import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
 import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,10 +28,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ManagerController {
     @PutMapping("/putTask")
-    PutTaskResponse putTask (@Valid @RequestBody PutTaskRequest putTaskRequest, HttpSession session);
+    PutTaskResponse putTask (@Valid @RequestBody PutTaskRequest putTaskRequest, @AuthenticationPrincipal UserDetails userDetails);
 
     @PutMapping("/putEpic")
-    PutEpicResponse putEpic (@Valid @RequestBody PutEpicRequest putEpicRequest, HttpSession session);
+    PutEpicResponse putEpic (@Valid @RequestBody PutEpicRequest putEpicRequest, @AuthenticationPrincipal UserDetails userDetails);
 
     @PutMapping("/putSubTask")
     PutSubTaskResponse addSubTask (@Valid @RequestBody PutSubTaskRequest putSubTaskRequest);

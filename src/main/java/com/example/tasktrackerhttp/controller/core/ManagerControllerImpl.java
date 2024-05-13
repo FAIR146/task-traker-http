@@ -9,13 +9,13 @@ import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RestController
@@ -27,9 +27,9 @@ public class ManagerControllerImpl implements ManagerController {
     }
 
     @Override
-    public PutTaskResponse putTask (PutTaskRequest putTaskRequest, HttpSession session) {
+    public PutTaskResponse putTask (PutTaskRequest putTaskRequest, @AuthenticationPrincipal UserDetails userDetails) {
         PutTaskResponse putTaskResponse = new PutTaskResponse();
-        String login = (String) session.getAttribute("login");
+        String login = userDetails.getUsername();
         long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), login);
         putTaskResponse.setId(id);
         log.info("Добавлена таска {}", putTaskResponse);
@@ -37,9 +37,9 @@ public class ManagerControllerImpl implements ManagerController {
     }
 
     @Override
-    public PutEpicResponse putEpic (PutEpicRequest putEpicRequest, HttpSession session) {
+    public PutEpicResponse putEpic (PutEpicRequest putEpicRequest, @AuthenticationPrincipal UserDetails userDetails) {
         PutEpicResponse putEpicResponse = new PutEpicResponse();
-        String login = (String) session.getAttribute("login");
+        String login = userDetails.getUsername();
         long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), login);
         putEpicResponse.setId(id);
         log.info("Добавлен епик {}", putEpicResponse);

@@ -112,6 +112,7 @@ public class BoardController {
         manager.removeTaskById(id);
         return "redirect:/tasks";
     }
+
     @GetMapping("/deleteSubTaskById")
     public String deleteSubTaskById(@RequestParam long subtaskId, @AuthenticationPrincipal UserDetails userDetails) {
         SubTask subTask = manager.getSubTaskById(subtaskId);

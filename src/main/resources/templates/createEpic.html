@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/materialize.css}" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .table-container {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<center><h1>ДОБАВЛЕНИЕ EPIC</h1></center>
+
+<form action="/putEpic">
+<center><h4>Введите имя</h4></center>
+
+
+<div style="width: 450px; margin: 0 auto;">
+    <input id="name" name="name" type="text" style="text-align: center; width: 100%;">
+</div>
+
+
+
+<center><h4>Введите описание</h4></center>
+<div style="width: 450px; margin: 0 auto;">
+    <input id="description"  name="description" type="text" style="text-align: center; width: 100%;">
+</div>
+
+
+<center>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Создать
+        <i class="material-icons right">add_circle_outline</i>
+    </button>
+</center>
+</form>
+
+</body>
+</html>

@@ -1,9 +1,15 @@
 package com.example.tasktrackerhttp.controller.core.put;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class UpdateEpicRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
-    private long id;
+    @NotNull
+    private Long id;
 
     public String getName() {
         return name;

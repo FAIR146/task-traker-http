@@ -3,15 +3,20 @@ package com.example.tasktrackerhttp.controller.core;
 import com.example.tasktrackerhttp.controller.core.put.*;
 import com.example.tasktrackerhttp.controller.core.response.*;
 import com.example.tasktrackerhttp.dto.Epic;
+import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
 import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+
 import jakarta.servlet.http.HttpSession;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,9 +29,9 @@ public class ManagerControllerImpl implements ManagerController {
     }
 
     @Override
-    public PutTaskResponse putTask (PutTaskRequest putTaskRequest, HttpSession session) {
+    public PutTaskResponse putTask (PutTaskRequest putTaskRequest, @AuthenticationPrincipal UserDetails userDetails) {
         PutTaskResponse putTaskResponse = new PutTaskResponse();
-        String login = (String) session.getAttribute("login");
+        String login = userDetails.getUsername();
         long id = manager.addTask(putTaskRequest.getName(),putTaskRequest.getDescription(), putTaskRequest.getStatus(), login);
         putTaskResponse.setId(id);
         log.info("Добавлена таска {}", putTaskResponse);
@@ -34,9 +39,9 @@ public class ManagerControllerImpl implements ManagerController {
     }
 
     @Override
-    public PutEpicResponse putEpic (PutEpicRequest putEpicRequest, HttpSession session) {
+    public PutEpicResponse putEpic (PutEpicRequest putEpicRequest, @AuthenticationPrincipal UserDetails userDetails) {
         PutEpicResponse putEpicResponse = new PutEpicResponse();
-        String login = (String) session.getAttribute("login");
+        String login = userDetails.getUsername();
         long id = manager.addEpic(putEpicRequest.getName(), putEpicRequest.getDescription(), login);
         putEpicResponse.setId(id);
         log.info("Добавлен епик {}", putEpicResponse);
@@ -49,23 +54,36 @@ public class ManagerControllerImpl implements ManagerController {
         long id = manager.addSubTask(putSubTaskRequest.getEpicId(), putSubTaskRequest.getName(), putSubTaskRequest.getDescription(), putSubTaskRequest.getStatus());
         putSubTaskResponse.setId(id);
         log.info("Добавлена сабТаска {}", putSubTaskResponse);
+        log.info("Добавлена сабтаска {}", putSubTaskRequest);
         return putSubTaskResponse;
     }
+
+    public void updateSubtaskStatus(long id, Status status) {
+        System.out.println();
+        //manager.updateSubtaskStatus();  UPDATE SUBTASK SET STATUS = "~STATUS~" WHERE id = ~id~;
+    }
+
     @Override
     public void deleteEpicById (long id) {
         manager.removeEpicById(id);
         log.info("Удален епик с id {}", id);
+        log.info("Удален епик с id{}", id);
     }
+  
     @Override
     public void deleteTaskById (long id) {
         manager.removeTaskById(id);
         log.info("Удалена таска с id {}", id);
+        log.info("Удалена таска с id{}", id);
 
     }
     @Override
     public void deleteSubTaskById (long id) {
         manager.removeSubTaskById(id);
+
         log.info("Удалена сабТаска с id {}", id);
+        log.info("Удалена сабтаска с id{}", id);
+
     }
 
     @Override
@@ -125,7 +143,9 @@ public class ManagerControllerImpl implements ManagerController {
     public void updateEpic (UpdateEpicRequest updateEpicRequest) {
         manager.updateEpic(updateEpicRequest.getId(), updateEpicRequest.getName(), updateEpicRequest.getDescription());
         log.info("Обновлён епик {}", updateEpicRequest);
+        log.info("Обновлен епик {}", updateEpicRequest);
     }
+  
     @Override
     public void updateTask (UpdateTaskRequest updateTaskRequest) {
         manager.updateTask(updateTaskRequest.getId(), updateTaskRequest.getName(), updateTaskRequest.getDescription(), updateTaskRequest.getStatus());

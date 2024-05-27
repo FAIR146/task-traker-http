@@ -6,7 +6,6 @@ public class PutSubTaskRequest extends AbstractPutRequest {
     private long epicId;
     private Status status;
 
-
     public long getEpicId() {
         return epicId;
     }

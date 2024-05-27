@@ -7,7 +7,6 @@ import com.example.tasktrackerhttp.dto.Task;
 
 import java.util.List;
 
-
 public interface TaskDao {
     long addTask (Task task);
     long addEpic (Epic epic);

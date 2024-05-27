@@ -4,12 +4,16 @@ import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedTasksByUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ManagerImpl implements Manager {
 
     private final TaskDao taskDao;
@@ -24,7 +28,11 @@ public class ManagerImpl implements Manager {
         task.setDescription(description);
         task.setStatus(status);
         task.setUserName(userName);
-        return taskDao.addTask(task);
+
+        long id = taskDao.addTask(task);
+        log.debug("Task = [{}] was created with id = [{}] for user = [{}}", task, id, userName);
+
+        return id;
     }
 
     public long addEpic(String name, String description, String userName) {
@@ -32,7 +40,11 @@ public class ManagerImpl implements Manager {
         epic.setName(name);
         epic.setDescription(description);
         epic.setUserName(userName);
-        return taskDao.addEpic(epic);
+
+        long id = taskDao.addEpic(epic);
+        log.debug("Epic = [{}] was created with id = [{}] for user = [{}]", epic, id, userName);
+
+        return id;
     }
 
     //TODO: не хватает связи эпик -> сабтаск. То есть сабтаск-> эпик есть, а наоборот связь не выставлена
@@ -43,19 +55,27 @@ public class ManagerImpl implements Manager {
         subTask.setDescription(description);
         subTask.setStatus(status);
 
-        return taskDao.addSubTask(subTask);
+        long id = taskDao.addSubTask(subTask);
+        log.debug("SubTask = [{}] was created with id = [{}]", subTask, id);
+
+        return id;
     }
 
     public void removeEpicById(long id) {
         taskDao.removeEpicById(id);
+        log.debug("Remove epic with id = [{}]", id);
+
     }
 
     public void removeTaskById(long id) {
         taskDao.removeTaskById(id);
+        log.debug("Remove task with id = [{}]", id);
+
     }
 
     public void removeSubTaskById(long id) {
         taskDao.removeSubTaskById(id);
+        log.debug("Remove SubTask with id = [{}]", id);
     }
 
     public Epic getEpicById(long id) {
@@ -72,6 +92,7 @@ public class ManagerImpl implements Manager {
 
     public void updateTask (long id, String name, String description, Status status) {
         Task task = new Task();
+        log.debug("Update Task with id = [{}]. Old value = [{}]. New value SubTask: name = [{}] description = [{}] status = [{}].", id, task, name, description, status);
         task.setId(id);
         task.setName(name);
         task.setDescription(description);
@@ -80,6 +101,7 @@ public class ManagerImpl implements Manager {
     }
     public void updateEpic (long id, String name, String description) {
         Epic epic = new Epic();
+        log.debug("Update Epic with id = [{}]. Old value = [{}]. New value SubTask: name = [{}] description = [{}].", id, epic, name, description);
         epic.setId(id);
         List<SubTask> subTasks = taskDao.getEpicById(id).getSubTasks();
         epic.setName(name);
@@ -87,8 +109,9 @@ public class ManagerImpl implements Manager {
         epic.setSubTasks(subTasks);
         taskDao.updateEpic(epic);
     }
-    public void updateSubTask (long id,  String name, String description, Status status) { //long epicId
+    public void updateSubTask (long id, String name, String description, Status status) { //long epicId
         SubTask subTask = taskDao.getSubTaskById(id);
+        log.debug("Update SubTask with id = [{}]. Old value = [{}]. New value SubTask: name = [{}] description = [{}] status = [{}].", id, subTask, name, description, status);
         subTask.setId(id);
         subTask.setName(name);
         subTask.setDescription(description);

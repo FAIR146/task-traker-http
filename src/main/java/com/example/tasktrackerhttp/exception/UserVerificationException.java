@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp.Exception;
+package com.example.tasktrackerhttp.exception;
 
 public class UserVerificationException extends RuntimeException {
     public UserVerificationException (String message) {

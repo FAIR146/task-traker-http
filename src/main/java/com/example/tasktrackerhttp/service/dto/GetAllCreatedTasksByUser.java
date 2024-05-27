@@ -1,4 +1,4 @@
-package com.example.tasktrackerhttp.service;
+package com.example.tasktrackerhttp.service.dto;
 
 import com.example.tasktrackerhttp.dto.Task;
 import lombok.Builder;

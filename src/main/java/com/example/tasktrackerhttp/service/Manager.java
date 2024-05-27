@@ -4,6 +4,8 @@ import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedTasksByUser;
 
 public interface Manager {
     long addTask (String name, String description, Status status, String userName);

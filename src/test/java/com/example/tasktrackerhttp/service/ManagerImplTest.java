@@ -1,6 +1,8 @@
 package com.example.tasktrackerhttp.service;
 
 import com.example.tasktrackerhttp.dto.*;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedTasksByUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

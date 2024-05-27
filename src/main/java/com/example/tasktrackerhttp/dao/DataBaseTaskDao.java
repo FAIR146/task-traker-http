@@ -12,7 +12,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 @Repository
 @ConditionalOnProperty(name = "taskTracker.task.dao.implementation", havingValue = "DataBaseTaskDao")
@@ -21,6 +22,7 @@ public class DataBaseTaskDao implements TaskDao {
     private final SimpleJdbcInsert simpleJdbcInsertTask;
     private final SimpleJdbcInsert simpleJdbcInsertEpic;
     private final SimpleJdbcInsert simpleJdbcInsertSubTask;
+
     private final RowMapper<Task> taskRowMapper = (rs, rowNum) -> {
         Task task = new Task();
         task.setId(rs.getLong("id"));
@@ -30,6 +32,7 @@ public class DataBaseTaskDao implements TaskDao {
         task.setUserName(rs.getString("user_name"));
         return task;
     };
+
     private final RowMapper<Epic> epicRowMapper = (rs, rowNum) -> {
         Epic epic = new Epic();
         epic.setId(rs.getLong("id"));
@@ -50,6 +53,7 @@ public class DataBaseTaskDao implements TaskDao {
         return subTask;
 
     };
+
     DataBaseTaskDao (JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
 
@@ -264,5 +268,4 @@ public class DataBaseTaskDao implements TaskDao {
 
         return subTasks;
     }
-
 }

@@ -13,8 +13,8 @@ import com.example.tasktrackerhttp.controller.core.response.PutEpicResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutSubTaskResponse;
 import com.example.tasktrackerhttp.controller.core.response.PutTaskResponse;
 import com.example.tasktrackerhttp.dto.Status;
-import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
-import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedTasksByUser;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -71,5 +71,4 @@ public interface ManagerController {
 
     @GetMapping("/updateSubtaskStatus")
     void updateSubtaskStatus(@RequestParam("subtaskId") long id, @RequestParam Status status);
-
 }

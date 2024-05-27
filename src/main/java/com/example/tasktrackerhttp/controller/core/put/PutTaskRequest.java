@@ -7,6 +7,7 @@ public class PutTaskRequest extends AbstractPutRequest {
     @NotNull
     private Status status;
 
+
     public Status getStatus() {
         return status;
     }

@@ -5,12 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class GetTaskResponse {
-    @NotBlank
     private String name;
-    @NotBlank
     private String description;
     private Status status;
-    @NotNull
     private long id;
     private String userName;
 

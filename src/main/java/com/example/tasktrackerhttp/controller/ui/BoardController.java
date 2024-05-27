@@ -1,12 +1,12 @@
 package com.example.tasktrackerhttp.controller.ui;
 
-import com.example.tasktrackerhttp.Exception.UserVerificationException;
+import com.example.tasktrackerhttp.exception.UserVerificationException;
 import com.example.tasktrackerhttp.dto.Epic;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.SubTask;
 import com.example.tasktrackerhttp.dto.Task;
-import com.example.tasktrackerhttp.service.GetAllCreatedEpicsByUser;
-import com.example.tasktrackerhttp.service.GetAllCreatedTasksByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedEpicsByUser;
+import com.example.tasktrackerhttp.service.dto.GetAllCreatedTasksByUser;
 import com.example.tasktrackerhttp.service.Manager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,10 +35,12 @@ public class BoardController {
     public String createTask (Model model) {
         return "createTask";
     }
+
     @GetMapping("/createEpic")
     public String createEpic (Model model) {
         return "createEpic";
     }
+
     @GetMapping("/updTask")
     public String updTask (Model model, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Task task = manager.getTaskById(id);
@@ -46,6 +48,7 @@ public class BoardController {
         model.addAttribute("task", task);
         return "updTask";
     }
+
     @GetMapping("/updEpic")
     public String updEpic (Model model, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Epic epic = manager.getEpicById(id);
@@ -61,6 +64,7 @@ public class BoardController {
         manager.updateTask(id, name, description, status);
         return "redirect:/tasks";
     }
+
     @GetMapping("/updateEpicRequest")
     public String updateEpic (@RequestParam String name, @RequestParam String description, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails){
         Epic epic = manager.getEpicById(id);
@@ -69,7 +73,6 @@ public class BoardController {
         return "redirect:/epics";
     }
 
-
     @GetMapping("/createSubTask")
     public String createSubTask (Model model, @RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Epic epic = manager.getEpicById(id);
@@ -77,6 +80,7 @@ public class BoardController {
         model.addAttribute("epic", epic);
         return "createSubTask";
     }
+
     @PostMapping("/putSubTask")
     public String putSubTask(@RequestParam long id, @RequestParam String name, @RequestParam String description, @RequestParam Status status, @AuthenticationPrincipal UserDetails userDetails) {
         Epic epic = manager.getEpicById(id);
@@ -91,12 +95,14 @@ public class BoardController {
         manager.addTask(name, description, status, login);
         return "redirect:/tasks";
     }
+
     @GetMapping("/putEpic")
     public String putEpic (@RequestParam String name, @RequestParam String description, @AuthenticationPrincipal UserDetails userDetails) {
         String login = userDetails.getUsername();
         manager.addEpic(name, description, login);
         return "redirect:/epics";
     }
+
     @GetMapping("/deleteEpicById")
     public String deleteEpicById (@RequestParam long id, @AuthenticationPrincipal UserDetails userDetails) {
         Epic epic = manager.getEpicById(id);
@@ -120,6 +126,7 @@ public class BoardController {
         manager.removeSubTaskById(subtaskId);
         return "redirect:/epics";
     }
+
     @GetMapping("/epics")
     public String drawEpics (Model model, @AuthenticationPrincipal UserDetails userDetails) {
         String login = userDetails.getUsername();
@@ -139,7 +146,6 @@ public class BoardController {
         GetAllCreatedTasksByUser getAllCreatedTasksByUser = manager.getAllCreatedTasksByUser(login);;
 
         log.info("Список task {}", getAllCreatedTasksByUser);
-
 
         model.addAttribute("tasksNew", getAllCreatedTasksByUser.getNewTasks());
         model.addAttribute("tasksInProgress", getAllCreatedTasksByUser.getInProgressTasks());

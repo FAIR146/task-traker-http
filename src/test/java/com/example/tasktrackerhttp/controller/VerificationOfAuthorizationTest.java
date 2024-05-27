@@ -1,7 +1,7 @@
 package com.example.tasktrackerhttp.controller;
 
 
-import com.example.tasktrackerhttp.Exception.UserVerificationException;
+import com.example.tasktrackerhttp.exception.UserVerificationException;
 import com.example.tasktrackerhttp.dao.TaskDao;
 import com.example.tasktrackerhttp.dto.Status;
 import com.example.tasktrackerhttp.dto.Task;
@@ -9,11 +9,8 @@ import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.rmi.ServerException;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class VerificationOfAuthorizationTest extends BaseAuthenticatedControllerTest{
     @Autowired

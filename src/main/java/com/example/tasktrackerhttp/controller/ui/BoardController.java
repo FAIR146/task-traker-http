@@ -120,8 +120,6 @@ public class BoardController {
         manager.removeSubTaskById(subtaskId);
         return "redirect:/epics";
     }
-
-
     @GetMapping("/epics")
     public String drawEpics (Model model, @AuthenticationPrincipal UserDetails userDetails) {
         String login = userDetails.getUsername();
